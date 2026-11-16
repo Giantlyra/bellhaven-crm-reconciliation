@@ -18,13 +18,13 @@ _2026-11-16. Built from a fresh live read of the CRM (125 accounts) and the webs
 - An **actionable proposal held by a human** (#41, #46, #49, #66) has a concrete operation that could be released later.
 - A **rejected** proposal (below) will never run.
 
-## 2. #71 Amberly Manor, Hudson OH (not held; approved 2026-11-16 22:21:51 UTC, not executed)
+## 2. #71 Amberly Manor, Hudson OH (HELD since 2026-11-16 22:55:27 UTC; never executed)
 
 - **Website:** Amberly Manor, 4390 Darrow Rd, Hudson OH 44236, (330) 228-4392, admin Tom Trent.
 - **No CRM account in Hudson.**
 - **Why the Colorado Amberly Manor is distinct.** `0015D74ZLRY810RGY5` is at 918 S Nevada Ave, Colorado Springs CO, under Juniper Point, phone (734) 358-9267, administrator Ned Duval. Bellhaven operates only in OH, MI, IN and PA. Every identity attribute differs except the name, and matching never relies on name alone.
 - **Proposed:** create Amberly Manor (Hudson OH) under Bellhaven, starting at $0/$0.
-- **Status: APPROVED in the app (22:21:51 UTC, empty note), not executed.** Creating it still needs a typed `APPLY 71` on a writes-enabled server. Nothing is created.
+- **Status: HELD.** It was approved in the app at 22:21:51 UTC, then put on hold at 22:55:27 UTC (both with empty notes). It was never executed, and nothing is created.
 
 ## 2a. Investigation categories (display only, shown in the app)
 
@@ -34,8 +34,7 @@ Each open case carries a descriptive category so a reviewer can see why it isn't
 |---|---|---|
 | Possible change of ownership / rebrand (none confirmed) | #41 Monroe HELD · #49 Chagrin Falls HELD · #66 Portage HELD | Did 750 Stewart Rd operate under Cedar Trail? Is Riverbend Manor a former name? Is Sunny Acres a former name? |
 | Address verification | #46 Ashtabula HELD | Should PO Box 517 remain the billing address? |
-| Identity verification | #38 Union Square HELD · #53 Kettering HELD | Is 240 Market St a separate community? Which of the three Kettering records is current? |
-| New account confirmation (not an ownership change) | #71 Amberly Manor APPROVED, not executed | Is Amberly Manor (Hudson OH) a Bellhaven community that needs its own account? |
+| Identity verification | #38 Union Square HELD · #53 Kettering HELD · #71 Amberly Manor HELD | Is 240 Market St a separate community? Which of the three Kettering records is current? Is Amberly Manor (Hudson OH) a Bellhaven community that needs its own account (not an ownership change)? |
 
 ## 3. Closed without CRM write
 

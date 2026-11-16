@@ -17,8 +17,6 @@ CATEGORIES = {
                 "The CRM and the website give different kinds of address (mailing vs physical)."),
     "IDENTITY": ("Identity verification",
                  "The records can't be tied to one facility with enough confidence."),
-    "NEW_ACCOUNT": ("New account confirmation",
-                    "No CRM account exists for this community; creating one needs business confirmation."),
 }
 
 CASES = {
@@ -60,7 +58,7 @@ CASES = {
              uncertain="Which record, if any, is the live facility. Picking one would be a guess.",
              confirm="Which account is current, or should a new Bellhaven account be designated and the rest kept as history?",
              next="Keep held. Choose a survivor only once the business names it."),
-    71: dict(category="NEW_ACCOUNT", place="Hudson, OH",
+    71: dict(category="IDENTITY", place="Hudson, OH",
              known="The website lists Amberly Manor, 4390 Darrow Rd, Hudson OH. No CRM account exists in Hudson. The only CRM "
                    "'Amberly Manor' is in Colorado Springs under another operator, and every attribute except the name differs.",
              uncertain="Only that the community is genuinely new to the CRM rather than recorded under another name. "

@@ -23,8 +23,7 @@ def test_assigned_categories():
     cat = {pid: c["category"] for pid, c in I.CASES.items()}
     assert {p for p, c in cat.items() if c == "CHOW_REBRAND"} == {41, 49, 66}
     assert cat[46] == "ADDRESS"
-    assert {p for p, c in cat.items() if c == "IDENTITY"} == {38, 53}
-    assert cat[71] == "NEW_ACCOUNT"  # not an ownership change
+    assert {p for p, c in cat.items() if c == "IDENTITY"} == {38, 53, 71}  # #71: not an ownership change
     assert "confirmed" not in I.CATEGORIES["CHOW_REBRAND"][0].lower()
 
 
