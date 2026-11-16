@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Stage 1 (7 items) approved and fully validated live; awaiting the user's APPLY BATCH OF 7 in the app; live-writes server up._
+_Last updated: 2026-11-16 by Claude Code. STAGE 1 EXECUTED AND VERIFIED (7/7). Comprehensive evaluation of all 35 proposals done (docs/EVALUATION_TABLE.md). Dry-run._
 
 ---
 
@@ -110,7 +110,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 91576), **LIVE WRITES ENABLED** for the stage-1 window only; restore dry-run after the batch. Ledger backup: `data/ledger.pre-stage1.db`.
+- [V] One server is running: `./bh serve --port 8020` (PID 92948), in **dry-run**. The stage-1 live window is closed.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -299,6 +299,8 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 04:25:02–04:25:04 UTC: the user ran **stage 1** (`APPLY BATCH OF 7`) in the app. All 7 verified: #39, #47, #48, #50, #56, #59, #61. `batch_started` #267 / `batch_finished` #317; operations #12–#18. Independent check: only the approved fields changed (the `parent_name` display value follows the new `parent_id`); financials, contacts and the Owosso survivor are unchanged; Batavia `00163AAEB690110611` and Carlisle `00163ED66F49793F79` each exist exactly once. A fresh `scripts/final_audit.py` run: **18 of 18 operations live-matched and receipted, integrity PASS**. The earlier "not executed" observations were made before the batch ran.
+- [V] 2026-11-16: the user requested a comprehensive read-only evaluation with the business category taxonomy; no CRM changes. Delivered: `docs/EVALUATION_TABLE.md`.
 - [V] 2026-11-16 ~04:22 UTC: the user authorized **preparation of stage 1** (#50, #59, #39, #61, #56, #47, #48); approvals recorded from that chat authorization (#50, #59 were already approved). Final live validation: all 7 pass — no overlaps; no drift; approvals bound to current fingerprints; SOP: Lima AR $0 and Zanesville $0/$0 so direct re-parents are allowed; Owosso survivor `001EGU7BMJ942ZTRE6` matches the website phone and administrator, is Active under Bellhaven, and the loser has $0/$0 and no links; Portsmouth billing street identical to the website street; Batavia and Carlisle have no account with the same name, city, ZIP, phone or street. The user will personally type `APPLY BATCH OF 7`. Stage 2 (#40, #62) and CHOW (#60, #54) are **not** authorized.
 - [V] 2026-11-16: the user moved to **final execution and audit mode**. Plan: Group A executed only after explicit in-app authorization, with each write verified as it happens; B/C/D recorded; then one comprehensive read-only audit and the final report, monitoring results and walkthrough. Not an authorization to write; no approvals were given beyond those already recorded.
 - [V] 2026-11-16: the user confirmed **#49 and #66: HOLD** (superseding the earlier approval of both). They are recorded as HOLD in the ledger; no CRM change. Group B is now fully recorded (9 holds: #49, #66, #57, #41, #42, #38, #53, #70, #46).
@@ -337,13 +339,13 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Done this session (read-only):** `docs/CHOW_REVIEW.md` (#60, #54: both pass every automated rule; one financial question to answer) and `scripts/final_audit.py`. A baseline audit run shows **integrity PASS** (11 of 11 operations live-matched and receipted; protected fields and contacts intact).
+**Evaluation: [`docs/EVALUATION_TABLE.md`](docs/EVALUATION_TABLE.md)** (35 cases: 18 verified, 4 pending, 11 held, 2 rejected).
 
-**The user authorizes Group A, stage 1:** #50, #59, #39, #61, #56, #47, #48 in one batch. Then stage 2: #40 and #62. (#50 and #59 are already approved in the app; the others get recorded approvals from the user's authorization.)
+**Final action plan:**
+1. **Stage 2:** #40 and #62. Unblocked; the live preview is clean.
+2. **CHOW:** #60 then #54, after the user answers the unpaid-balance question (Q8).
+3. **Optional:** release #49 and #66.
+4. **Bellhaven answers (Q1–Q6)** for #57, #64, #41, #42, #53, #70, #38, #46, #36's follow-up and #68/#69; unresolved is a valid documented result.
+5. **Wrap-up:** follow-up scan, `scripts/final_audit.py`, final report, monitoring demo, walkthrough, and a check against the original assessment brief (not in this session; needs the user).
 
-**Then:**
-1. #60 Tiffin alone (the user answers the AR question in `docs/CHOW_REVIEW.md` first), then #54.
-2. Final audit: `PYTHONPATH=. .venv/bin/python scripts/final_audit.py docs/FINAL_AUDIT.md`.
-3. Final reconciliation report, monitoring demonstration and submission walkthrough, checked against the original assessment instructions.
-
-**Approval required:** every write. Server in dry-run (PID 89467). Operations total 11.
+**Approval required:** every write. Server in dry-run (PID 92948). Operations total 18.
