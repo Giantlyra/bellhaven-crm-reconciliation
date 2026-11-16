@@ -67,6 +67,10 @@ Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM
 **Limitations and exceptions, stated plainly:**
 - "Verified" means the CRM holds exactly what was authorized (read-back). It is not proof of the business event: the Sandusky sale and the Tiffin/Marietta AR collection remain business-unconfirmed.
 - Ashtabula has an existing account whose billing address is a PO box, kept pending a finance decision.
+- **Lima (#39):** the re-parent was allowed because outstanding AR was $0. But Lima's **$47,000 historical revenue**, earned under Harborview, now sits on an account under Bellhaven. That's a reporting-attribution limitation, the same as the earlier Findlay correction.
+- **Owosso (#56):** the duplicate was correctly inactivated, but its **Admissions Director contact (Tricia Lindqvist) remains on the inactive account**. That belongs in future contacts reconciliation, not a last-minute change.
+- **Union Square (#38):** the competing account's contact (Dale Croft vs the website's Phil Holloway) is in the investigation records, but **the proposal page does not yet display competing accounts' contacts**.
+- Superseded proposals are kept as audit history, not deleted. Two of them show the matching tightening: the first scan would have *created* Amberly Manor and Union Square; the stricter scan found look-alike accounts and escalated them to identity holds instead.
 - Six cases stay on hold with explicit business questions rather than forced answers.
 - _Confirm or edit this list before submitting._
 

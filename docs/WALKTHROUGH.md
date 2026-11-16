@@ -40,7 +40,7 @@ cd ~/clipboard-assessment
 | 0:45–1:15 | **#60: approval → verified change** (Decisions and Write log sections) | "I approved it, ran the live preview, which re-reads the CRM, re-checks the rules and blocks duplicate successors, and typed APPLY 60. Two writes, a POST and a PATCH, then a read-back. Status VERIFIED; successor `00164AE214A6588944`. The old account still holds its $84,000 and $12,400." |
 | 1:15–1:35 | **#68 Alliance: rejection** | "Not every proposal should run. This one would have set a status, 'Needs Review', that the CRM never uses. I rejected it: nothing written, and Alliance stays a documented finding. Three old-operator records were also closed and preserved rather than mislabelled as duplicates." |
 | 1:35–1:50 | **History** (filter or scroll to `execute_refused`) | "Everything is in an append-only audit log, including refusals: dry-run attempts, a wrong confirmation phrase, a proposal on hold. 25 writes in total, all read back." |
-| 1:50–2:00 | **`docs/FINAL_AUDIT.md`** or Start Here schedule card | "A daily read-only scan is configured, as a cron line and a GitHub Actions workflow, and refuses to run with writes enabled. The final audit re-checks every write: integrity PASS." |
+| 1:50–2:00 | **`docs/FINAL_AUDIT.md`** or Start Here schedule card | "A daily read-only scan runs at 6 AM from an installed cron job (a GitHub Actions workflow is configured too), and it refuses to run with writes enabled. The final audit re-checks every write: integrity PASS. The objective wasn't to force every record into a match. It was to make every defensible correction, preserve financial history, and escalate the cases where the evidence wasn't strong enough." |
 
 ## Live 45-minute walkthrough: preparation for the "small modification"
 

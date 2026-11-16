@@ -246,6 +246,8 @@ alternative; it would store the private ledger as a GitHub artifact, so **local 
 - Field-level read-back uses exact equality; if the CRM normalizes a value (e.g. phone format), the result is reported
   `failed` with the mismatch rather than silently accepted.
 - Single local operator: no login. The "actor" is recorded as `local-reviewer`.
+- The proposal page shows competing accounts' fields, but not their contacts. Example: Union Square #38's competing contact Dale Croft is in the investigation records, not on the page.
+- Business exceptions that technical verification does not settle: the Sandusky sale and $5,200 AR (#70); who collects the Tiffin and Marietta historical balances (#60, #54); Lima's $47,000 historical revenue now under Bellhaven (#39); the Owosso Admissions contact left on the inactive duplicate (#56).
 
 ## Demo (~2 minutes) and submission
 

@@ -64,12 +64,12 @@ const BEATS = [
   { t:[70,90], title:"Human approval and verified read-back",
     cue:"Screen: <b>/proposal/60</b>, Decisions and Write log (approved → APPLY 60 → read-back VERIFIED)",
     text:"Nothing writes without me. <em>I approve</em>, the live preview re-reads the CRM and re-checks the rules, <em>I type APPLY 60</em>, and the system <em>reads the result back</em>. Only then is it marked verified." },
-  { t:[90,105], title:"Rejected: #68 Alliance",
+  { t:[90,100], title:"Rejected: #68 Alliance",
     cue:"Screen: <b>/proposal/68</b>, status REJECTED (\"Needs Review\" is not a CRM status)",
     text:"And not everything should run. This proposal would have set a status the CRM doesn't use, so <em>I rejected it</em>. Nothing was written, and the business question stays documented." },
-  { t:[105,120], title:"Results, monitoring, open questions",
+  { t:[100,120], title:"Results, monitoring, the point",
     cue:"Screen: <b>/history</b>, then <b>docs/FINAL_AUDIT.md</b> (integrity PASS)",
-    text:"In total: <em>25 verified operations</em>, an <em>integrity audit that passes</em>, and a <em>read-only daily scan</em>. 23 of 35 communities match exactly. The rest are open business questions, like Sandusky, where the link is verified but the sale itself still needs confirmation." },
+    text:"In total: <em>25 verified operations</em>, an <em>integrity audit that passes</em>, and a <em>read-only daily scan</em> at 6 AM. The objective wasn't to force every CRM record into a match. It was to <em>make every defensible correction, preserve financial history, and escalate the cases where the evidence wasn't strong enough</em>, like Sandusky, where the link is verified but the sale still needs confirmation." },
 ];
 const TOTAL = 120;
 let i = 0, elapsed = 0, running = false, tick = null;

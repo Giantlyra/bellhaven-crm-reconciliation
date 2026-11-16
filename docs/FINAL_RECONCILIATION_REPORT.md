@@ -99,6 +99,18 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 - One may be a historical predecessor. Treating it as a duplicate (inactivate + "Duplicate of") versus as history (preserve) has different consequences for reporting and finances.
 - Owosso was a true same-parent duplicate and was inactivated. Port Clinton, Erie and Monroe/Harborview were preserved as likely predecessor records, with their history **inferred, not confirmed**.
 
+## 5b. Why the dashboard shows 71 proposals
+
+Only **35** are current decisions: 23 verified + 6 held + 5 rejected + 1 pending. The other **36 are kept as audit history**, never deleted:
+
+- **10 superseded:** earlier versions replaced by a materially changed proposal for the same case.
+  - #1 → #36 and #3 → #38: the first scan would have **created** Amberly Manor and Union Square. The stricter scan found look-alike accounts and escalated both to identity holds, so an **unsafe create was prevented**.
+  - #5, #6, #11, #12, #22, #23, #29 → #41, #42, #47, #48, #56, #57, #64: the same operations, with risk ratings and warnings added.
+  - #36 → #71, after the operator resolved Amberly as a distinct facility.
+- **26 resolved:** proposals from the very first scan that the first complete live scan (#3) no longer observed in that form, and re-derived under the final rules (for example #7 → #43).
+
+The ledger reconciles exactly: 23 verified proposals equal 25 read-back-verified operations (#60 and #54 have two each). There are 0 approved-but-unexecuted, interrupted, failed or blocked writes. 7 refused attempts were stopped before any write.
+
 ## 6. Controls that held
 
 - **No write without all of:** a server started with `CRM_WRITES_ENABLED=1`, a human approval bound to the proposal fingerprint, a fresh live preview with a plan token, and a typed confirmation phrase.
