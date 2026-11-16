@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. PUBLISHED: public repo https://github.com/Giantlyra/bellhaven-crm-reconciliation (branch bellhaven-assessment → main). Remaining: video, time spent, AI-tools confirmation, form submission by Nov 16 11:29 PM EST._
+_Last updated: 2026-11-16 ~15:10 UTC by Claude Code. Local cron INSTALLED and tested (run #14 PASS; failure capture PASS; CRM writes still 25)._
 
 ---
 
@@ -299,6 +299,11 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 ~15:05 UTC: the user authorized installing the **local daily cron job**. The crontab was empty before (backed up). One entry was installed, tagged `bellhaven-daily-reconcile`; a re-install is idempotent; macOS required the user to approve the "administer your computer" dialog.
+  - The exact command was run in a cron-like environment: scan #14 completed (exit 0).
+  - A forced-refusal test was logged with exit 1.
+  - CRM writes stayed at 25. `/usr/sbin/cron` is running.
+  - Limitation: runs are skipped (not caught up) if the Mac is asleep or off at 06:00.
 - [V] 2026-11-16: the user authorized publishing a **public GitHub repo**: https://github.com/Giantlyra/bellhaven-crm-reconciliation.
   - Pre-publish checks: no token, `.env`, data, ledgers or snapshots anywhere in history; no home paths in tracked files.
   - Commit author and committer were rewritten from the user's personal email to the GitHub no-reply address before pushing (file trees unchanged).

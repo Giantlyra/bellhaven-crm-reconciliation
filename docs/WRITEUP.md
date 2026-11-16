@@ -37,7 +37,7 @@ The goal: reconcile the CRM to the website, change only what is justified, never
    - a server explicitly started with writes enabled.
 
    Every write is then **read back** and compared before it counts as VERIFIED. All decisions and writes go to an append-only SQLite audit log.
-6. **Daily monitoring:** a read-only scheduled scan (`scripts/run_daily.py`). It refuses to run if writes are enabled. Configured as a cron line (`scripts/crontab.txt`) and a GitHub Actions workflow (`.github/workflows/daily-reconcile.yml`); neither is installed live, as the brief allows. A read-only `scripts/final_audit.py` re-verifies every write against the live CRM.
+6. **Daily monitoring:** a read-only scheduled scan (`scripts/run_daily.py`). It refuses to run if writes are enabled. Configured as a cron line (`scripts/crontab.txt`), **installed and tested on the author's Mac** (06:00 daily, logs to `data/daily.log`), and as a GitHub Actions workflow (`.github/workflows/daily-reconcile.yml`, which has no token secret on GitHub). A read-only `scripts/final_audit.py` re-verifies every write against the live CRM.
 
 ## Results
 

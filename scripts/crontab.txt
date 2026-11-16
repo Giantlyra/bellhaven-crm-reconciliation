@@ -1,3 +1,7 @@
-# Daily 06:00 local READ-ONLY scan. Creates pending proposals only; never approves or writes.
-# (run_daily.py refuses to start if CRM_WRITES_ENABLED=1.)  Install: crontab -e, paste the line below.
-0 6 * * * cd $HOME/clipboard-assessment && .venv/bin/python scripts/run_daily.py >> data/daily.log 2>&1
+# Bellhaven daily 06:00 (local time) READ-ONLY reconciliation scan.
+# Creates/records pending proposals only; never approves, previews or writes to the CRM.
+# - `env -u CRM_WRITES_ENABLED` strips the write flag; run_daily.py also refuses to start if it is set.
+# - Each run appends a UTC timestamp header, the scan output (stdout+stderr) and the exit code to data/daily.log.
+# - The trailing tag lets the installer replace this line instead of duplicating it.
+# Install (idempotent):  (crontab -l 2>/dev/null | grep -v 'bellhaven-daily-reconcile'; grep -v '^#' scripts/crontab.txt | grep .) | crontab -
+0 6 * * * cd "$HOME/clipboard-assessment" && { echo "=== bellhaven daily scan $(date -u +\%Y-\%m-\%dT\%H:\%M:\%SZ)"; env -u CRM_WRITES_ENABLED .venv/bin/python scripts/run_daily.py; echo "=== exit $?"; } >> data/daily.log 2>&1 # bellhaven-daily-reconcile

@@ -71,7 +71,7 @@ cd ~/clipboard-assessment
 - [x] 25 CRM operations human-approved, executed and verified; integrity audit PASS
 - [x] Unresolved cases documented with business questions (report §5)
 - [x] 130 tests passing
-- [x] Read-only daily schedule demonstrated; **cron is not installed** (no crontab for this user); the line is in `scripts/crontab.txt`
+- [x] Read-only daily schedule **installed** as a local cron job (06:00 daily, idempotent) and tested: run #14 PASS, failure capture PASS, 0 CRM writes
 - [x] Code committed locally on branch `bellhaven-assessment`
 - [x] Cross-checked against the original brief (welcome page): deadline Nov 16 2026 11:29 PM EST; schedule config only (no live cron needed); no hosting
 - [x] Public GitHub repository: https://github.com/Giantlyra/bellhaven-crm-reconciliation (`.env`, `data/`, `investigation.txt` are gitignored; `docs/` contains assessment account IDs and phones)
