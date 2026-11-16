@@ -219,16 +219,22 @@ alternative; it would store the private ledger as a GitHub artifact, so **local 
 - Phone mismatches are frequent in the CRM data; they are proposed as low-risk edits, not verified by calling.
 - Contacts (website administrator vs CRM contacts) are not reconciled. Known: the Owosso loser has a contact (Tricia
   Lindqvist); Sandusky has Frank Dietz (DON). Contacts were used as identity evidence for Amberly and Union Square.
-- The API spec (`/api/openapi.json`) has no field enums; the "Needs Review" status used for CRM-only accounts is unconfirmed.
+- The API spec (`/api/openapi.json`) has no field enums. The two "Needs Review" status proposals (#68, #69) were rejected as written; Alliance and Coldwater stay documented findings.
 - Field-level read-back uses exact equality; if the CRM normalizes a value (e.g. phone format), the result is reported
   `failed` with the mismatch rather than silently accepted.
 - Single local operator: no login. The "actor" is recorded as `local-reviewer`.
 
 ## Demo (~2 minutes) and submission
 
-Script: [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) (also in the **Walkthrough** tab). **No video has been recorded yet.** The **Submit** tab shows a
-live checklist.
+**Deadline: Nov 16 2026, 11:29 PM EST.**
 
-- Repository: _add link_
+- **Write-up** (matching approach, AI tools used, what we'd build next): [docs/WRITEUP.md](docs/WRITEUP.md).
+- **Demo script** (evidence, approval, rejection, verified CRM change): [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md), with 2- and 5-minute versions and prep for the live 45-minute session.
+- **Final results:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/MONITORING_RESULTS.md](docs/MONITORING_RESULTS.md).
+- **Daily schedule** (configuration only, as the brief allows): `scripts/crontab.txt` and `.github/workflows/daily-reconcile.yml`. Neither is installed live.
+
+The **Submit** tab shows a live checklist.
+
+- Repository or ZIP/Drive link: _add link_
 - Demo video: _add link (not recorded)_
 - Time spent: _fill in your actual total_

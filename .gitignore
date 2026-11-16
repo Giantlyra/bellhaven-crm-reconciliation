@@ -16,3 +16,6 @@ __pycache__/
 .pytest_cache/
 # investigation notes contain CRM account data
 investigation.txt
+
+# local submission bundles
+dist/

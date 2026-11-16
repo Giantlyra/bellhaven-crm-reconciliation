@@ -22,16 +22,34 @@ cd ~/clipboard-assessment
 | **3:45–4:20 · Exceptions** | `docs/FINAL_RECONCILIATION_REPORT.md` §4–5 | "Not everything should be forced. Three old-operator records were **closed and preserved** rather than mislabelled as duplicates. Six cases stay on **HOLD** with a specific question for Bellhaven, for example Kettering's three records. Sandusky's link is verified, but the sale and the **$5,200** remain a documented exception. An unresolved case with its evidence is a valid result." |
 | **4:20–5:00 · Monitoring** | Terminal: `scripts/run_daily.py` (with and without the flag) → Start Here schedule card → `docs/FINAL_AUDIT.md` | "The daily job is read-only and **refuses to run if writes are enabled**. Re-running finds **0 new** items. The dashboard shows the last scheduled run and failures. The cron line is provided but **not installed** on this machine. The final audit re-checks every write against the live CRM: **integrity PASS**." |
 
-## 2-minute demo
-| Time | Screen | What to show |
+## 2-minute demo video (required: evidence, approval, rejection, verified CRM change)
+
+**Before recording:**
+- The server is in **dry-run**: `./bh serve` (or the session server on :8020). The green DRY-RUN banner is on.
+- Open these tabs in order: `/` · `/proposal/60` · `/proposal/68` · `/history` · `docs/FINAL_AUDIT.md`.
+- Crop the address bar; the token is never shown in pages.
+- **Do not run a new write on camera.** The verified changes are already recorded, and the brief asks to *show* one.
+
+| Time | Screen | Say |
 |---|---|---|
-| 0:00 | **Start Here** | 35 communities vs 125 CRM accounts; the scan is complete and fail-closed; DRY-RUN banner; "CRM write calls ever: 25"; the daily read-only schedule and 0 failures |
-| 0:20 | **Find Problems / Build–Modify** | How a discrepancy is classified: field update, parent correction, change of ownership, duplicate, new account, or insufficient evidence. Open #60 Tiffin |
-| 0:40 | **#60 proposal page** | Evidence comparison: website vs CRM, $84,000 / $12,400 → CHOW. The historical account is preserved; the successor starts at $0; the open question about who collects the AR is shown |
-| 1:00 | **Queue** | Low-risk queue: eligibility rules, manual-review reasons, the receipts of run 1 (5 of 5 verified) |
-| 1:20 | **History** | Append-only audit: approve → preview → typed `APPLY` → op → read-back, per write; the refused attempts are logged too |
-| 1:40 | `docs/FINAL_AUDIT.md` | Integrity PASS: 25 of 25 operations live-matched; protected fields and contacts intact |
-| 1:50 | `docs/FINAL_RECONCILIATION_REPORT.md` §5 | The unresolved cases left open on purpose, each with its business question |
+| 0:00–0:15 | **Start Here** | "Bellhaven's website lists 35 communities; the CRM had 121 accounts. One read-only scan reads both, fails closed if anything is incomplete, and matches by address and ZIP, never by name alone." |
+| 0:15–0:45 | **#60 Tiffin: evidence** (scroll the comparison and financial table) | "Every proposal shows website vs CRM side by side, the sources and what's missing. Tiffin sits under Cedar Trail with $84,000 revenue and $12,400 unpaid, so the billing rule forbids re-parenting it. The engine proposes a change of ownership: preserve the old account, create a $0 Bellhaven successor, link them." |
+| 0:45–1:15 | **#60: approval → verified change** (Decisions and Write log sections) | "I approved it, ran the live preview, which re-reads the CRM, re-checks the rules and blocks duplicate successors, and typed APPLY 60. Two writes, a POST and a PATCH, then a read-back. Status VERIFIED; successor `00164AE214A6588944`. The old account still holds its $84,000 and $12,400." |
+| 1:15–1:35 | **#68 Alliance: rejection** | "Not every proposal should run. This one would have set a status, 'Needs Review', that the CRM never uses. I rejected it: nothing written, and Alliance stays a documented finding. Three old-operator records were also closed and preserved rather than mislabelled as duplicates." |
+| 1:35–1:50 | **History** (filter or scroll to `execute_refused`) | "Everything is in an append-only audit log, including refusals: dry-run attempts, a wrong confirmation phrase, a proposal on hold. 25 writes in total, all read back." |
+| 1:50–2:00 | **`docs/FINAL_AUDIT.md`** or Start Here schedule card | "A daily read-only scan is configured, as a cron line and a GitHub Actions workflow, and refuses to run with writes enabled. The final audit re-checks every write: integrity PASS." |
+
+## Live 45-minute walkthrough: preparation for the "small modification"
+
+- **Run tests first and last:** `./bh test` (130 tests, about 1 s). Keep the server in dry-run while changing code.
+- **Where common changes go:**
+  - *Compare a new field* (e.g. care type): `app/normalize.py` (normalizer), `app/reconcile.py` (`_website_fields` and the field-diff block), then a test in `tests/test_matching.py`.
+  - *Change matching strictness*: the street-similarity threshold and match tiers in `app/reconcile.py`.
+  - *Add or tighten a safety rule*: `app/policy.py` (`check_ops`), then a test in `tests/test_policy.py`. The rule runs automatically at preview and execute time.
+  - *Change queue eligibility*: `app/exec_queue.py` (`ALLOWED_FIELDS`, `MIN_NAME_SIMILARITY`), tests in `tests/test_queue.py`.
+  - *Add a column or page*: route in `app/main.py`, template in `app/templates/`.
+  - *Schedule*: `scripts/crontab.txt` or `.github/workflows/daily-reconcile.yml`.
+- **Show the safety model while modifying:** only `executor.execute` writes; anything else, such as scans, GETs, tests and the scheduler, is proven write-free by tests.
 
 ## Technical walkthrough (on request)
 1. `app/scrape.py`, `app/reconcile.py`: website + CRM ingestion (fail-closed), address+ZIP matching, classification.
@@ -55,7 +73,9 @@ cd ~/clipboard-assessment
 - [x] 130 tests passing
 - [x] Read-only daily schedule demonstrated; **cron is not installed** (no crontab for this user); the line is in `scripts/crontab.txt`
 - [x] Code committed locally on branch `bellhaven-assessment`
-- [ ] **Re-check against the original Clipboard brief.** It isn't in this repository; confirm the required form fields and deliverables
-- [ ] Public GitHub repository (`.env`, `data/` and `investigation.txt` are gitignored; `docs/` contain assessment account IDs and phones)
-- [ ] 2-minute video
-- [ ] Form: repo link, video link, honest time spent, write-up
+- [x] Cross-checked against the original brief (welcome page): deadline Nov 16 2026 11:29 PM EST; schedule config only (no live cron needed); no hosting
+- [ ] Public GitHub repository **or** shared ZIP/Drive link (`.env`, `data/`, `investigation.txt` are gitignored; `docs/` contains assessment account IDs and phones)
+- [ ] ~2-minute video showing evidence, approval, **rejection** and a verified CRM change (script above)
+- [ ] Honest actual time spent (`docs/WRITEUP.md`, README)
+- [x] Write-up: matching approach, AI tools used, what we'd build next (`docs/WRITEUP.md`). Confirm the AI-tools list
+- [ ] Submit before **Nov 16 2026, 11:29 PM EST**
