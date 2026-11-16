@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 ~03:30 UTC by Claude Code. Queue items approved but NOT run; code committed (c3ef0a7, branch bellhaven-assessment); server in dry-run._
+_Last updated: 2026-11-16 by Claude Code. Queue session opened but NOT run; no writes; dry-run restored._
 
 ---
 
@@ -60,6 +60,12 @@ _Last updated: 2026-11-16 ~03:30 UTC by Claude Code. Queue items approved but NO
 - A live GET shows all five accounts identical to `data/wave_a_pre_execution_snapshot.json`.
 - **Nothing to verify yet.** The five stay APPROVED, with nothing written.
 
+**Queue session 1 (2026-11-16): not run.**
+- The server was switched to live writes (PID 85605) and `/queue` was shown with the 5 approved items. Ledger backup: `data/ledger.pre-queue1.db`.
+- **No validation or run took place.** There are no audit events after #165, still 6 operations, and no receipt.
+- A live GET shows all 5 accounts and their contacts identical to the pre-Wave A snapshot.
+- Status: **#37, #44, #51, #63 and #67 are APPROVED, not executed.** The server was restored to dry-run (PID 85810).
+
 **Demo (2026-11-16):** run on a **throwaway copy** of the ledger with sandbox approvals, against the live CRM and website, in dry-run.
 - All 5 validated READY, with the exact before-values and request bodies.
 - The run was refused before any write (dry-run).
@@ -98,7 +104,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 84595), in **dry-run**, restarted with the queue code.
+- [V] One server is running: `./bh serve --port 8020` (PID 85810), in **dry-run**, restored after queue session 1, in which nothing was run.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -319,4 +325,4 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - **P3, need business answers first:** #70 Sandusky (Q3, $5,200 AR) · #36 and #38 (Q4, missing Bellhaven accounts) · #41, #42, #57, #64 (Q1) · #53 Kettering (Q2) · #46 Ashtabula (Q5).
 - **P4, recommended reject:** #68 and #69 (Q6, invalid status value).
 
-**Approval required:** running the queue, and every manual item individually. Server is in dry-run (PID 84595). No writes since #45.
+**Approval required:** running the queue, and every manual item individually. Server is in dry-run (PID 85810). No writes since #45.
