@@ -15,7 +15,7 @@ live re-check before it runs and a read-back check after.
 | Communities matching the CRM exactly | **23 of 35**. The rest are documented cases, not guesses: 6 HELD with business questions, 5 closed without a write, 1 new pending create |
 | Tests | **130 passing** (mocked CRM, temporary SQLite). On a fresh clone, **123 pass and 7 are skipped**: those 7 need the private assessment snapshot, which is gitignored |
 
-**Start here:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/WRITEUP.md](docs/WRITEUP.md) · [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md)
+**Start here:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_DECISION_REVIEW.md](docs/FINAL_DECISION_REVIEW.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/WRITEUP.md](docs/WRITEUP.md) · [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md)
 
 ## Quick start (fresh clone)
 
@@ -254,7 +254,7 @@ alternative; it would store the private ledger as a GitHub artifact, so **local 
 - **Write-up** (matching approach, AI tools used, what we'd build next): [docs/WRITEUP.md](docs/WRITEUP.md).
 - **Demo script** (evidence, approval, rejection, verified CRM change): [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md), with 2- and 5-minute versions and prep for the live 45-minute session.
 - **Final results:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/MONITORING_RESULTS.md](docs/MONITORING_RESULTS.md).
-- **Daily schedule** (configuration only, as the brief allows): `scripts/crontab.txt` and `.github/workflows/daily-reconcile.yml`. Neither is installed live.
+- **Daily schedule:** the brief requires only the configuration (`scripts/crontab.txt`, `.github/workflows/daily-reconcile.yml`). The local 06:00 cron job is also **installed and tested** on the author's Mac. The GitHub workflow has no token secret, so it cannot read the CRM.
 
 The **Submit** tab shows a live checklist.
 

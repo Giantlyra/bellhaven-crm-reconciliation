@@ -42,16 +42,18 @@ CRM_WRITES_ENABLED=1 ./bh serve --port 8020
 - It never approves, previews or executes.
 - An incomplete or failed scan creates no proposals and resolves nothing. The run is recorded as `incomplete` or `failed`, and its exit code is 1.
 
-**Install** (optional; the cron job isn't installed yet):
+**Status (2026-11-16): INSTALLED** on the author's Mac. `crontab -l` shows one entry tagged `bellhaven-daily-reconcile`, and a test run passed (see `MONITORING_RESULTS.md`). If the Mac is asleep at 06:00, that day's run is skipped.
+
+**Install or re-install (idempotent; replaces the tagged line instead of duplicating it):**
 
 ```bash
-crontab -e
+(crontab -l 2>/dev/null | grep -v 'bellhaven-daily-reconcile'; grep -v '^#' scripts/crontab.txt | grep .) | crontab -
 ```
 
-Paste this line from `scripts/crontab.txt`, then save:
+The installed line comes from `scripts/crontab.txt`. For a manual install with `crontab -e`, paste it and save:
 
 ```
-0 6 * * * cd $HOME/clipboard-assessment && .venv/bin/python scripts/run_daily.py >> data/daily.log 2>&1
+0 6 * * * cd "$HOME/clipboard-assessment" && { echo "=== bellhaven daily scan $(date -u +\%Y-\%m-\%dT\%H:\%M:\%SZ)"; env -u CRM_WRITES_ENABLED .venv/bin/python scripts/run_daily.py; echo "=== exit $?"; } >> data/daily.log 2>&1 # bellhaven-daily-reconcile
 ```
 
 **Check that it works.** Run the exact command once by hand:
