@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 ~03:30 UTC by Claude Code. Queue run 1: 5/5 VERIFIED; dry-run restored._
+_Last updated: 2026-11-16 by Claude Code. Batch completion mode: all 24 open items reviewed read-only (docs/REMAINING_DECISIONS.md); awaiting user decisions; no writes._
 
 ---
 
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user switched to **batch completion mode**: one read-only review of all remaining items, a decision table, then sequential execution of explicitly approved changes with stop-on-error. CHOW, duplicates, conflicting identities and financial-risk cases stay manual unless their requirements are met. Not an authorization.
 - [V] 2026-11-16 03:26 UTC: the user ran the queue (`APPLY QUEUE OF 5`). All 5 were verified by the app and by Claude Code's independent live check.
 - [V] 2026-11-16 03:20 UTC: the user approved #37, #44, #51, #63 and #67 in the app for the queue. No queue run followed. On request, the code was committed: `c3ef0a7` on branch `bellhaven-assessment`, the repo's first commit. Stray empty files `Y`, `app/au_`, `app/ci_` and `app/r⏎⏎R` were left out and not deleted.
 - [V] 2026-11-16: the user asked to switch from manual walkthroughs to a controlled execution queue for **explicitly approved low-risk corrections**. No auto-approval, no high-risk execution; ownership, duplicates and uncertain matches stay manual. Built and dry-run demonstrated; no new writes.
@@ -322,13 +323,15 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Wave A: 10 of 14 executed and verified** (#58, #65, #52, #55, #45, #37, #44, #51, #63, #67). **4 left, manual only:** #50 Chesterton, #59 Portsmouth (billing ZIP), #49 Chagrin Falls, #66 Willow Creek. Each needs individual authorization in the per-proposal flow.
+**Decision table: [`docs/REMAINING_DECISIONS.md`](docs/REMAINING_DECISIONS.md)** (24 open items, reviewed read-only).
+- No drift, and the website is unchanged on all 24.
+- Pre-execution snapshot: `data/remaining_pre_execution_snapshot.json`.
 
-**Next recommended:** #50 Chesterton (name only; phone and administrator already match the website).
+| Lane | Items | Execution |
+|---|---|---|
+| A. Batch (verified Wave A) | #50, #59, #49, #66 | Existing `/batch` path, `APPLY BATCH OF n`, stops at the first failure. The low-risk queue excludes them by design (renames and a billing field) |
+| B. Individual | #39 → #40 · #61 → #62 · #56 · #47 · #48 · #60 → #54 | `APPLY <id>`, one at a time; CHOW is never batched |
+| C. Blocked (Q1–Q5) | #70, #36, #38, #41, #42, #57, #64, #53, #46 | Needs business answers |
+| D. Reject | #68, #69 | Rejecting writes nothing |
 
-**Manual review after that:**
-- **P2:** #39 → #40 Lima · #61 → #62 Zanesville · #56 Owosso · #47 and #48 creates · #60 → #54 CHOW.
-- **P3 (business answers):** #70 · #36 and #38 · #41, #42, #57, #64 · #53 · #46.
-- **P4 (reject):** #68 and #69.
-
-**Approval required:** every remaining item individually. Server in dry-run (PID 86231). No further writes authorized.
+**Waiting on the user:** approve or hold each item in lanes A and B, reject (or not) #68/#69, and answer Q1–Q6. Nothing is authorized. Server in dry-run (PID 86231).
