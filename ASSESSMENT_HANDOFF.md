@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Duplicate review recorded: #57/#64/#42 closed as predecessor records (no CRM write), #41 HOLD; #70 documented exception. 23 verified · 7 hold · 5 closed; dry-run._
+_Last updated: 2026-11-16 by Claude Code. WRAP-UP DONE: follow-up scan (#71), final audit PASS, final report, monitoring results, walkthrough. Dry-run._
 
 ---
 
@@ -299,6 +299,12 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 ~05:26–05:30 UTC: wrap-up run, with no CRM writes.
+  - Follow-up scan #12 produced **#71** (create Amberly Manor, Hudson OH, pending review; #36 superseded).
+  - The scheduled job refused to start with writes enabled; its read-only run #13 was idempotent (0 new / 12 known).
+  - `docs/FINAL_AUDIT.md`: integrity PASS, 25 of 25 operations.
+  - New: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/MONITORING_RESULTS.md`, `docs/WALKTHROUGH.md`. Stale counts refreshed (130 tests).
+  - Ledger backup before the scan: `data/ledger.pre-scan12.db`.
 - [V] 2026-11-16: duplicate review accepted. **#57, #64, #42 closed in the ledger (status REJECTED = proposed inactivate/link/note never executed)** as likely historical predecessor records; both accounts in each pair preserved; ownership history inferred, not confirmed. **#41 stays HOLD** until Cedar Trail's relationship to 750 Stewart Rd is established. **#70** recorded as a documented exception (sale unconfirmed; $5,200 AR responsibility unresolved). No CRM changes.
 - [V] 2026-11-16 05:08 UTC: the user also **released #70 Sandusky from HOLD, approved it and executed it** (`APPLY 70`, operation 23). Independent check: only `chow_current_account` → Millstone `0017JP8Z1UQ763BVK3` changed; $130,000 / AR $5,200, Bellhaven parent, contact and status are unchanged; the Millstone account is unchanged. Q3 (sale confirmation, AR ownership) is still open. Whole-CRM check: all 23 accounts changed since the seed are explained by verified ledger operations; 0 unexplained writes; 25 of 25 operations verified. A later "stale form token" error came from a page opened before the dry-run restart; nothing was written.
 - [V] 2026-11-16 05:05–05:09 UTC: the user approved and executed **#60 Tiffin** (`APPLY 60`, 05:06:38) and then **#54 Marietta** (`APPLY 54`, 05:09:05) in the app. #54 was approved, held, released and re-approved; one attempt while on hold was refused (audit #357). Both verified (operations 21–22, 24–25). Independent check: each historical account changed **only** in `chow_current_account`, keeping its revenue/AR ($84,000/$12,400; $51,250/$3,800), Cedar Trail parent, name, phone and contacts. Each successor exists once, under Bellhaven, at $0/$0. Note: #54 ran before Claude Code had verified #60 (the agreed order was to verify #60 first); both are correct.
@@ -344,14 +350,12 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**State:** 35 proposals = **23 verified** (25 operations) · **7 hold** (#36, #38, #41, #46, #49, #53, #66) · **5 closed without write** (#42, #57, #64, #68, #69). Nothing is pending; no writes are authorized.
+**Final state:** 36 proposals = 23 verified (25 operations, audit PASS) · 6 hold (#38, #41, #46, #49, #53, #66) · 5 closed without write (#42, #57, #64, #68, #69) · 1 pending new create (#71 Amberly Manor, Hudson OH) · #36 superseded by #71.
 
-**Documented exceptions:** #70 (sale unconfirmed, $5,200 AR) · #60/#54 (who collects $12,400/$3,800) · #57/#64/#42 (ownership history inferred).
+**For the user:**
+1. Decide #71 (confirm Hudson OH first) or leave it pending.
+2. Supply the original Clipboard brief so the deliverables can be checked against it.
+3. Video, public repo, time spent, form submission.
 
-**Wrap-up, no CRM writes:**
-1. Follow-up scan for #36 (Hudson OH create proposal, for review only).
-2. `scripts/final_audit.py docs/FINAL_AUDIT.md`.
-3. Final reconciliation report, monitoring demo, walkthrough; refresh stale docs.
-4. Check against the original assessment brief (the user must supply it).
-
+**Bellhaven questions:** see `docs/FINAL_RECONCILIATION_REPORT.md` §5.
 Server in dry-run (PID 95736).

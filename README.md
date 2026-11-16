@@ -158,7 +158,7 @@ blindly re-creates.
 
 ## Live findings (scans #3–#9, 2026-11-15, 35 website facilities / 121 CRM accounts; CRM unchanged throughout)
 
-Current ledger: 32 PENDING, 3 HELD, 0 approved or executed.
+**Final state (2026-11-16):** 23 proposals VERIFIED (25 CRM operations, read-back verified; integrity audit PASS), 6 HELD with business questions, 5 closed without a write, 1 new pending create (#71). See `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/MONITORING_RESULTS.md` and `docs/WALKTHROUGH.md`. The original findings below are kept for history.
 
 - **28 operations** are ready for your individual authorization.
 - **4** are prepared but recommended for HOLD or INVESTIGATE:
@@ -184,7 +184,7 @@ These are proposals awaiting review, not applied changes. 0 engine write calls h
 
 ## Tests
 
-`./bh test`: **112 passed** (Python 3.9.6). Everything runs on mocked HTTP and in-memory or temporary SQLite. The report appears in the Test
+`./bh test`: **130 passed** (was 112 before the queue and confirmation-phrase work) (Python 3.9.6). Everything runs on mocked HTTP and in-memory or temporary SQLite. The report appears in the Test
 tab and in [docs/TEST_REPORT.md](docs/TEST_REPORT.md), which maps tests to the required scenarios:
 
 - incomplete ingestion

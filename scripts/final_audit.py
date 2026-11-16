@@ -34,14 +34,19 @@ SNAPSHOTS = ["data/wave_a_pre_execution_snapshot.json", "data/remaining_pre_exec
 PROTECTED = ("lifetime_revenue", "outstanding_ar", "parent_id", "status", "chow_current_account",
              "duplicate_of_account", "billing_street", "billing_city", "billing_state", "billing_zip", "care_type")
 OPEN_QUESTIONS = {
-    "Q1": "Are $0 predecessor-brand records at Monroe/Port Clinton/Erie historical operators or duplicates? (#41, #42, #57, #64)",
+    "Q1": "Did 750 Stewart Rd ever operate under Cedar Trail, or is 'Cedar Trail of Monroe' an erroneous record? (#41)",
+    "Q1b": "Predecessor-brand records preserved; ownership history inferred, not confirmed (#42, #57, #64: closed, no write)",
     "Q2": "Which Kettering account is live? (#53)",
-    "Q3": "Did Bellhaven sell Sandusky to Millstone, and who owns the $5,200 AR? (#70)",
-    "Q4": "Is Union Square a distinct facility from the look-alike CRM account? (#38)",
+    "Q3": "Was the Sandusky sale to Millstone confirmed, and who collects the $5,200 AR? (#70: link verified, exception documented)",
+    "Q4": "Is Union Square Senior Living (240 Market St) a different community from Bellhaven at Union Square? (#38)",
     "Q5": "Keep PO Box 517 as Ashtabula's billing address? (#46)",
-    "Q7": "Are Chagrin Falls and Willow Creek renames, or ownership changes? (#49, #66)",
+    "Q6": "Are Alliance and Coldwater still Bellhaven communities? (#68, #69: rejected as written)",
+    "Q7": "Chagrin Falls / Willow Creek: rename or ownership change? (#49, #66)",
+    "Q8": "Who collects the historical Tiffin ($12,400) and Marietta ($3,800) balances? (#60, #54: CHOW verified)",
+    "Q9": "Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71)",
 }
-CASE_Q = {41: "Q1", 42: "Q1", 57: "Q1", 64: "Q1", 53: "Q2", 70: "Q3", 38: "Q4", 46: "Q5", 49: "Q7", 66: "Q7"}
+CASE_Q = {41: "Q1", 42: "Q1b", 57: "Q1b", 64: "Q1b", 53: "Q2", 70: "Q3", 38: "Q4", 46: "Q5", 68: "Q6", 69: "Q6",
+          49: "Q7", 66: "Q7", 60: "Q8", 54: "Q8", 71: "Q9"}
 
 
 def _num(s):
@@ -176,7 +181,7 @@ def main(out_path: str | None = None) -> int:
     counts = collections.Counter(r[0] for r in led.db.execute("select status from proposals where status not in ('resolved','superseded')"))
     md.append("- Open ledger: " + " · ".join(f"**{k}: {v}**" for k, v in sorted(counts.items())))
     md.append("- Resolved or superseded by later scans (not open): " + str(led.db.execute("select count(*) from proposals where status in ('resolved','superseded')").fetchone()[0]))
-    held = led.db.execute("select id, kind, title, status from proposals where status in ('hold','pending','approved','rejected') order by id").fetchall()
+    held = led.db.execute("select id, kind, title, status from proposals where status in ('hold','pending','approved','rejected') or id in (60, 54, 70) order by id").fetchall()
     md += ["", "| # | Kind | Status | Case | Open question |", "|---|---|---|---|---|"]
     for pid, kind, title, st in held:
         md.append(f"| #{pid} | {kind} | {st} | {title[:70]} | {OPEN_QUESTIONS.get(CASE_Q.get(pid), '')} |")

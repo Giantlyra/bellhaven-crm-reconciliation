@@ -19,7 +19,7 @@
 | 1:00–1:25 | Approve → **Live preview** → type `APPLY 60` | "Approving records a decision; it writes nothing. The preview re-reads the CRM, re-runs the SOP on live numbers, checks for an existing successor, and binds a plan token to that state. The write only happens after this typed confirmation, then every field is read back." *(B: show the dry-run refusal. A: show VERIFIED with the read-back.)* |
 | 1:25–1:40 | **#56 Owosso** | "Duplicates are never merged or deleted. The survivor is the record whose phone matches the website; the other becomes Inactive and points at it." |
 | 1:40–1:52 | **History** | "Every decision, preview, write and read-back is in an append-only log. Findlay was fixed earlier; it's imported as a verified receipt and never re-proposed." |
-| 1:52–2:00 | **Test** tab | "112 tests on a mocked CRM cover partial failures, stale data and repeated approvals. The daily job only scans, and refuses to start if writes are enabled." |
+| 1:52–2:00 | **Test** tab | "130 tests on a mocked CRM cover partial failures, stale data and repeated approvals. The daily job only scans, and refuses to start if writes are enabled." |
 
 ## Technical walkthrough (for follow-up questions)
 
@@ -49,6 +49,8 @@
   - A reverted proposal reopens as *pending*, never *approved*.
   - An interrupted execution resumes only through a fresh preview and confirmation.
 
+> **Superseded for the final submission by `WALKTHROUGH.md`**, which reflects the executed and verified state (25 operations, audit PASS).
+
 ## Submission checklist
 
 - [x] The scraper covers all 35 communities, including the homepage-only listing (scan #9)
@@ -59,7 +61,7 @@
 - [x] Approve → live preview → typed confirmation → write → read-back; CHOW as one recoverable ordered operation
 - [x] Persistent ledger; re-runs idempotent (scans #5–#9: 0 new / 35 known)
 - [x] Daily read-only schedule (`scripts/crontab.txt`), with status and failures on Start Here
-- [x] Tests: 112 passing (`./bh test`; `docs/TEST_REPORT.md`)
+- [x] Tests: 130 passing (`./bh test`; `docs/TEST_REPORT.md`)
 - [x] README, requirements matrix, nine-path review, decision report, operations list, investigation questions, change history, operations guide, demo script
 - [ ] **Stop the stale servers** (ports 8000–8006, 8010, 8011)
 - [ ] **Your approvals executed** one at a time (`APPROVAL_BATCH.md`), then a re-scan shows only held items open
