@@ -17,7 +17,7 @@ in-app Approve → Live preview → typed `APPLY <id>`, followed by a read-back.
 
 > ## FINAL STATUS (2026-11-16, supersedes the counts below)
 >
-> **35 proposals: 23 VERIFIED (25 CRM operations) · 7 HOLD · 5 CLOSED/REJECTED without CRM write.** Independent audit: 25 of 25 operations live-matched and receipted; protected fields and contacts intact; no unexplained CRM writes.
+> **35 proposals reviewed: 23 VERIFIED (25 CRM operations) · 6 HOLD · 5 CLOSED/REJECTED without CRM write · #36 resolved and superseded by #71** (a new pending create for Amberly Manor, Hudson OH, from the follow-up scan; review only). Independent audit: 25 of 25 operations live-matched and receipted; protected fields and contacts intact; no unexplained CRM writes.
 >
 > | Disposition | Proposals |
 > |---|---|
@@ -30,7 +30,7 @@ in-app Approve → Live preview → typed `APPLY <id>`, followed by a read-back.
 > | **Closed: historical predecessor records, both accounts preserved, no CRM write** | #57 Port Clinton, #64 Erie, #42 Monroe (Harborview). Ownership history **inferred, not confirmed** |
 > | **Closed: rejected as written** | #68 Alliance, #69 Coldwater (invalid status value "Needs Review") |
 > | **HOLD: unresolved** | #41 Monroe (Cedar Trail), #53 Kettering, #38 Union Square, #46 Ashtabula, #49 Chagrin Falls, #66 Willow Creek |
-> | **HOLD: identity resolved, follow-up pending** | #36 Amberly Manor: resolved DISTINCT; a follow-up scan will propose creating Hudson OH |
+> | **Identity resolved → new proposal** | #36 Amberly Manor resolved DISTINCT. Follow-up scan #12 created **#71** (create Amberly Manor, 4390 Darrow Rd, Hudson OH, under Bellhaven), **pending, not executed** |
 >
 > Legacy pre-engine change: Findlay `parent_id` → Bellhaven (verified, not part of the 35).
 > Details: `EVALUATION_TABLE.md`, `CRM_CHANGE_HISTORY.md`, `CHOW_REVIEW.md`.

@@ -49,7 +49,7 @@
   - A reverted proposal reopens as *pending*, never *approved*.
   - An interrupted execution resumes only through a fresh preview and confirmation.
 
-> **Superseded for the final submission by `WALKTHROUGH.md`**, which reflects the executed and verified state (25 operations, audit PASS).
+> **Superseded for the final submission by `WALKTHROUGH.md`** (2-minute and 5-minute scripts), which reflects the executed and verified state (25 operations, audit PASS).
 
 ## Submission checklist
 

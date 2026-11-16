@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. WRAP-UP DONE: follow-up scan (#71), final audit PASS, final report, monitoring results, walkthrough. Dry-run._
+_Last updated: 2026-11-16 by Claude Code. FINAL DELIVERY: audit PASS re-run; requirements matrix, reconciliation report, walkthrough (5-minute script) updated; cron confirmed NOT installed; dry-run._
 
 ---
 
@@ -299,6 +299,11 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: final delivery pass, with no CRM writes.
+  - **Re-confirmed:** 25 of 25 operations verified, with read-back receipts for all 23 executed proposals. The 4 created accounts each exist once at $0/$0. The #70 and #41 notes are present. #71 is pending, and no Hudson account exists.
+  - **Scheduler:** `crontab -l` shows no crontab for this user and there is no `data/daily.log`, so **cron is not installed**. Only manually triggered runs exist (#8, #13).
+  - The final audit was regenerated (PASS); 130 tests pass.
+  - Requirements matrix rows 21, 22, 28 and 35 updated. Reconciliation report final status corrected (6 hold, #71 pending). 5-minute script added to `docs/WALKTHROUGH.md`.
 - [V] 2026-11-16 ~05:26–05:30 UTC: wrap-up run, with no CRM writes.
   - Follow-up scan #12 produced **#71** (create Amberly Manor, Hudson OH, pending review; #36 superseded).
   - The scheduled job refused to start with writes enabled; its read-only run #13 was idempotent (0 new / 12 known).
@@ -350,12 +355,11 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Final state:** 36 proposals = 23 verified (25 operations, audit PASS) · 6 hold (#38, #41, #46, #49, #53, #66) · 5 closed without write (#42, #57, #64, #68, #69) · 1 pending new create (#71 Amberly Manor, Hudson OH) · #36 superseded by #71.
+**Delivery is complete on the engineering side.** Blocking items are the user's:
+1. **The original Clipboard brief.** It is not in the repo or the session. The deliverables can't be checked against it (matrix rows 34–36: contacts? status flag? form fields and deadline).
+2. **Public GitHub repository.** The work is on local branch `bellhaven-assessment` (`main` has no commits). Push it (or merge to `main`) and make the repo public. `docs/` contains assessment account IDs and phones; secrets and data are gitignored.
+3. **2-minute video** (script: `docs/WALKTHROUGH.md`).
+4. **Time spent** (README) and the **form submission**.
+5. **The deadline is unverified:** the matrix notes Nov 17 2026 04:29 UTC was likely inferred, not sourced.
 
-**For the user:**
-1. Decide #71 (confirm Hudson OH first) or leave it pending.
-2. Supply the original Clipboard brief so the deliverables can be checked against it.
-3. Video, public repo, time spent, form submission.
-
-**Bellhaven questions:** see `docs/FINAL_RECONCILIATION_REPORT.md` §5.
-Server in dry-run (PID 95736).
+Optional: decide #71; install cron. Server in dry-run (PID 95736). Operations total 25.

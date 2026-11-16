@@ -1,4 +1,4 @@
-# Final Reconciliation Audit (2026-11-16T05:26:41Z)
+# Final Reconciliation Audit (2026-11-16T05:32:37Z)
 
 _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM write is possible from this script._
 
@@ -109,7 +109,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 - **Q9:** Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71)
 
 - Identity resolutions recorded (local decisions, no CRM write): 1
-- Audit log: 396 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
+- Audit log: 398 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
 
 ## Result
 
