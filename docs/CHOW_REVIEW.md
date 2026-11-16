@@ -65,3 +65,32 @@ A new account is created under the correct parent, and the old account's `chow_c
 - **Both pass every automated rule today.** The SOP, successor, drift and policy checks are clean, and nothing is blocked.
 - **Confidence in ownership: high for the facility identity, medium for the transfer itself** (inferred from the website listing and the About page, not from a CRM or contract record).
 - **Recommendation: APPROVE #60 first, alone, and #54 only after #60 verifies, on the condition that the user answers question 2.** Otherwise hold.
+
+
+## Direction and successor verification (2026-11-16, read-only, before execution)
+
+| Check | #60 Tiffin | #54 Marietta |
+|---|---|---|
+| Historical (old) account | `001U6RW32TY0WSXZZB` "Bellhaven of Tiffin", parent **Cedar Trail** | `001A34WFSUYHCRBLFT` "Bellhaven of Marietta", parent **Cedar Trail** |
+| Direction | **Cedar Trail → Bellhaven** | **Cedar Trail → Bellhaven** |
+| Evidence for direction | The website lists the community under Bellhaven; the About page says "select communities joining us from Cedar Trail" (2026); the CRM account already carries the Bellhaven name under the old parent | same |
+| Evidence against | none found (no other account in the city or ZIP; no link, note or contact pointing elsewhere) | none found |
+| Rule check | `chow_required` = True: revenue $84,000 **and** AR $12,400 > 0 | True: $51,250 and $3,800 > 0 |
+| Successor vs website | name, street, city, state, ZIP and phone all equal the live website; parent Bellhaven; Active; care type Skilled Nursing (= Short-Term Rehab & Nursing) | same |
+| Successor financials | **No revenue or AR fields are sent.** New accounts start at $0 / $0 (confirmed by the Batavia and Carlisle creates) | same |
+| What changes on the old account | **Only** `chow_current_account` → new successor id. Parent, name, phone, revenue, AR, status, contacts (none) and audit history are preserved | same |
+| Guards | Live preview clean: no drift, no existing successor, no existing CHOW link | same |
+| Limitation | The direction rests on public website evidence, not a transaction record or transfer date | same |
+
+### Unanswered: responsibility for the historical balances
+The CHOW leaves the **$12,400 (Tiffin)** and **$3,800 (Marietta)** outstanding AR on the historical Cedar Trail-parented accounts, exactly as the SOP requires.
+- **Who is legally or operationally responsible for collecting these balances is not known from the data.**
+- This evaluation does **not** assume or change that responsibility, and the CHOW writes nothing about it.
+- It is recorded as an open business question for Bellhaven/Cedar Trail (Q8).
+
+### Execution plan
+1. #60 alone: the user approves it in the app, runs the live preview, and types `APPLY 60`.
+2. Claude Code independently verifies the result.
+3. Only then is #54 presented, the same way.
+
+Nothing is approved on the user's behalf.

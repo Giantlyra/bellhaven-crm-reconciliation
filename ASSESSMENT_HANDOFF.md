@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. STAGE 2 EXECUTED AND VERIFIED (#40, #62). 20 operations verified; only the CHOW cases remain executable; dry-run._
+_Last updated: 2026-11-16 by Claude Code. CHOW #60 verified (direction and successor) and presented for the user's own approval; live-writes window open for #60 only._
 
 ---
 
@@ -110,7 +110,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 94002), in **dry-run**. The stage-2 live window is closed. Backups: `data/ledger.pre-stage1.db`, `data/ledger.pre-stage2.db`.
+- [V] One server is running: `./bh serve --port 8020` (PID 94760), **LIVE WRITES ENABLED for the #60 CHOW window only**. Restore dry-run after #60.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user asked to prepare **#60 then #54** for separate human-approved CHOW execution. **Claude Code must not approve or execute either.** Verified read-only (see `docs/CHOW_REVIEW.md` § Direction): direction Cedar Trail → Bellhaven for both; each successor equals the live website (name, address, phone), under Bellhaven, with no revenue/AR fields sent (starts $0/$0); only `chow_current_account` is written on the historical account. **Open question Q8:** who collects the $12,400 and $3,800 balances. Not assumed and not changed. Live window opened for #60 (backup `data/ledger.pre-chow60.db`). #54 is not presented until #60 is verified.
 - [V] 2026-11-16 04:42:23 UTC: the user authorized **stage 2** in chat (approvals for #40 and #62 recorded from it) and ran `APPLY BATCH OF 2` in the app. Both verified (operations 19–20, audit `batch_started` #322 / `batch_finished` #337). Independent check: only the approved fields changed; Lima $47,000 / $0, Bellhaven parent, status and contacts intact; Zanesville contacts intact; no phone collisions. A fresh audit run: **20 of 20 operations live-matched and receipted, integrity PASS.** The CHOW cases (#60, #54) were **not** touched.
 - [V] 2026-11-16 04:25:02–04:25:04 UTC: the user ran **stage 1** (`APPLY BATCH OF 7`) in the app. All 7 verified: #39, #47, #48, #50, #56, #59, #61. `batch_started` #267 / `batch_finished` #317; operations #12–#18. Independent check: only the approved fields changed (the `parent_name` display value follows the new `parent_id`); financials, contacts and the Owosso survivor are unchanged; Batavia `00163AAEB690110611` and Carlisle `00163ED66F49793F79` each exist exactly once. A fresh `scripts/final_audit.py` run: **18 of 18 operations live-matched and receipted, integrity PASS**. The earlier "not executed" observations were made before the batch ran.
 - [V] 2026-11-16: the user requested a comprehensive read-only evaluation with the business category taxonomy; no CRM changes. Delivered: `docs/EVALUATION_TABLE.md`.
