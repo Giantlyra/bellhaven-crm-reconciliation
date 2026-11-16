@@ -22,25 +22,31 @@ cd ~/clipboard-assessment
 | **3:45–4:20 · Exceptions** | `docs/FINAL_RECONCILIATION_REPORT.md` §4–5 | "Not everything should be forced. Three old-operator records were **closed and preserved** rather than mislabelled as duplicates. Six cases stay on **HOLD** with a specific question for Bellhaven, for example Kettering's three records. Sandusky's link is verified, but the sale and the **$5,200** remain a documented exception. An unresolved case with its evidence is a valid result." |
 | **4:20–5:00 · Monitoring** | Terminal: `scripts/run_daily.py` (with and without the flag) → Start Here schedule card → `docs/FINAL_AUDIT.md` | "The daily job is read-only and **refuses to run if writes are enabled**. Re-running finds **0 new** items. The dashboard shows the last scheduled run and failures. The 6 AM cron job is **installed and tested** on this Mac (configuration alone would satisfy the brief). The final audit re-checks every write against the live CRM: **integrity PASS**." |
 
-## 2-minute demo video (required: evidence, approval, rejection, verified CRM change)
+## 2-minute demo video: BEFORE → WHAT WE FOUND → HOW WE DECIDED → AFTER
 
-**Teleprompter:** open `docs/teleprompter.html` in any browser by double-clicking it in Finder; it works offline with no server. It has 7 beats with time targets and screen cues, a 2:00 timer, ←/→ to move between beats, T to start the timer, C for clean reading mode, and D for dark mode.
+**Presentation view and teleprompter:** `docs/teleprompter.html`. Double-click it in Finder; it works offline.
+- Each of the 7 beats has a **visual panel** built from authentic data: the scan #3 snapshot for *Before*, the ledger for the findings, and `FINAL_AUDIT.md` for *After*. Each panel shows its source.
+- **S** = slide view (panels only, large: show this on screen while recording).
+- **C** = narration only (for reading).
+- ←/→ move between beats · **T** starts the 2:00 timer.
 
+The narration is **256 words, about 2:00**.
+
+| # | Time | Screen | Narration |
+|---|---|---|---|
+| 1 BEFORE | 0:00–0:20 | Presentation, slide view, beat 1 ("Before" panel) | Bellhaven's website lists thirty-five communities. The CRM had a hundred and twenty-one accounts, and only nine matched cleanly. The first full scan found thirty-five issues: wrong phones and names, wrong parent companies, duplicates, missing communities, and accounts with unpaid balances. |
+| 2 FOUND | 0:20–0:35 | Slide beat 2 (optionally app `/proposal/56`, Owosso) | Six addresses had more than one account. I learned that two accounts at the same address don't automatically mean one is a duplicate. One might be a historical predecessor, and the financial consequences are very different. |
+| 3 FOUND | 0:35–0:55 | Slide beat 3 (optionally app `/proposal/53`, Kettering) | Owosso was a true duplicate, so it was inactivated and linked. Monroe, Port Clinton and Erie kept their earlier operators' records. The first scan even proposed creating Amberly Manor and Union Square; stricter identity checks found conflicting records and stopped those creates. |
+| 4 DECIDED | 0:55–1:15 | App **`/proposal/60`**, financial table | Tiffin sat under Cedar Trail with eighty-four thousand dollars of revenue and twelve thousand four hundred still owed. Re-parenting it would break the billing rules. So we kept that history, created a new Bellhaven account at zero, and linked them: two verified writes. |
+| 5 DECIDED | 1:15–1:30 | App `/proposal/60` Decisions and Write log → **`/history`** | The system is deterministic Python; AI helped me build and review it, never to change the CRM. I approve, the live preview re-checks everything, I type APPLY, and the result is read back. |
+| 6 DECIDED | 1:30–1:40 | App **`/proposal/68`** (REJECTED) | Alliance's proposed status doesn't exist in the CRM, so I rejected it. Nothing was written. |
+| 7 AFTER | 1:40–2:00 | Slide beat 7 (Before/After table) → app Start Here | Now: twenty-five verified operations, twenty-three exact matches, an audit that passes, and a daily read-only scan. I didn't just build a system that finds differences. I built a workflow that evaluates the evidence, protects financial history, requires human approval, and recognizes when a change shouldn't be made. |
 
 **Before recording:**
-- The server is in **dry-run**: `./bh serve` (or the session server on :8020). The green DRY-RUN banner is on.
-- Open these tabs in order: `/` · `/proposal/60` · `/proposal/68` · `/history` · `docs/FINAL_AUDIT.md`.
-- Crop the address bar; the token is never shown in pages.
-- **Do not run a new write on camera.** The verified changes are already recorded, and the brief asks to *show* one.
-
-| Time | Screen | Say |
-|---|---|---|
-| 0:00–0:15 | **Start Here** | "Bellhaven's website lists 35 communities; the CRM had 121 accounts. One read-only scan reads both, fails closed if anything is incomplete, and matches by address and ZIP, never by name alone." |
-| 0:15–0:45 | **#60 Tiffin: evidence** (scroll the comparison and financial table) | "Every proposal shows website vs CRM side by side, the sources and what's missing. Tiffin sits under Cedar Trail with $84,000 revenue and $12,400 unpaid, so the billing rule forbids re-parenting it. The engine proposes a change of ownership: preserve the old account, create a $0 Bellhaven successor, link them." |
-| 0:45–1:15 | **#60: approval → verified change** (Decisions and Write log sections) | "I approved it, ran the live preview, which re-reads the CRM, re-checks the rules and blocks duplicate successors, and typed APPLY 60. Two writes, a POST and a PATCH, then a read-back. Status VERIFIED; successor `00164AE214A6588944`. The old account still holds its $84,000 and $12,400." |
-| 1:15–1:35 | **#68 Alliance: rejection** | "Not every proposal should run. This one would have set a status, 'Needs Review', that the CRM never uses. I rejected it: nothing written, and Alliance stays a documented finding. Three old-operator records were also closed and preserved rather than mislabelled as duplicates." |
-| 1:35–1:50 | **History** (filter or scroll to `execute_refused`) | "Everything is in an append-only audit log, including refusals: dry-run attempts, a wrong confirmation phrase, a proposal on hold. 25 writes in total, all read back." |
-| 1:50–2:00 | **`docs/FINAL_AUDIT.md`** or Start Here schedule card | "A daily read-only scan runs at 6 AM from an installed cron job (a GitHub Actions workflow is configured too), and it refuses to run with writes enabled. The final audit re-checks every write: integrity PASS. The objective wasn't to force every record into a match. It was to make every defensible correction, preserve financial history, and escalate the cases where the evidence wasn't strong enough." |
+- Run the app in **dry-run**: http://127.0.0.1:8020.
+- Open two browser windows: the presentation in slide view, and the app.
+- Crop the address bar.
+- **Do not make a CRM write on camera.**
 
 ## Live 45-minute walkthrough: preparation for the "small modification"
 

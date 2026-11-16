@@ -3,112 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bellhaven Teleprompter</title>
+<title>Bellhaven Presentation</title>
 <style>
-  :root { --bg:#fbfaf7; --ink:#1c2120; --mut:#6b7370; --line:#e3e1db; --accent:#2e5d50; --cue:#fff6e0; --cueink:#6b4e00; --bar:#2e5d50; --warn:#b3261e; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c; --bar:#7cc0aa; --warn:#ff8a80; } }
-  :root[data-theme="dark"] { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c; --bar:#7cc0aa; --warn:#ff8a80; }
+  :root { --bg:#fbfaf7; --ink:#1c2120; --mut:#6b7370; --line:#e3e1db; --card:#ffffff; --accent:#2e5d50; --cue:#fff6e0; --cueink:#6b4e00;
+          --good:#1e6a42; --goodbg:#e3f3ea; --warn:#8a5a00; --warnbg:#fff1d6; --bad:#b3261e; --badbg:#fbe4e1; --blue:#1f5fa8; --bluebg:#e3eefb; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --card:#1a1e1d; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c;
+          --good:#8fd6ae; --goodbg:#16291f; --warn:#f0c46c; --warnbg:#2b2414; --bad:#ff9a90; --badbg:#2e1816; --blue:#8ab8f0; --bluebg:#152233; } }
+  :root[data-theme="dark"] { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --card:#1a1e1d; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c;
+          --good:#8fd6ae; --goodbg:#16291f; --warn:#f0c46c; --warnbg:#2b2414; --bad:#ff9a90; --badbg:#2e1816; --blue:#8ab8f0; --bluebg:#152233; }
   * { box-sizing:border-box }
-  body { margin:0; background:var(--bg); color:var(--ink); font:18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-  header { position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; z-index:2 }
-  .sec { font-weight:700 } .tgt { color:var(--mut) } .clock { font-variant-numeric:tabular-nums; font-weight:700; margin-left:auto }
-  .clock.over { color:var(--warn) }
-  .bar { height:4px; background:var(--line); } .bar > i { display:block; height:100%; background:var(--bar); width:0 }
-  main { max-width:900px; margin:0 auto; padding:20px 16px 120px }
-  .cue { background:var(--cue); color:var(--cueink); border-radius:8px; padding:10px 14px; font-size:16px; margin-bottom:18px }
-  .cue b { font-weight:700 }
-  .text { font-size:clamp(28px, 4.6vw, 46px); line-height:1.35; font-weight:500; letter-spacing:.005em }
-  .text em { font-style:normal; color:var(--accent); font-weight:700 }
-  nav { position:fixed; bottom:0; left:0; right:0; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:8px; padding:10px 16px; justify-content:center; flex-wrap:wrap }
-  button { font:inherit; font-size:16px; padding:10px 16px; border-radius:8px; border:1px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; min-width:96px }
-  button.primary { background:var(--accent); color:var(--bg); border-color:var(--accent) }
-  .dots { display:flex; gap:6px; align-items:center } .dots span { width:9px; height:9px; border-radius:50%; background:var(--line) } .dots span.on { background:var(--accent) }
-  .hint { color:var(--mut); font-size:13px; text-align:center; margin-top:28px }
-  body.clean header .tgt, body.clean .cue, body.clean .hint { display:none }
-  body.clean .text { font-size:clamp(32px, 5.4vw, 56px) }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  header { position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; z-index:2 }
+  .stage { font-weight:800; letter-spacing:.06em; font-size:13px; padding:2px 8px; border-radius:6px; background:var(--accent); color:var(--bg) }
+  .sec { font-weight:700 } .tgt { color:var(--mut) } .clock { font-variant-numeric:tabular-nums; font-weight:700; margin-left:auto } .clock.over { color:var(--bad) }
+  .bar { height:4px; background:var(--line) } .bar > i { display:block; height:100%; background:var(--accent); width:0 }
+  main { max-width:1000px; margin:0 auto; padding:16px 16px 120px }
+  .cue { background:var(--cue); color:var(--cueink); border-radius:8px; padding:9px 14px; font-size:15px; margin-bottom:14px }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px }
+  .panel h2 { margin:0 0 10px; font-size:20px } .src { color:var(--mut); font-size:12px; margin-top:10px }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px }
+  .stat { border:1px solid var(--line); border-radius:10px; padding:10px 12px } .stat b { display:block; font-size:30px; line-height:1.1 } .stat span { color:var(--mut); font-size:13px }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px } .chip { border-radius:999px; padding:3px 10px; font-size:13px; background:var(--warnbg); color:var(--warn) }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:10px } @media (max-width:640px){ .two{grid-template-columns:1fr} }
+  .box { border-radius:10px; padding:12px; } .box h3 { margin:0 0 6px; font-size:16px } .box p { margin:4px 0; font-size:14px }
+  .g { background:var(--goodbg); color:var(--ink) } .g h3 { color:var(--good) }
+  .w { background:var(--warnbg) } .w h3 { color:var(--warn) }
+  .r { background:var(--badbg) } .r h3 { color:var(--bad) }
+  .b { background:var(--bluebg) } .b h3 { color:var(--blue) }
+  .flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center } .step { border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; background:var(--bg) } .arrow { color:var(--mut) }
+  table { width:100%; border-collapse:collapse; font-size:15px } th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line) } th { color:var(--mut); font-size:12px; font-weight:600 }
+  td.num { font-variant-numeric:tabular-nums; font-weight:700 }
+  code { font-size:12px; background:var(--bg); padding:1px 4px; border-radius:4px }
+  .text { font-size:clamp(24px, 3.8vw, 40px); line-height:1.38; font-weight:500 } .text em { font-style:normal; color:var(--accent); font-weight:700 }
+  nav { position:fixed; bottom:0; left:0; right:0; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:8px; padding:10px 16px; justify-content:center; flex-wrap:wrap; z-index:3 }
+  button { font:inherit; font-size:15px; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; min-width:88px }
+  button.primary { background:var(--accent); color:var(--bg); border-color:var(--accent) } button:disabled { opacity:.4 }
+  .hint { color:var(--mut); font-size:12px; text-align:center }
+  /* Slide view: the visual panel only, large, for screen recording */
+  body.slide header .tgt, body.slide .cue, body.slide .text, body.slide .hint { display:none }
+  body.slide main { max-width:1200px } body.slide .panel { font-size:20px; padding:26px } body.slide .panel h2 { font-size:30px }
+  body.slide .stat b { font-size:44px } body.slide .box p, body.slide td, body.slide .step { font-size:19px }
+  /* Clean reading mode: narration only */
+  body.clean .cue, body.clean .panel, body.clean .hint, body.clean header .tgt { display:none } body.clean .text { font-size:clamp(30px, 5vw, 54px) }
 </style>
 </head>
 <body>
 <header>
-  <span class="sec" id="sec">1 / 7</span>
-  <span class="tgt" id="tgt">target 0:00–0:15</span>
-  <span class="dots" id="dots"></span>
+  <span class="stage" id="stage">BEFORE</span>
+  <span class="sec" id="sec"></span>
+  <span class="tgt" id="tgt"></span>
   <span class="clock" id="clock">0:00 / 2:00</span>
 </header>
 <div class="bar"><i id="bar"></i></div>
 <main>
   <div class="cue" id="cue"></div>
+  <div id="panel"></div>
   <div class="text" id="text"></div>
-  <p class="hint">Keys: → / Space next · ← previous · T start/pause timer · R reset · C clean reading mode · D dark/light</p>
+  <p class="hint">→ / Space next · ← previous · T timer · R reset · S slide view (visuals only, for recording) · C narration only · D dark/light</p>
 </main>
 <nav>
   <button id="prev">← Prev</button>
   <button id="timer" class="primary">Start timer</button>
   <button id="next">Next →</button>
-  <button id="clean">Clean mode</button>
+  <button id="slide">Slide view</button>
+  <button id="clean">Narration only</button>
 </nav>
 <script>
+// Every figure below comes from saved project data: the scan #3 snapshot (first complete live scan, 2026-11-15 10:42 UTC),
+// the ledger, and docs/FINAL_AUDIT.md (final, read-only). Nothing is simulated.
+const SRC_BEFORE = "Source: first complete live scan #3 (2026-11-15 10:42 UTC) · data/snapshots/run-0003 · ledger proposals #36–#70";
+const SRC_AFTER = "Source: docs/FINAL_AUDIT.md (read-only, integrity PASS) · ledger: 25 of 25 operations read-back verified";
 const BEATS = [
-  { t:[0,15], title:"The Bellhaven problem",
-    cue:"Screen: <b>Start Here</b> (http://127.0.0.1:8020/), the 35 vs 121/125 counters and DRY-RUN banner",
-    text:"Bellhaven Senior Living's website lists <em>35 communities</em>. The CRM started with <em>121 accounts</em>: stale names and phones, wrong parent companies after two acquisitions, duplicates, and missing facilities. The website is the source of truth for identity. The CRM holds financial history we must not damage." },
-  { t:[15,30], title:"Address-first matching",
-    cue:"Screen: <b>Build / Modify</b>, then open any proposal's evidence table",
-    text:"I matched on <em>physical address and ZIP first</em>, never on name alone. There's an \"Amberly Manor\" in the CRM, but it's in Colorado, where Bellhaven doesn't operate. Every proposal shows the website and the CRM evidence side by side." },
-  { t:[30,50], title:"Duplicate vs. historical predecessor",
-    cue:"Screen: <b>Final report §5a</b> (docs/FINAL_RECONCILIATION_REPORT.md) or the Port Clinton / Owosso proposals",
-    text:"I learned that <em>two accounts at the same address don't automatically mean one is a duplicate</em>. One might be a historical predecessor, and the financial consequences of treating them incorrectly are very different. Owosso was a true duplicate, so it was inactivated. Port Clinton, Erie and Monroe kept their older operator records." },
-  { t:[50,70], title:"CHOW example: #60 Tiffin",
-    cue:"Screen: <b>/proposal/60</b>, scroll to the financial table ($84,000 / $12,400)",
-    text:"Tiffin is a <em>change of ownership</em>. It sat under Cedar Trail with <em>$84,000</em> in revenue and <em>$12,400</em> still owed. So we don't re-parent it. We preserve that history, create a new Bellhaven account starting at zero, and link the two." },
-  { t:[70,90], title:"Human approval and verified read-back",
-    cue:"Screen: <b>/proposal/60</b>, Decisions and Write log (approved → APPLY 60 → read-back VERIFIED)",
-    text:"Nothing writes without me. <em>I approve</em>, the live preview re-reads the CRM and re-checks the rules, <em>I type APPLY 60</em>, and the system <em>reads the result back</em>. Only then is it marked verified." },
-  { t:[90,100], title:"Rejected: #68 Alliance",
-    cue:"Screen: <b>/proposal/68</b>, status REJECTED (\"Needs Review\" is not a CRM status)",
-    text:"And not everything should run. This proposal would have set a status the CRM doesn't use, so <em>I rejected it</em>. Nothing was written, and the business question stays documented." },
-  { t:[100,120], title:"Results, monitoring, the point",
-    cue:"Screen: <b>/history</b>, then <b>docs/FINAL_AUDIT.md</b> (integrity PASS)",
-    text:"In total: <em>25 verified operations</em>, an <em>integrity audit that passes</em>, and a <em>read-only daily scan</em> at 6 AM. The objective wasn't to force every CRM record into a match. It was to <em>make every defensible correction, preserve financial history, and escalate the cases where the evidence wasn't strong enough</em>, like Sandusky, where the link is verified but the sale still needs confirmation." },
+ { stage:"BEFORE", t:[0,20], title:"The original CRM",
+   cue:"Show this panel in <b>Slide view (S)</b>, or the app's Start Here page",
+   panel:`<div class="panel"><h2>Before: website vs original CRM</h2>
+     <div class="stats">
+       <div class="stat"><b>35</b><span>website communities (homepage 35, directory 34; Findlay on the homepage only)</span></div>
+       <div class="stat"><b>121</b><span>original CRM accounts</span></div>
+       <div class="stat"><b>9</b><span>communities matching exactly</span></div>
+       <div class="stat"><b>35</b><span>issues found by the first full scan</span></div></div>
+     <div class="chips"><span class="chip">14 wrong phones</span><span class="chip">8 outdated names</span><span class="chip">1 ZIP</span><span class="chip">1 PO-box billing address</span>
+       <span class="chip">2 wrong parent companies</span><span class="chip">3 ownership changes with unpaid balances</span><span class="chip">5 duplicate candidates</span>
+       <span class="chip">2 missing communities</span><span class="chip">2 CRM-only accounts</span><span class="chip">3 identity conflicts</span><span class="chip">6 addresses with 2+ accounts</span></div>
+     <div class="src">${SRC_BEFORE}</div></div>`,
+   text:"Bellhaven's website lists <em>thirty-five communities</em>. The CRM had <em>a hundred and twenty-one accounts</em>, and <em>only nine</em> matched cleanly. The first full scan found thirty-five issues: wrong phones and names, wrong parent companies, duplicates, missing communities, and accounts with unpaid balances." },
+ { stage:"WHAT WE FOUND", t:[20,35], title:"Duplicate vs. historical predecessor",
+   cue:"Slide view, or <b>/proposal/56</b> (Owosso) in the app",
+   panel:`<div class="panel"><h2>Two accounts at one address ≠ automatically a duplicate</h2>
+     <div class="two">
+       <div class="box g"><h3>True duplicate: Owosso (#56)</h3><p>Both records under Bellhaven. Survivor <code>001EGU7BMJ942ZTRE6</code> holds the website phone and administrator.</p><p>The other was <b>inactivated and linked</b>, not deleted.</p></div>
+       <div class="box b"><h3>Historical predecessors: Monroe, Port Clinton, Erie</h3><p>Competing $0 records under earlier operators (Harborview, Cedar Trail).</p><p><b>Preserved</b>, not labelled duplicates. History is inferred, not confirmed.</p></div></div>
+     <div class="src">Source: ledger #56 (verified), #42 / #57 / #64 (closed without write), #41 (held)</div></div>`,
+   text:"Six addresses had more than one account. <em>I learned that two accounts at the same address don't automatically mean one is a duplicate.</em> One might be a historical predecessor, and the financial consequences are very different." },
+ { stage:"WHAT WE FOUND", t:[35,55], title:"Mistakes caught, guesses refused",
+   cue:"Slide view, or <b>/proposal/53</b> (Kettering, competing candidates)",
+   panel:`<div class="panel"><h2>The matching caught its own risky moves</h2>
+     <div class="two">
+       <div class="box r"><h3>Prevented: unsafe account creations</h3><p>The first scan proposed <b>creating</b> Amberly Manor and Union Square.</p><p>Stricter identity checks found look-alike CRM records and turned both into <b>identity holds</b>. Amberly's Colorado account was later shown to be distinct; the Hudson OH create (#71) waits for approval.</p></div>
+       <div class="box w"><h3>Refused to guess: 6 held</h3><p><b>Kettering</b>: 3 competing records, no defensible survivor.</p><p><b>Union Square</b>: different street, phone, parent and administrator.</p><p><b>Ashtabula</b>: PO Box 517 may be the right billing address.</p><p>Plus Monroe/Cedar Trail, Chagrin Falls, Willow Creek.</p></div></div>
+     <div class="src">Source: ledger #1 → #36 → #71, #3 → #38 (superseded history); holds #38 #41 #46 #49 #53 #66</div></div>`,
+   text:"Owosso was a true duplicate, so it was inactivated and linked. Monroe, Port Clinton and Erie kept their earlier operators' records. The first scan even proposed <em>creating</em> Amberly Manor and Union Square; stricter identity checks found conflicting records and <em>stopped those creates</em>." },
+ { stage:"HOW WE DECIDED", t:[55,75], title:"Change of ownership: #60 Tiffin",
+   cue:"App: <b>/proposal/60</b>, scroll to the financial table",
+   panel:`<div class="panel"><h2>Tiffin (#60): protect the financial history</h2>
+     <div class="flow"><div class="step"><b>Historical account</b> <code>001U6RW32TY0WSXZZB</code><br>Cedar Trail · revenue <b>$84,000</b> · unpaid <b>$12,400</b><br><i>preserved untouched</i></div>
+       <span class="arrow">→ linked via <code>chow_current_account</code> →</span>
+       <div class="step"><b>New Bellhaven successor</b> <code>00164AE214A6588944</code><br>starts at <b>$0 / $0</b></div></div>
+     <p style="margin:10px 0 0">Re-parenting directly would move live billing history. <b>2 writes</b>: create + link, both read-back verified.</p>
+     <div class="src">Source: ledger #60, operations 21–22 (verified 2026-11-16 05:06:38 UTC); live CRM read-back</div></div>`,
+   text:"Tiffin sat under Cedar Trail with <em>eighty-four thousand dollars</em> of revenue and <em>twelve thousand four hundred</em> still owed. Re-parenting it would break the billing rules. So we kept that history, created a new Bellhaven account at zero, and linked them: <em>two verified writes</em>." },
+ { stage:"HOW WE DECIDED", t:[75,90], title:"Human approval, verified read-back",
+   cue:"App: <b>/proposal/60</b> Decisions and Write log, then <b>/history</b>",
+   panel:`<div class="panel"><h2>Nothing writes without a human</h2>
+     <div class="flow"><div class="step">Approve</div><span class="arrow">→</span><div class="step">Live preview<br><small>re-reads the CRM, re-checks the rules</small></div><span class="arrow">→</span><div class="step">Typed <code>APPLY 60</code></div><span class="arrow">→</span><div class="step">Write</div><span class="arrow">→</span><div class="step"><b>Read-back: VERIFIED</b></div></div>
+     <p style="margin:10px 0 0">Runtime is <b>deterministic Python</b>. Claude Code and ChatGPT helped build and review it; <b>no AI made a CRM change</b>.</p>
+     <div class="src">Source: ledger decisions for #60 (approved 05:05:39, executed 05:06:38 UTC); 7 refused attempts logged, none wrote</div></div>`,
+   text:"The system is <em>deterministic Python</em>; AI helped me build and review it, never to change the CRM. <em>I approve</em>, the live preview re-checks everything, <em>I type APPLY</em>, and the result is <em>read back</em>." },
+ { stage:"HOW WE DECIDED", t:[90,100], title:"Rejected: #68 Alliance",
+   cue:"App: <b>/proposal/68</b>, status REJECTED",
+   panel:`<div class="panel"><h2>Rejected: #68 Alliance</h2><div class="box r"><h3>Proposed status "Needs Review"</h3><p>Not a status the CRM uses (only Active / Inactive). <b>Rejected. 0 writes.</b> The question "is Alliance still Bellhaven?" stays documented.</p></div>
+     <div class="src">Source: ledger #68 (rejected); live CRM status values</div></div>`,
+   text:"Alliance's proposed status <em>doesn't exist in the CRM</em>, so I rejected it. Nothing was written." },
+ { stage:"AFTER", t:[100,120], title:"Verified results",
+   cue:"Slide view, then the app's <b>Start Here</b> and <b>docs/FINAL_AUDIT.md</b>",
+   panel:`<div class="panel"><h2>After: verified results</h2>
+     <table><tr><th></th><th>Before</th><th>After</th></tr>
+       <tr><td>Communities matching exactly</td><td class="num">9 of 35</td><td class="num">23 of 35</td></tr>
+       <tr><td>CRM accounts</td><td class="num">121</td><td class="num">125</td></tr>
+       <tr><td>Read-back-verified CRM operations</td><td class="num">0</td><td class="num">25 (23 proposals)</td></tr>
+       <tr><td>Unfinished or failed writes</td><td class="num">—</td><td class="num">0</td></tr>
+       <tr><td>Open, documented on purpose</td><td class="num">—</td><td class="num">6 held · 5 rejected · 1 pending</td></tr>
+       <tr><td>Integrity audit</td><td class="num">—</td><td class="num">PASS</td></tr>
+       <tr><td>Daily monitoring</td><td class="num">—</td><td class="num">read-only, 6 AM, installed</td></tr></table>
+     <p style="margin:10px 0 0">The 4 new accounts (Batavia, Carlisle, and the Tiffin and Marietta successors) aren't the measure of success. <b>Justified corrections, preserved financial history and documented exceptions are.</b></p>
+     <div class="src">${SRC_AFTER}</div></div>`,
+   text:"Now: <em>twenty-five verified operations</em>, <em>twenty-three exact matches</em>, an audit that passes, and a daily read-only scan. <em>I didn't just build a system that finds differences. I built a workflow that evaluates the evidence, protects financial history, requires human approval, and recognizes when a change shouldn't be made.</em>" },
 ];
-const TOTAL = 120;
-let i = 0, elapsed = 0, running = false, tick = null;
+const TOTAL = 120; let i = 0, elapsed = 0, running = false, tick = null;
 const $ = id => document.getElementById(id);
 const fmt = s => Math.floor(s/60) + ":" + String(Math.floor(s%60)).padStart(2,"0");
 function render() {
   const b = BEATS[i];
+  $("stage").textContent = b.stage;
   $("sec").textContent = (i+1) + " / " + BEATS.length + " · " + b.title;
   $("tgt").textContent = "target " + fmt(b.t[0]) + "–" + fmt(b.t[1]);
-  $("cue").innerHTML = b.cue;
-  $("text").innerHTML = b.text;
-  $("dots").innerHTML = BEATS.map((_, k) => '<span class="' + (k <= i ? "on" : "") + '"></span>').join("");
+  $("cue").innerHTML = "Screen: " + b.cue; $("panel").innerHTML = b.panel; $("text").innerHTML = b.text;
   $("prev").disabled = i === 0; $("next").disabled = i === BEATS.length - 1;
-  try { localStorage.setItem("tp_beat", i); } catch (e) {}
+  try { localStorage.setItem("tp2_beat", i); } catch (e) {}
   window.scrollTo(0, 0);
 }
-function clock() {
-  $("clock").textContent = fmt(elapsed) + " / " + fmt(TOTAL);
-  $("clock").classList.toggle("over", elapsed > TOTAL);
-  $("bar").style.width = Math.min(100, elapsed / TOTAL * 100) + "%";
-}
-function toggleTimer() {
-  running = !running;
-  $("timer").textContent = running ? "Pause timer" : "Start timer";
-  if (running) tick = setInterval(() => { elapsed += 1; clock(); }, 1000); else clearInterval(tick);
-}
+function clock() { $("clock").textContent = fmt(elapsed) + " / " + fmt(TOTAL); $("clock").classList.toggle("over", elapsed > TOTAL); $("bar").style.width = Math.min(100, elapsed/TOTAL*100) + "%"; }
+function toggleTimer() { running = !running; $("timer").textContent = running ? "Pause timer" : "Start timer"; if (running) tick = setInterval(() => { elapsed++; clock(); }, 1000); else clearInterval(tick); }
 function reset() { if (running) toggleTimer(); elapsed = 0; clock(); i = 0; render(); }
-const go = d => { i = Math.max(0, Math.min(BEATS.length - 1, i + d)); render(); };
-$("prev").onclick = () => go(-1); $("next").onclick = () => go(1);
-$("timer").onclick = toggleTimer; $("clean").onclick = () => document.body.classList.toggle("clean");
+const go = d => { i = Math.max(0, Math.min(BEATS.length-1, i+d)); render(); };
+const mode = m => { document.body.classList.toggle(m); if (m === "slide") document.body.classList.remove("clean"); else document.body.classList.remove("slide"); };
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1); $("timer").onclick = toggleTimer;
+$("slide").onclick = () => mode("slide"); $("clean").onclick = () => mode("clean");
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); }
-  else if (e.key === "ArrowLeft") go(-1);
-  else if (e.key.toLowerCase() === "t") toggleTimer();
-  else if (e.key.toLowerCase() === "r") reset();
-  else if (e.key.toLowerCase() === "c") document.body.classList.toggle("clean");
-  else if (e.key.toLowerCase() === "d") { const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; }
+  const k = e.key.toLowerCase();
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); } else if (e.key === "ArrowLeft") go(-1);
+  else if (k === "t") toggleTimer(); else if (k === "r") reset(); else if (k === "s") mode("slide"); else if (k === "c") mode("clean");
+  else if (k === "d") { const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; }
 });
-try { const s = parseInt(localStorage.getItem("tp_beat"), 10); if (s >= 0 && s < BEATS.length) i = s; } catch (e) {}
+try { const s = parseInt(localStorage.getItem("tp2_beat"), 10); if (s >= 0 && s < BEATS.length) i = s; } catch (e) {}
 render(); clock();
 </script>
 </body>
