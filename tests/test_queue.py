@@ -238,3 +238,22 @@ def test_queue_pages(monkeypatch):
     assert "Refused before any write" in res and crm.writes() == []
     assert c.post("/queue/run", data={"pids": [goshen], "tokens": [token], "reviewed": "yes",
                                       "confirmation": "APPLY QUEUE OF 1"}).status_code == 403   # no CSRF
+
+
+def test_phrase_normalizes_spacing_but_not_words_or_case():
+    assert X.normalize_phrase("  APPLY BATCH   OF 4 \n") == "APPLY BATCH OF 4"
+    assert X.normalize_phrase("apply batch of 4") != "APPLY BATCH OF 4"
+    msg = X.phrase_mismatch("APPLY BATCH OF 4", "apply batch of 4", "Batch confirmation")
+    assert "type exactly 'APPLY BATCH OF 4'" in msg and "received 'apply batch of 4'" in msg
+
+
+def test_batch_accepts_spacing_variants_and_reports_wrong_text(ledger):
+    crm, _, fetch = build(ledger)
+    p = pid_for(ledger, "A1")
+    X.approve(ledger, p)
+    tok = X.preview(crm, ledger, p)["token"]
+    with pytest.raises(X.ExecutionError, match="received 'APPLY BATCH OF 2'"):
+        X.execute_batch(crm, ledger, [(p, tok)], confirmation="APPLY BATCH OF 2", writes_enabled=True)
+    assert crm.writes() == []
+    res = X.execute_batch(crm, ledger, [(p, tok)], confirmation="APPLY BATCH  OF 1", writes_enabled=True)
+    assert res[0]["status"] == L.VERIFIED

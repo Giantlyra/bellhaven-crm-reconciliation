@@ -47,6 +47,16 @@ def batch_phrase(n: int) -> str:
     return f"APPLY BATCH OF {n}"
 
 
+def normalize_phrase(text) -> str:
+    """Collapse any run of whitespace (incl. non-breaking/Unicode spaces) to one space and trim. Words and case must
+    still match exactly; this only stops invisible spacing differences from failing a deliberate confirmation."""
+    return " ".join((text or "").split())
+
+
+def phrase_mismatch(expected: str, got, what: str = "Confirmation phrase") -> str:
+    return f"{what} mismatch: type exactly '{expected}' (received {(got or '')!r})"
+
+
 def _resolve(fields: dict, refs: dict) -> dict:
     out = {}
     for k, v in fields.items():
@@ -249,8 +259,8 @@ def _authorize(ledger, pid: int, confirmation: str, writes_enabled):
     appr = ledger.last_decision(pid, "approved")
     if not appr or appr.get("fingerprint") != p["fingerprint"]:
         raise ExecutionError("No approval recorded for this exact proposal version")
-    if (confirmation or "").strip() != confirmation_phrase(pid):
-        raise ExecutionError(f"Confirmation phrase mismatch: type exactly '{confirmation_phrase(pid)}'")
+    if normalize_phrase(confirmation) != confirmation_phrase(pid):
+        raise ExecutionError(phrase_mismatch(confirmation_phrase(pid), confirmation))
     enabled = config.WRITES_ENABLED if writes_enabled is None else writes_enabled
     if not enabled:
         raise WritesDisabled("Live CRM writes are disabled (dry-run mode). Restart the server with "
@@ -385,8 +395,8 @@ def execute_batch(crm, ledger, items: list, *, confirmation: str, writes_enabled
     """items: [(pid, plan_token), ...] the operator reviewed together. Each is still authorized, previewed,
     executed and audited individually; CHOW proposals are excluded (always one at a time). Stops at the first
     item that does not verify."""
-    if (confirmation or "").strip() != batch_phrase(len(items)):
-        raise ExecutionError(f"Batch confirmation mismatch: type exactly '{batch_phrase(len(items))}'")
+    if normalize_phrase(confirmation) != batch_phrase(len(items)):
+        raise ExecutionError(phrase_mismatch(batch_phrase(len(items)), confirmation, "Batch confirmation"))
     for pid, _ in items:
         p = ledger.get_proposal(pid)
         if p is None or p["kind"] == "CHOW":

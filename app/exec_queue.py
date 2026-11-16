@@ -187,8 +187,8 @@ def run_queue(crm, ledger, items: list, *, confirmation: str, writes_enabled=Non
               actor: str = "local-reviewer") -> dict:
     """items: [(pid, plan_token), ...] exactly as shown in the queue preview the operator reviewed."""
     pids = [pid for pid, _ in items]
-    if (confirmation or "").strip() != queue_phrase(len(items)):
-        raise X.ExecutionError(f"Queue confirmation mismatch: type exactly '{queue_phrase(len(items))}'")
+    if X.normalize_phrase(confirmation) != queue_phrase(len(items)):
+        raise X.ExecutionError(X.phrase_mismatch(queue_phrase(len(items)), confirmation, "Queue confirmation"))
     if not items:
         raise X.ExecutionError("The queue is empty")
     if len(set(pids)) != len(pids):
