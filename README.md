@@ -4,11 +4,25 @@ Reconciles Bellhaven Senior Living's public community website against the assess
 evidence-backed corrections and writes **only** the changes a human approves and confirms. Each write gets a
 live re-check before it runs and a read-back check after.
 
-## Quick start (copy/paste one line at a time)
+## Results at a glance (final, 2026-11-16)
+
+| | |
+|---|---|
+| Website communities reconciled | **35** (homepage 35, directory 34; one listed on the homepage only) |
+| CRM accounts | **121** at the start → **125** (Batavia, Carlisle, and the Tiffin and Marietta successors created) |
+| CRM changes | **25 operations on 23 proposals**, each human-approved, live-previewed, typed-confirmed and **read-back VERIFIED**. Plus one earlier Findlay parent correction |
+| Integrity audit | **PASS**: every write live-matched and receipted; protected financial fields and contacts intact; no change outside the ledger |
+| Communities matching the CRM exactly | **23 of 35**. The rest are documented cases, not guesses: 6 HELD with business questions, 5 closed without a write, 1 new pending create |
+| Tests | **130 passing** (mocked CRM, temporary SQLite) |
+
+**Start here:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/WRITEUP.md](docs/WRITEUP.md) · [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md)
+
+## Quick start (fresh clone)
 
 ```bash
-cd ~/clipboard-assessment
-./bh test                 # mocked test-suite (~1 s). Never touches the live CRM.
+git clone https://github.com/Giantlyra/bellhaven-crm-reconciliation.git
+cd bellhaven-crm-reconciliation
+./bh test                 # first run creates .venv and installs requirements; mocked tests (~1 s), no token or network needed
 ./bh scan                 # live READ-ONLY scan: website + every CRM page -> pending proposals
 ./bh serve                # review workspace at http://127.0.0.1:8000  (dry-run: writes disabled)
 ```
@@ -25,6 +39,11 @@ cd ~/clipboard-assessment
 
 | Document | Contents |
 |---|---|
+| [FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) | **Final results**: every verified change, the decisions made without a write, unresolved business questions |
+| [FINAL_AUDIT.md](docs/FINAL_AUDIT.md) | Read-only integrity audit: website vs CRM, writes vs receipts, protected fields and contacts |
+| [WRITEUP.md](docs/WRITEUP.md) | Submission write-up: matching approach, AI tools used, what we'd build next |
+| [WALKTHROUGH.md](docs/WALKTHROUGH.md) | 2- and 5-minute demo scripts and prep for the live session |
+| [EVALUATION_TABLE.md](docs/EVALUATION_TABLE.md) · [CHOW_REVIEW.md](docs/CHOW_REVIEW.md) · [MONITORING_RESULTS.md](docs/MONITORING_RESULTS.md) | Per-case evaluation, change-of-ownership review, scheduler demonstration |
 | [REQUIREMENTS_MATRIX.md](docs/REQUIREMENTS_MATRIX.md) | Every traced requirement: source, module, UI location, tests, status |
 | [NINE_PATH_REVIEW.md](docs/NINE_PATH_REVIEW.md) | Nine independent evaluations, the conflicts between them, and a prioritized remediation plan |
 | [DECISION_REPORT.md](docs/DECISION_REPORT.md) | Risk, confidence, evidence and recommendation for all 35 open items |
@@ -35,8 +54,9 @@ cd ~/clipboard-assessment
 | [OPERATIONS.md](docs/OPERATIONS.md) | Startup, the daily schedule, and recovery from every failure state |
 | [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | 2-minute demo, technical walkthrough, submission checklist |
 
-Setup on a new machine: `cp .env.example .env`, put the token in `CRM_TOKEN`, then run any `./bh` command (the first run
-creates `.venv`). Python 3.9+.
+Requirements: Python 3.9+ and macOS/Linux (`./bh` creates `.venv` on first run). **`./bh test` needs no credentials.**
+For `./bh scan` and `./bh serve`, first run `cp .env.example .env` and put the assessment CRM token in `CRM_TOKEN`. The token never leaves `.env`, which is gitignored.
+The ledger and snapshots are created under `data/`, which is gitignored, so a fresh clone starts with an empty ledger. Run `./bh scan` to populate it.
 
 ## Making a real CRM change (only with explicit operator consent)
 
@@ -156,9 +176,9 @@ blindly re-creates.
 - The nine-card console decisions (`data/review.db`, e.g. a local "APPROVE Marietta") are **not** imported. They were
   demo notes and never authorized a write.
 
-## Live findings (scans #3–#9, 2026-11-15, 35 website facilities / 121 CRM accounts; CRM unchanged throughout)
+## Historical: initial findings before any execution (scans #3–#9, 2026-11-15)
 
-**Final state (2026-11-16):** 23 proposals VERIFIED (25 CRM operations, read-back verified; integrity audit PASS), 6 HELD with business questions, 5 closed without a write, 1 new pending create (#71). See `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/MONITORING_RESULTS.md` and `docs/WALKTHROUGH.md`. The original findings below are kept for history.
+> **Historical snapshot, superseded.** This section records what the first scans found *before* anything was approved. Since then, 25 writes were executed and verified; see **Results at a glance** above and `docs/FINAL_RECONCILIATION_REPORT.md`. The counts below (for example "0 engine write calls", "28 operations ready") describe 2026-11-15 only.
 
 - **28 operations** are ready for your individual authorization.
 - **4** are prepared but recommended for HOLD or INVESTIGATE:
@@ -180,7 +200,7 @@ See `docs/APPROVAL_BATCH.md` and `docs/INVESTIGATION_QUESTIONS.md`.
 | Renames / fields (18) | aliases (Sycamore Ridge, Chagrin Falls, Chesterton, Willow Creek, Arbors-Dayton, Zanesville, Ashland, Grove City), Ashtabula PO Box, Portsmouth ZIP, phone mismatches |
 | Already resolved | Findlay parent (live: under Bellhaven). The only CRM difference from the pre-Findlay snapshot |
 
-These are proposals awaiting review, not applied changes. 0 engine write calls have been made.
+_As of 2026-11-15 these were proposals awaiting review, and 0 engine writes had been made. Final outcomes are in the final report._
 
 ## Tests
 
@@ -204,8 +224,9 @@ tab and in [docs/TEST_REPORT.md](docs/TEST_REPORT.md), which maps tests to the r
 `scripts/run_daily.py` runs the scan only (verified 2026-11-15 by running the exact cron command: scan #8 completed, 0 new). Start Here shows the last scheduled run, every scheduled failure, and the log tail. Install and recovery steps are in [docs/OPERATIONS.md](docs/OPERATIONS.md). It refuses to start if `CRM_WRITES_ENABLED=1`, so a scheduler can never hold
 write permission. Local cron: `scripts/crontab.txt` (06:00 daily). `.github/workflows/daily-reconcile.yml` is an optional
 alternative; it would store the private ledger as a GitHub artifact, so **local cron is recommended** for this assessment.
+Status: as the brief allows, this is **configuration only**. The cron line is not installed on the author's machine. On GitHub the workflow exists, but no `CRM_TOKEN` secret is configured, so it cannot read the CRM.
 
-## Operator notes
+## Operator notes (author's machine)
 
 - Stop old servers from earlier sessions. They run old code on ports 8000–8006, 8010 and 8011: `lsof -nP -iTCP -sTCP:LISTEN | grep -E ':80(0[0-9]|1[01])'`, then
   `kill <PID>` for each. Or close those terminal windows.
