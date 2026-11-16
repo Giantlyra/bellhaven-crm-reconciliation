@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. FINAL DELIVERY: audit PASS re-run; requirements matrix, reconciliation report, walkthrough (5-minute script) updated; cron confirmed NOT installed; dry-run._
+_Last updated: 2026-11-16 by Claude Code. PUBLISHED: public repo https://github.com/Giantlyra/bellhaven-crm-reconciliation (branch bellhaven-assessment → main). Remaining: video, time spent, AI-tools confirmation, form submission by Nov 16 11:29 PM EST._
 
 ---
 
@@ -299,6 +299,11 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user authorized publishing a **public GitHub repo**: https://github.com/Giantlyra/bellhaven-crm-reconciliation.
+  - Pre-publish checks: no token, `.env`, data, ledgers or snapshots anywhere in history; no home paths in tracked files.
+  - Commit author and committer were rewritten from the user's personal email to the GitHub no-reply address before pushing (file trees unchanged).
+  - Published: 83 files, default branch `main`.
+  - The GitHub Actions workflow `daily-reconcile` is **active** on GitHub: scheduled daily at 11:00 UTC, but no `CRM_TOKEN` secret is set, so runs will fail at the CRM read. It is read-only either way.
 - [V] 2026-11-16: final delivery pass, with no CRM writes.
   - **Re-confirmed:** 25 of 25 operations verified, with read-back receipts for all 23 executed proposals. The 4 created accounts each exist once at $0/$0. The #70 and #41 notes are present. #71 is pending, and no Hudson account exists.
   - **Scheduler:** `crontab -l` shows no crontab for this user and there is no `data/daily.log`, so **cron is not installed**. Only manually triggered runs exist (#8, #13).

@@ -235,6 +235,6 @@ alternative; it would store the private ledger as a GitHub artifact, so **local 
 
 The **Submit** tab shows a live checklist.
 
-- Repository or ZIP/Drive link: _add link_
+- Repository: https://github.com/Giantlyra/bellhaven-crm-reconciliation
 - Demo video: _add link (not recorded)_
 - Time spent: _fill in your actual total_
