@@ -3,7 +3,7 @@
 A change is listed here only if a **read-back from the CRM API** confirmed it. Approvals, previews and proposals are
 not changes.
 
-As of 2026-11-16 03:27 UTC there are **twelve** verified CRM changes:
+As of 2026-11-16 04:42 UTC there are **twenty-one** verified CRM changes (the legacy Findlay re-parent plus 20 engine operations):
 
 1. The Findlay re-parent, made before this engine existed.
 2. Proposal #43, the Monroe phone fix.
@@ -14,7 +14,7 @@ As of 2026-11-16 03:27 UTC there are **twelve** verified CRM changes:
 7. Proposal #45, the Findlay phone fix (Wave A).
 8–12. Proposals #37, #44, #51, #63 and #67: Wave A field fixes run through the controlled execution queue.
 
-The engine has made 11 write calls in total.
+The engine has made 20 write calls in total (see §2.7 and §2.8 for operations 7–20).
 
 ## 1. Findlay parent correction (verified)
 
@@ -122,7 +122,25 @@ The engine has made 11 write calls in total.
 | #63 | `001TZCSTBZFM6K5BGN` Bellhaven Rehabilitation & Nursing of Grove City | name: Bellhaven Rehab and Nursing of Grove City → Bellhaven Rehabilitation & Nursing of Grove City | $0 / $0 | decision #21, op #10, queue_item #208, 03:26:54 UTC |
 | #67 | `0010KJFP601YNTZVDA` The Arbors at Bellhaven - Dayton | name: Arbors at Bellhaven Dayton → The Arbors at Bellhaven - Dayton; phone: (216) 659-9837 → (260) 254-7592 | $0 / $0 | decision #22, op #11, queue_item #216, 03:26:55 UTC |
 
-The other proposals are not affected by these changes. As of queue run 1 there are 21 PENDING, 3 HELD and 11 VERIFIED (#43, #58, #65, #52, #55, #45, #37, #44, #51, #63, #67). Earlier local
+### 2.8 Stage 1 batch and stage 2 batch (verified 2026-11-16)
+
+Both were executed by the user in the app (`APPLY BATCH OF 7` at 04:25:02–04:25:04 UTC, `APPLY BATCH OF 2` at 04:42:23 UTC), with the user's chat authorization, a read-only batch preview first, and independent read-back checks against the snapshots. Backups: `data/ledger.pre-stage1.db`, `data/ledger.pre-stage2.db`.
+
+| # | Account | Change | Ledger |
+|---|---|---|---|
+| #50 | `0013NUZQHQUEZ8DXEG` | name: Chesterton Senior Commons → Bellhaven of Chesterton | op 15 |
+| #59 | `001CF3LDWVRGL09P4F` | billing_zip: 45626 → 45662 | op 17 |
+| #39 | `001LGFPBJY4N9MB6KL` Lima | parent_id: Harborview → Bellhaven (revenue $47,000, AR $0, so a direct re-parent under the SOP) | op 12 |
+| #61 | `001H1JMVZWP46D5VUF` Zanesville | parent_id: Cedar Trail → Bellhaven ($0 / $0) | op 18 |
+| #56 | `001QU150PM4Z15UA71` Owosso | status → Inactive, duplicate_of_account → `001EGU7BMJ942ZTRE6`, note appended; survivor unchanged | op 16 |
+| #47 | created `00163AAEB690110611` | Bellhaven of Batavia, 2000 Hospital Dr, Batavia OH 45103, under Bellhaven; exists once | op 13 |
+| #48 | created `00163ED66F49793F79` | Bellhaven of Carlisle, 640 Walnut Bottom Rd, Carlisle PA 17015, under Bellhaven; exists once | op 14 |
+| #40 | `001LGFPBJY4N9MB6KL` Lima | phone: (734) 872-9575 → (231) 539-3617 | op 19 |
+| #62 | `001H1JMVZWP46D5VUF` Zanesville | name: Cedar Trail of Zanesville → Bellhaven of Zanesville; phone: (517) 817-8191 → (814) 599-2533 | op 20 |
+
+Independent checks: only the approved fields changed (the displayed parent name follows the new `parent_id`); revenue, AR, status, links and contacts are unchanged; no phone collisions. A fresh `scripts/final_audit.py` run shows **20 of 20 operations live-matched and receipted, integrity PASS**.
+
+The other proposals are not affected by these changes. As of stage 2 there are 2 PENDING (#60, #54), 11 HELD, 2 REJECTED and 20 VERIFIED. Earlier local
 approvals, including the nine-card console's "APPROVE Marietta", are not authorizations.
 
 When you execute approved items, each verified change appears automatically:
