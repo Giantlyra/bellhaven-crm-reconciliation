@@ -74,7 +74,7 @@
 const SRC_BEFORE = "Source: first complete live scan #3 (2026-11-15 10:42 UTC) · data/snapshots/run-0003 · ledger proposals #36–#70";
 const SRC_AFTER = "Source: docs/FINAL_AUDIT.md (read-only, integrity PASS) · ledger: 25 of 25 operations read-back verified";
 const BEATS = [
- { stage:"BEFORE", t:[0,20], title:"The original CRM",
+ { stage:"BEFORE", t:[0,18], title:"The original CRM",
    cue:"Show this panel in <b>Slide view (S)</b>, or the app's Start Here page",
    panel:`<div class="panel"><h2>Before: website vs original CRM</h2>
      <div class="stats">
@@ -87,23 +87,25 @@ const BEATS = [
        <span class="chip">2 missing communities</span><span class="chip">2 CRM-only accounts</span><span class="chip">3 identity conflicts</span><span class="chip">6 addresses with 2+ accounts</span></div>
      <div class="src">${SRC_BEFORE}</div></div>`,
    text:"Bellhaven's website lists <em>thirty-five communities</em>. The CRM had <em>a hundred and twenty-one accounts</em>, and <em>only nine</em> matched cleanly. The first full scan found thirty-five issues: wrong phones and names, wrong parent companies, duplicates, missing communities, and accounts with unpaid balances." },
- { stage:"WHAT WE FOUND", t:[20,35], title:"Duplicate vs. historical predecessor",
-   cue:"Slide view, or <b>/proposal/56</b> (Owosso) in the app",
-   panel:`<div class="panel"><h2>Two accounts at one address ≠ automatically a duplicate</h2>
-     <div class="two">
-       <div class="box g"><h3>True duplicate: Owosso (#56)</h3><p>Both records under Bellhaven. Survivor <code>001EGU7BMJ942ZTRE6</code> holds the website phone and administrator.</p><p>The other was <b>inactivated and linked</b>, not deleted.</p></div>
-       <div class="box b"><h3>Historical predecessors: Monroe, Port Clinton, Erie</h3><p>Competing $0 records under earlier operators (Harborview, Cedar Trail).</p><p><b>Preserved</b>, not labelled duplicates. History is inferred, not confirmed.</p></div></div>
-     <div class="src">Source: ledger #56 (verified), #42 / #57 / #64 (closed without write), #41 (held)</div></div>`,
-   text:"Six addresses had more than one account. <em>I learned that two accounts at the same address don't automatically mean one is a duplicate.</em> One might be a historical predecessor, and the financial consequences are very different." },
- { stage:"WHAT WE FOUND", t:[35,55], title:"Mistakes caught, guesses refused",
-   cue:"Slide view, or <b>/proposal/53</b> (Kettering, competing candidates)",
-   panel:`<div class="panel"><h2>The matching caught its own risky moves</h2>
-     <div class="two">
-       <div class="box r"><h3>Prevented: unsafe account creations</h3><p>The first scan proposed <b>creating</b> Amberly Manor and Union Square.</p><p>Stricter identity checks found look-alike CRM records and turned both into <b>identity holds</b>. Amberly's Colorado account was later shown to be distinct; the Hudson OH create (#71) waits for approval.</p></div>
-       <div class="box w"><h3>Refused to guess: 6 held</h3><p><b>Kettering</b>: 3 competing records, no defensible survivor.</p><p><b>Union Square</b>: different street, phone, parent and administrator.</p><p><b>Ashtabula</b>: PO Box 517 may be the right billing address.</p><p>Plus Monroe/Cedar Trail, Chagrin Falls, Willow Creek.</p></div></div>
-     <div class="src">Source: ledger #1 → #36 → #71, #3 → #38 (superseded history); holds #38 #41 #46 #49 #53 #66</div></div>`,
-   text:"Owosso was a true duplicate, so it was inactivated and linked. Monroe, Port Clinton and Erie kept their earlier operators' records. The first scan even proposed <em>creating</em> Amberly Manor and Union Square; stricter identity checks found conflicting records and <em>stopped those creates</em>." },
- { stage:"HOW WE DECIDED", t:[55,75], title:"Change of ownership: #60 Tiffin",
+ { stage:"WHAT WE FOUND", t:[18,36], title:"Judgment 1: what I noticed (Owosso)",
+   cue:"Slide view, or app <b>/proposal/56</b> (Owosso: survivor vs inactivated record)",
+   panel:`<div class="panel"><h2>What I noticed: 6 addresses with more than one account</h2>
+     <div class="flow"><div class="step"><b>Noticed</b><br>Owosso: two accounts at 1120 W Main St, <b>both under Bellhaven</b></div><span class="arrow">→</span>
+       <div class="step"><b>Double-checked</b><br><code>001EGU7BMJ942ZTRE6</code> has the website phone <b>(734) 503-1363</b> and administrator <b>Gloria Lambert</b></div><span class="arrow">→</span>
+       <div class="step"><b>Decided</b><br>Defensible survivor, so the other record was <b>inactivated and linked</b>, not deleted</div></div>
+     <div class="src">Source: scan #3 snapshot (6 multi-account addresses); ledger #56 (verified); live CRM read-back</div></div>`,
+   text:"Here's what <em>I noticed first</em>: six addresses had more than one account. At Owosso, both belonged to Bellhaven, but one matched the website's phone and administrator. That gave me a <em>defensible survivor</em>, so the other was inactivated and linked." },
+ { stage:"WHAT WE FOUND", t:[36,58], title:"Judgment 2: what I realized (predecessors)",
+   cue:"Slide view, or app <b>/proposal/57</b> (Port Clinton) / <b>/proposal/53</b> (Kettering)",
+   panel:`<div class="panel"><h2>Then I double-checked: a previous operator's account isn't necessarily a duplicate</h2>
+     <table><tr><th>Address</th><th>Bellhaven account</th><th>Extra record's parent</th><th>Revenue / AR</th><th>Decision</th></tr>
+       <tr><td>Monroe, 750 Stewart Rd</td><td>Bellhaven Gardens of Monroe</td><td>Harborview <i>and</i> Cedar Trail</td><td>$0 / $0</td><td>Harborview record preserved; Cedar Trail record <b>held</b></td></tr>
+       <tr><td>Port Clinton, 1420 Harbor Point Dr</td><td>Bellhaven of Port Clinton</td><td>Harborview</td><td>$0 / $0</td><td>Preserved</td></tr>
+       <tr><td>Erie, 4930 W Lake Rd</td><td>Bellhaven Shores of Erie</td><td>Harborview</td><td>$0 / $0</td><td>Preserved</td></tr></table>
+     <p style="margin:10px 0 0">The history is <b>possible, not proven</b>, so nothing was inactivated and the open question is documented. The stricter identity checks also <b>stopped two unsafe creates</b> (Amberly Manor, Union Square).</p>
+     <div class="src">Source: ledger #41 (held), #42 / #57 / #64 (closed without write); #1 → #36 → #71 and #3 → #38 (superseded history)</div></div>`,
+   text:"But when <em>I double-checked</em> Monroe, Port Clinton and Erie, the extra records belonged to other parent companies. That's when <em>I realized</em> a previous operator's account isn't necessarily a duplicate. So I preserved them and documented what still needs confirming. Stricter identity checks also stopped two unsafe account creations." },
+ { stage:"HOW WE DECIDED", t:[58,79], title:"Judgment 3: Tiffin's financial protection",
    cue:"App: <b>/proposal/60</b>, scroll to the financial table",
    panel:`<div class="panel"><h2>Tiffin (#60): protect the financial history</h2>
      <div class="flow"><div class="step"><b>Historical account</b> <code>001U6RW32TY0WSXZZB</code><br>Cedar Trail · revenue <b>$84,000</b> · unpaid <b>$12,400</b><br><i>preserved untouched</i></div>
@@ -111,20 +113,20 @@ const BEATS = [
        <div class="step"><b>New Bellhaven successor</b> <code>00164AE214A6588944</code><br>starts at <b>$0 / $0</b></div></div>
      <p style="margin:10px 0 0">Re-parenting directly would move live billing history. <b>2 writes</b>: create + link, both read-back verified.</p>
      <div class="src">Source: ledger #60, operations 21–22 (verified 2026-11-16 05:06:38 UTC); live CRM read-back</div></div>`,
-   text:"Tiffin sat under Cedar Trail with <em>eighty-four thousand dollars</em> of revenue and <em>twelve thousand four hundred</em> still owed. Re-parenting it would break the billing rules. So we kept that history, created a new Bellhaven account at zero, and linked them: <em>two verified writes</em>." },
- { stage:"HOW WE DECIDED", t:[75,90], title:"Human approval, verified read-back",
+   text:"Tiffin was <em>the third judgment call</em>. It sat under Cedar Trail with <em>eighty-four thousand dollars</em> of revenue and <em>twelve thousand four hundred</em> still owed. Re-parenting it would break the billing rules, so I kept that history, created a new Bellhaven account at zero, and linked them." },
+ { stage:"HOW WE DECIDED", t:[79,94], title:"Human approval, verified read-back",
    cue:"App: <b>/proposal/60</b> Decisions and Write log, then <b>/history</b>",
    panel:`<div class="panel"><h2>Nothing writes without a human</h2>
      <div class="flow"><div class="step">Approve</div><span class="arrow">→</span><div class="step">Live preview<br><small>re-reads the CRM, re-checks the rules</small></div><span class="arrow">→</span><div class="step">Typed <code>APPLY 60</code></div><span class="arrow">→</span><div class="step">Write</div><span class="arrow">→</span><div class="step"><b>Read-back: VERIFIED</b></div></div>
      <p style="margin:10px 0 0">Runtime is <b>deterministic Python</b>. Claude Code and ChatGPT helped build and review it; <b>no AI made a CRM change</b>.</p>
      <div class="src">Source: ledger decisions for #60 (approved 05:05:39, executed 05:06:38 UTC); 7 refused attempts logged, none wrote</div></div>`,
    text:"The system is <em>deterministic Python</em>; AI helped me build and review it, never to change the CRM. <em>I approve</em>, the live preview re-checks everything, <em>I type APPLY</em>, and the result is <em>read back</em>." },
- { stage:"HOW WE DECIDED", t:[90,100], title:"Rejected: #68 Alliance",
+ { stage:"HOW WE DECIDED", t:[94,101], title:"Rejected: #68 Alliance",
    cue:"App: <b>/proposal/68</b>, status REJECTED",
    panel:`<div class="panel"><h2>Rejected: #68 Alliance</h2><div class="box r"><h3>Proposed status "Needs Review"</h3><p>Not a status the CRM uses (only Active / Inactive). <b>Rejected. 0 writes.</b> The question "is Alliance still Bellhaven?" stays documented.</p></div>
      <div class="src">Source: ledger #68 (rejected); live CRM status values</div></div>`,
    text:"Alliance's proposed status <em>doesn't exist in the CRM</em>, so I rejected it. Nothing was written." },
- { stage:"AFTER", t:[100,120], title:"Verified results",
+ { stage:"AFTER", t:[101,120], title:"Verified results",
    cue:"Slide view, then the app's <b>Start Here</b> and <b>docs/FINAL_AUDIT.md</b>",
    panel:`<div class="panel"><h2>After: verified results</h2>
      <table><tr><th></th><th>Before</th><th>After</th></tr>
@@ -137,7 +139,7 @@ const BEATS = [
        <tr><td>Daily monitoring</td><td class="num">—</td><td class="num">read-only, 6 AM, installed</td></tr></table>
      <p style="margin:10px 0 0">The 4 new accounts (Batavia, Carlisle, and the Tiffin and Marietta successors) aren't the measure of success. <b>Justified corrections, preserved financial history and documented exceptions are.</b></p>
      <div class="src">${SRC_AFTER}</div></div>`,
-   text:"Now: <em>twenty-five verified operations</em>, <em>twenty-three exact matches</em>, an audit that passes, and a daily read-only scan. <em>I didn't just build a system that finds differences. I built a workflow that evaluates the evidence, protects financial history, requires human approval, and recognizes when a change shouldn't be made.</em>" },
+   text:"Now: <em>twenty-five verified operations</em>, <em>twenty-three exact matches</em>, an audit that passes, and a daily read-only scan. <em>I didn't just build a system that finds differences. The business context decides what should actually change, and when a change shouldn't be made.</em>" },
 ];
 const TOTAL = 120; let i = 0, elapsed = 0, running = false, tick = null;
 const $ = id => document.getElementById(id);
