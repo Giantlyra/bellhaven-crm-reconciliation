@@ -262,4 +262,4 @@ The **Submit** tab shows a live checklist.
 
 - Repository: https://github.com/Giantlyra/bellhaven-crm-reconciliation
 - Demo video: _add link (not recorded)_
-- Time spent: _fill in your actual total_
+- Time spent: Approximately 5.5 hours of active work, including implementation, CRM investigation, business-rule evaluation, testing, debugging, verification, and documentation. This estimate excludes breaks and idle waiting time.

@@ -107,6 +107,6 @@ cd ~/clipboard-assessment
 - [x] Cross-checked against the original brief (welcome page): deadline Nov 16 2026 11:29 PM EST; schedule config only (no live cron needed); no hosting
 - [x] Public GitHub repository: https://github.com/Giantlyra/bellhaven-crm-reconciliation (`.env`, `data/`, `investigation.txt` are gitignored; `docs/` contains assessment account IDs and phones)
 - [ ] ~2-minute video showing evidence, approval, **rejection** and a verified CRM change (script above)
-- [ ] Honest actual time spent (`docs/WRITEUP.md`, README)
+- [x] Honest actual time spent: approximately 5.5 hours of active work, excluding breaks and idle waiting (`docs/WRITEUP.md`, README)
 - [x] Write-up: matching approach, AI tools used, what we'd build next (`docs/WRITEUP.md`). Confirm the AI-tools list
 - [ ] Submit before **Nov 16 2026, 11:29 PM EST**

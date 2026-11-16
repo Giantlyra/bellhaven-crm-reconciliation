@@ -86,4 +86,4 @@ Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM
 
 ## Time spent
 
-_Fill in your honest total before submitting._
+Approximately 5.5 hours of active work, including implementation, CRM investigation, business-rule evaluation, testing, debugging, verification, and documentation. This estimate excludes breaks and idle waiting time.
