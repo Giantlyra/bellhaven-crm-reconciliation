@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Batch decision plan (groups A-D) recorded; Group A previewed read-only; nothing executed; dry-run._
+_Last updated: 2026-11-16 by Claude Code. Final execution/audit mode: CHOW review and read-only final-audit tool done; baseline audit PASS; awaiting Group A authorization; dry-run._
 
 ---
 
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user moved to **final execution and audit mode**. Plan: Group A executed only after explicit in-app authorization, with each write verified as it happens; B/C/D recorded; then one comprehensive read-only audit and the final report, monitoring results and walkthrough. Not an authorization to write; no approvals were given beyond those already recorded.
 - [V] 2026-11-16: the user confirmed **#49 and #66: HOLD** (superseding the earlier approval of both). They are recorded as HOLD in the ledger; no CRM change. Group B is now fully recorded (9 holds: #49, #66, #57, #41, #42, #38, #53, #70, #46).
 - [V] 2026-11-16: **batch decision plan (all 24 cases).**
   - **Group A, approval candidates:** #50, #59, #39, #40, #61, #62, #56, #47, #48. Approved as a group only after final validation, and **not** an authorization to write. Read-only preview: `docs/GROUP_A_PREVIEW.md`. All 9 validate clean against the live CRM.
@@ -335,11 +336,13 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**The user authorizes:**
-1. (#49 and #66 confirmed HOLD.)
-2. Authorization to execute Group A in two stages. Stage 1: #50, #59, #39, #61, #56, #47, #48 in one batch. Stage 2, after stage 1 is verified: #40 and #62.
+**Done this session (read-only):** `docs/CHOW_REVIEW.md` (#60, #54: both pass every automated rule; one financial question to answer) and `scripts/final_audit.py`. A baseline audit run shows **integrity PASS** (11 of 11 operations live-matched and receipted; protected fields and contacts intact).
 
-**Then:** the two CHOW cases (#60 then #54) individually, with financial and ownership review. After that come the final reconciliation report, the monitoring demonstration and the submission walkthrough.
+**The user authorizes Group A, stage 1:** #50, #59, #39, #61, #56, #47, #48 in one batch. Then stage 2: #40 and #62. (#50 and #59 are already approved in the app; the others get recorded approvals from the user's authorization.)
 
-**Remaining open and unresolved, documented:** #57, #64, #41, #42, #38, #53, #70, #46 (business questions Q1–Q5).
+**Then:**
+1. #60 Tiffin alone (the user answers the AR question in `docs/CHOW_REVIEW.md` first), then #54.
+2. Final audit: `PYTHONPATH=. .venv/bin/python scripts/final_audit.py docs/FINAL_AUDIT.md`.
+3. Final reconciliation report, monitoring demonstration and submission walkthrough, checked against the original assessment instructions.
+
 **Approval required:** every write. Server in dry-run (PID 89467). Operations total 11.
