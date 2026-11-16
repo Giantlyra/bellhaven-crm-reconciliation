@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Build / Modify · Bellhaven{% endblock %}
+{% block body %}
+<h1>Build / Modify — proposal queue</h1>
+<div class="card muted">Approving records a decision only. A write happens only from a proposal's <b>live preview</b>, after you
+type its confirmation phrase, and only if this server was started with <code>CRM_WRITES_ENABLED=1</code>. HOLD items cannot be approved.</div>
+<p class="filters">Status:
+{% for s in statuses %}<a class="{{ 'on' if s==status }}" href="/review?status={{s}}&kind={{kind}}&risk={{risk}}">{{ (s|state) if s and s!='open' else (s or 'all') }}{% if s and s!='open' %} ({{ counts.get(s,0) }}){% endif %}</a>{% endfor %}</p>
+<p class="filters">Type: <a class="{{ 'on' if not kind }}" href="/review?status={{status}}&risk={{risk}}">all</a>
+{% for k in kinds %}<a class="{{ 'on' if k==kind }}" href="/review?status={{status}}&kind={{k}}&risk={{risk}}">{{k}}</a>{% endfor %}
+ · Risk: {% for r in ['','low','medium','high','hold'] %}<a class="{{ 'on' if r==risk }}" href="/review?status={{status}}&kind={{kind}}&risk={{r}}">{{ r or 'any' }}</a>{% endfor %}</p>
+<form method="get"><input type="hidden" name="status" value="{{status}}"><input type="hidden" name="kind" value="{{kind}}"><input type="text" name="q" value="{{q}}" placeholder="Search title or account id"> <button>Search</button></form>
+<br>
+<table><tr><th>#</th><th>Type</th><th>Proposal</th><th>Risk</th><th>Confidence</th><th>Status</th></tr>
+{% for p in props %}<tr>
+  <td>{{ p.id }}</td><td><span class="tag {{p.kind}}">{{ p.kind }}</span></td>
+  <td><a href="/proposal/{{p.id}}">{{ p.title }}</a>{% if p.payload.warnings %} <span class="muted">⚠ {{ p.payload.warnings|length }}</span>{% endif %}</td>
+  <td><span class="tag r-{{p.risk}}">{{ p.risk }}</span></td><td>{{ p.confidence }}</td><td><span class="tag s-{{p.status}}">{{ p.status|state }}</span></td>
+</tr>{% else %}<tr><td colspan="6" class="muted">Nothing here.</td></tr>{% endfor %}</table>
+
+{% if batchable %}
+<h2>Batch review of approved (non-CHOW) proposals</h2>
+<form method="post" action="/batch/preview" class="card">
+  <input type="hidden" name="csrf" value="{{csrf}}">
+  <p class="muted">Pick approved items to preview together. Each is re-validated live, shown with its exact request, executed and audited individually. CHOW always runs one at a time.</p>
+  {% for p in batchable %}<label style="display:block"><input type="checkbox" name="pids" value="{{p.id}}"> #{{p.id}} <span class="tag {{p.kind}}">{{p.kind}}</span> {{ p.title }}</label>{% endfor %}
+  <br><button class="run">Live preview selected (read-only)</button>
+</form>{% endif %}
+{% endblock %}

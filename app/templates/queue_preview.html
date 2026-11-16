@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Queue preview · Bellhaven{% endblock %}
+{% block body %}
+<p><a href="/queue">← Queue</a></p>
+<h1>Queue validation ({{ ok|length }} of {{ items|length }} ready)</h1>
+<div class="card muted">This step is read-only. Each item was re-checked just now:
+  <ul style="margin:4px 0">
+    <li>Eligibility and your recorded approval.</li>
+    <li>Drift and policy against the live CRM.</li>
+    <li>The exact request matches the approved operation.</li>
+    <li>The live website still publishes the proposed value.</li>
+  </ul>
+  Items with any problem are excluded.</div>
+<form method="post" action="/queue/run"><input type="hidden" name="csrf" value="{{csrf}}">
+<table><tr><th>#</th><th>Result</th><th>Request</th><th>Live CRM now</th><th>Will send</th></tr>
+{% for it in items %}<tr>
+  <td><a href="/proposal/{{it.pid}}">#{{it.pid}}</a><br><span class="muted">{{ it.p.title if it.p else '' }}</span></td>
+  {% if it.ok %}{% set r = it.pv.requests[0] %}
+  <td><span class="tag s-verified">ready</span><input type="hidden" name="pids" value="{{it.pid}}"><input type="hidden" name="tokens" value="{{it.pv.token}}"></td>
+  <td><code>{{r.method}} {{r.path}}</code></td><td><pre>{{ r.before|pretty }}</pre></td><td><pre>{{ r.body|pretty }}</pre></td>
+  {% else %}<td colspan="4"><div class="bad">Excluded: {{ it.problems|join('; ') }}</div></td>{% endif %}
+</tr>{% endfor %}</table>
+{% if ok %}
+<div class="card">{% if not writes_enabled %}<div class="warn">Dry-run server: the queue will be refused before any write. Restart with <code>CRM_WRITES_ENABLED=1 ./bh serve --port 8020</code> to execute.</div>{% endif %}
+<label><input type="checkbox" name="reviewed" value="yes" required> I reviewed every request above and authorize exactly these {{ ok|length }} corrections.</label>
+<p>Type <span class="phrase">{{ phrase }}</span>:</p><input type="text" name="confirmation" autocomplete="off" required>
+<button class="approve">Run queue (one at a time · re-validated · read-back · stops at first failure)</button></div>{% endif %}
+</form>
+{% endblock %}

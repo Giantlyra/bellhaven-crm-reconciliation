@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Data Review · Bellhaven{% endblock %}
+{% block body %}
+<h1>Data Review</h1>
+{% if not run %}<div class="card">No completed scan yet — run one from <a href="/">Start Here</a>.</div>{% else %}
+<p class="muted">Scan #{{run.id}} · {{ summary.provenance }} · {{ total }} rows ({{ run.website_facilities }} website communities + CRM-only Bellhaven accounts). Matching is by normalized street + ZIP first; names alone never decide identity.</p>
+<form method="get" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+  <input type="text" name="q" value="{{q}}" placeholder="Search name, account id, street…">
+  <select name="cls"><option value="">All classifications</option>{% for c in all_cls %}<option {{ 'selected' if c==cls }}>{{c}}</option>{% endfor %}</select>
+  <button>Filter</button>{% if q or cls %}<a href="/data" style="align-self:center">clear</a>{% endif %}
+</form>
+<table><tr><th>Website community</th><th>Classification</th><th>CRM account(s) · parent · revenue / AR</th><th>Match basis</th><th>Proposals</th></tr>
+{% for r in rows %}<tr>
+  <td>{% if r.facility %}<a href="{{ r.source_url }}" target="_blank" rel="noopener">{{ r.facility }}</a><br><span class="muted">{{ r.website.street }}, {{ r.website.city }} {{ r.website.state }} {{ r.website.zip }}</span>
+      {% if not r.in_directory %}<br><span class="tag HOLD">homepage-only (not in directory)</span>{% endif %}
+      {% else %}<span class="muted">— not on website —</span><br>CRM: {{ r.crm_name }}{% endif %}</td>
+  <td>{% for c in r.classification.split(' + ') %}<span class="tag {{ c.split(' ')[0] }}">{{ c }}</span> {% endfor %}</td>
+  <td>{% for a in r.crm or [] %}<div><a href="/api/account/{{a.account_id}}" target="_blank" title="live read-only JSON">{{ a.account_id }}</a>{% if a.account_id == r.survivor and r.duplicates %} <b>(survivor)</b>{% endif %}
+      {{ a.name }}<br><span class="muted">{{ a.billing_street }}, {{a.billing_zip}} · {{ a.parent_name or 'no parent' }} · {{ a.lifetime_revenue|money }} / {{ a.outstanding_ar|money }}</span></div>{% endfor %}
+      {% if r.candidates %}<div class="muted">Not used: {% for c in r.candidates %}{{c.account_id}} {{c.name}} ({{c.billing_city}} {{c.billing_state}}){% if not loop.last %}; {% endif %}{% endfor %}</div>{% endif %}</td>
+  <td class="muted">{{ r.basis or '' }}</td>
+  <td>{% for p in r.proposals %}<a href="/proposal/{{p.id}}">#{{p.id}}</a> <span class="tag s-{{p.status}}">{{ p.status|state }}</span><br>{% endfor %}</td>
+</tr>{% else %}<tr><td colspan="5" class="muted">No rows match.</td></tr>{% endfor %}</table>
+{% endif %}
+{% endblock %}

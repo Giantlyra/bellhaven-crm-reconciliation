@@ -1,0 +1,3 @@
+# Daily 06:00 local READ-ONLY scan. Creates pending proposals only; never approves or writes.
+# (run_daily.py refuses to start if CRM_WRITES_ENABLED=1.)  Install: crontab -e, paste the line below.
+0 6 * * * cd $HOME/clipboard-assessment && .venv/bin/python scripts/run_daily.py >> data/daily.log 2>&1

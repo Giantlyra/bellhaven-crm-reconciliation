@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Bellhaven Reconciliation{% endblock %}</title>
+<style>
+  :root { --ink:#1d2321; --mut:#66706c; --line:#dfe3e1; --bg:#f6f7f6; --card:#fff; --green:#2e5d50;
+          --amber:#a36a00; --red:#b3261e; --blue:#1f5fa8; }
+  * { box-sizing:border-box }
+  body { margin:0; font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--bg) }
+  header { background:var(--green); color:#fff; padding:12px 24px; display:flex; gap:24px; align-items:center; flex-wrap:wrap }
+  header b { font-size:16px } header a { color:#fff; text-decoration:none; opacity:.85 } header a:hover { opacity:1 }
+  main { max-width:1200px; margin:0 auto; padding:20px 16px 60px }
+  h1 { font-size:22px; margin:6px 0 14px } h2 { font-size:16px; margin:22px 0 8px }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:10px 12px }
+  .stat .n { font-size:24px; font-weight:600 } .stat .l { color:var(--mut); font-size:12px }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line) }
+  th,td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top }
+  th { background:#eef1ef; font-size:12px; color:var(--mut) }
+  .tag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:11px; font-weight:600; background:#e8ecea }
+  .CHOW { background:#fde7c8; color:#7a4a00 } .WRONG_PARENT { background:#fbe0dd; color:var(--red) }
+  .DUPLICATE { background:#e6defa; color:#4b2e9a } .WEBSITE_ONLY { background:#dcecfb; color:var(--blue) }
+  .AMBIGUOUS { background:#fff2b3; color:#6b5800 } .CRM_ONLY { background:#f0e1ea; color:#7a1f55 }
+  .FIELD_UPDATE { background:#dff1e7; color:#1e6a42 } .MATCH_OK { background:#eef1ef; color:var(--mut) }
+  .s-pending { background:#fff2b3 } .s-applied,.s-verified { background:#c9ecd6; color:#14532d } .s-rejected,.s-superseded { background:#e5e7eb }
+  .s-failed,.s-conflict { background:#fbd5d1; color:var(--red) } .s-applying,.s-approved { background:#dcecfb }
+  .s-hold,.HOLD { background:#ffe3b3; color:#7a4a00 } .s-resolved { background:#e3f0ea; color:#2e5d50 } .ALIAS { background:#dff1e7; color:#1e6a42 }
+  .r-low { background:#e3f0ea; color:#2e5d50 } .r-medium { background:#fff2b3; color:#6b5800 } .r-high { background:#fbe0dd; color:var(--red) } .r-hold { background:#ffe3b3; color:#7a4a00 }
+  header nav a { padding:4px 8px; border-radius:4px } header nav a.on { background:rgba(255,255,255,.18); opacity:1; font-weight:600 }
+  .mode { padding:6px 24px; font-size:12px; font-weight:600 } .mode.dry { background:#e3f0ea; color:#2e5d50 } .mode.live { background:#b3261e; color:#fff }
+  .steps li { margin:6px 0 } kbd, code { background:#eef1ef; padding:1px 5px; border-radius:3px; font-size:12px }
+  .phrase { font-family:ui-monospace,Menlo,monospace; font-weight:700; background:#fff8e6; padding:2px 6px; border:1px dashed var(--amber) }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin:12px 0 }
+  .warn { border-left:4px solid var(--amber); background:#fff8e6; padding:8px 12px; margin:8px 0 }
+  .chow { border-left:4px solid var(--red); background:#fdecea; padding:10px 14px; margin:10px 0; font-weight:500 }
+  .ok { border-left:4px solid var(--green); background:#e9f5ee; padding:8px 12px; margin:8px 0 }
+  .bad { border-left:4px solid var(--red); background:#fdecea; padding:8px 12px; margin:8px 0 }
+  pre { background:#f1f3f2; padding:8px; border-radius:4px; overflow:auto; font-size:12px; margin:0; white-space:pre-wrap; word-break:break-word }
+  .muted { color:var(--mut) } a { color:var(--blue) }
+  button { font:inherit; padding:7px 16px; border-radius:5px; border:1px solid var(--line); cursor:pointer; background:#fff }
+  .approve { background:var(--green); color:#fff; border-color:var(--green) } .rejectb { background:#fff; color:var(--red); border-color:var(--red) }
+  .run { background:var(--blue); color:#fff; border-color:var(--blue) }
+  .filters a { margin-right:10px } .filters a.on { font-weight:700; text-decoration:none; color:var(--ink) }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:14px } @media (max-width:800px){ .cols{grid-template-columns:1fr} }
+  input[type=text] { padding:7px; border:1px solid var(--line); border-radius:5px; width:340px; max-width:100% }
+  .diff-old { color:var(--red); text-decoration:line-through } .diff-new { color:#14532d; font-weight:600 }
+</style>
+</head>
+<body>
+<header id="bellhaven-navigation"><b>Bellhaven CRM Reconciliation</b>
+  <nav>{% for key, label, url in [('start','Start Here','/'),('data','Data Review','/data'),('problems','Find Problems','/problems'),('review','Build / Modify','/review'),('queue','Queue','/queue'),('test','Test','/test'),('walkthrough','Walkthrough','/walkthrough'),('submit','Submit','/submit'),('history','History','/history'),('legacy','Legacy','/legacy')] %}<a href="{{url}}" class="{{ 'on' if tab==key }}">{{label}}</a>{% endfor %}</nav></header>
+{% if writes_enabled %}<div class="mode live">LIVE WRITES ENABLED for this server process — each write still requires approval, a fresh live preview and a typed confirmation.</div>
+{% else %}<div class="mode dry">DRY-RUN — CRM writes are disabled in this server process. Scans, reviews and live previews are read-only.</div>{% endif %}
+<main>{% block body %}{% endblock %}</main>
+</body>
+</html>

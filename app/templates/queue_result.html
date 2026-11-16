@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Queue result · Bellhaven{% endblock %}
+{% block body %}
+<h1>Queue result</h1>
+{% if err %}<div class="bad">Refused before any write: {{ err }}</div>{% endif %}
+{% if out %}
+{% if out.stopped_early %}<div class="bad">Stopped at the first item that did not verify. Later items were not run.</div>
+{% else %}<div class="ok">Every item was written, read back and verified, and only the approved fields changed.</div>{% endif %}
+<table><tr><th>#</th><th>Account</th><th>Result</th><th>Before → after (read back)</th><th>Protected fields</th><th>Detail</th></tr>
+{% for r in out.results %}<tr>
+  <td><a href="/proposal/{{r.pid}}">#{{r.pid}}</a></td><td><code>{{ r.account_id or '' }}</code></td>
+  <td><span class="tag s-{{r.status}}">{{ r.status }}</span></td>
+  <td>{% for k, v in (r.wrote or {}).items() %}<div>{{k}}: <span class="diff-old">{{ r.before[k] }}</span> → <span class="diff-new">{{ (r.after or {}).get(k, '—') }}</span></div>{% endfor %}</td>
+  <td>{% if r.protected_ok is defined %}{{ '✅ unchanged' if r.protected_ok else '❌ changed' }}{% if r.changed_fields %}<div class="muted">changed: {{ r.changed_fields|join(', ') }}</div>{% endif %}{% endif %}</td>
+  <td class="muted">{{ (r.problems or [])|join('; ') or r.note or '' }}</td></tr>{% endfor %}</table>
+<p class="muted">Receipt: {{ out.receipt_file or '(ledger audit log only)' }} · audit events queue_started / queue_item / queue_finished</p>
+{% endif %}
+<p><a href="/queue">← Queue</a> · <a href="/history">History</a></p>
+{% endblock %}

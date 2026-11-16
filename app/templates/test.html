@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Test · Bellhaven{% endblock %}
+{% block body %}
+<h1>Test</h1>
+<div class="card">The suite runs entirely against mocked HTTP and in-memory/temporary SQLite. It never contacts the live CRM.
+<form method="post" action="/test/run" onsubmit="this.querySelector('button').disabled=true;this.querySelector('button').textContent='Running… (~10 s)'"><input type="hidden" name="csrf" value="{{csrf}}"><br><button class="run">Run test suite now</button> <span class="muted">or in a terminal: <code>./bh test</code></span></form></div>
+{% if report %}
+<div class="{{ 'ok' if report.exit_code == 0 else 'bad' }}"><b>{{ report.summary }}</b> · ran {{ report.ran_at }}</div>
+<table><tr><th>Module</th><th>Test</th><th>Outcome</th><th>Time</th></tr>
+{% for c in report.cases %}<tr><td>{{c.module}}</td><td>{{c.name}}</td><td><span class="tag {{ 's-verified' if c.outcome=='passed' else ('s-failed' if c.outcome=='failed' else '') }}">{{c.outcome}}</span></td><td>{{ '%.2f'|format(c.time) }}s</td></tr>{% endfor %}</table>
+<h2>Output tail</h2><pre>{{ report.output_tail }}</pre>
+{% else %}<p class="muted">No report yet.</p>{% endif %}
+{% endblock %}

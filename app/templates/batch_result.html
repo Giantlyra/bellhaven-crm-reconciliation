@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Batch result</h1>
+{% if err %}<div class="bad">{{ err }}</div>{% endif %}
+<table><tr><th>Proposal</th><th>Result</th><th>Detail</th></tr>
+{% for r in results %}<tr><td><a href="/proposal/{{r.pid}}">#{{r.pid}}</a></td><td><span class="tag s-{{r.status}}">{{r.status}}</span></td><td>{{ r.error or (r.problems|join('; ') if r.problems else '') }}</td></tr>{% endfor %}</table>
+<p><a href="/review">← Queue</a> · <a href="/history">History</a></p>
+{% endblock %}

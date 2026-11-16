@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Walkthrough · Bellhaven{% endblock %}
+{% block body %}
+<h1>Walkthrough — ~2-minute narrated demo</h1>
+<div class="warn">The tool does not record video. Record your screen while following this script, then add the link to the README and the <a href="/submit">Submit</a> tab. Full script with spoken lines: <code>docs/DEMO_SCRIPT.md</code>.</div>
+<ol class="steps">
+<li><b>0:00 Scan state (15 s).</b> <a href="/">Start Here</a>: scan completeness (35 facilities, homepage 35 / directory 34, 121 CRM accounts on every page), source fingerprints, proposal lifecycle counts, "CRM write calls ever: 0", daily schedule card.</li>
+<li><b>0:15 Problems (20 s).</b> <a href="/problems">Find Problems</a>: categories with evidence. Open the Kettering HOLD: three $0 accounts at one address, no decisive evidence, so no operation exists. Amberly: same name, Colorado address.</li>
+<li><b>0:35 CHOW (25 s).</b> <a href="/proposal/60">#60 Tiffin</a>: revenue $84,000 and AR $12,400, so the old account is preserved; ordered plan = create successor under Bellhaven → set <code>chow_current_account</code> → read back.</li>
+<li><b>1:00 Consent (20 s).</b> Approve ("records a decision, writes nothing") → Live preview: fresh re-read, exact bodies, plan token → type <span class="phrase">APPLY 60</span>. Dry-run server: show the refusal. Write-enabled server (only with your fresh approval): show VERIFIED after read-back.</li>
+<li><b>1:20 Duplicate (15 s).</b> <a href="/proposal/56">#56 Owosso</a>: which record survives, which becomes Inactive, why; nothing merged or deleted.</li>
+<li><b>1:35 Audit (15 s).</b> <a href="/history">History</a>: Findlay verified receipt (never re-proposed), decisions, write log, append-only audit.</li>
+<li><b>1:50 Close (10 s).</b> <a href="/test">Test</a> tab: suite green on mocked HTTP. "The daily job only scans and refuses to run with writes enabled."</li>
+</ol>
+{% endblock %}

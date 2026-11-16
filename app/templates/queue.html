@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Execution queue · Bellhaven{% endblock %}
+{% block body %}
+<h1>Controlled execution queue</h1>
+{% if msg %}<div class="{{ 'bad' if msg.startswith('error') or ': error' in msg else 'ok' }}">{{ msg }}</div>{% endif %}
+<div class="card muted">
+  Only <b>single-account phone/name corrections</b> qualify. They need an exact address+ZIP match, high confidence, no
+  competing CRM records, an account already under Bellhaven, and (for renames) a recognisably similar name.
+  Parent and ownership changes, duplicates, CHOW, billing address, uncertain matches and material renames stay in
+  <b>manual review</b> and cannot be queued.
+  <br>Nothing here approves anything. You approve each record yourself.
+  Running the queue re-validates every item against the live CRM and the live website right before its write.
+  Each write is read back, checked for unexpected field changes and receipted.
+  The queue <b>stops at the first item that does not verify</b>.
+</div>
+
+<h2>1. Approved and eligible: ready to queue ({{ ready|length }})</h2>
+{% if ready %}
+<form method="post" action="/queue/preview"><input type="hidden" name="csrf" value="{{csrf}}">
+<table><tr><th></th><th>#</th><th>Account</th><th>Change (CRM now → proposed)</th><th>Risk</th></tr>
+{% for r in ready %}<tr>
+  <td><input type="checkbox" name="pids" value="{{r.p.id}}" checked></td>
+  <td><a href="/proposal/{{r.p.id}}">#{{r.p.id}}</a></td>
+  <td><code>{{r.account_id}}</code><br>{{ r.p.title }}</td>
+  <td>{% for k, v in r.fields.items() %}<div>{{k}}: <span class="diff-old">{{ r.current.get(k, '') }}</span> → <span class="diff-new">{{ v }}</span></div>{% endfor %}</td>
+  <td><span class="tag r-{{r.p.risk}}">{{r.p.risk}}</span></td></tr>{% endfor %}
+</table>
+<p><button class="run">Validate selected against live CRM &amp; website (read-only)</button></p>
+</form>
+{% else %}<p class="muted">None yet. Approve eligible records below.</p>{% endif %}
+
+<h2>2. Eligible, awaiting your approval ({{ awaiting|length }})</h2>
+{% if awaiting %}
+<table><tr><th>#</th><th>Account</th><th>Change (CRM now → proposed)</th><th>Website evidence</th><th>Your decision</th></tr>
+{% for r in awaiting %}{% set w = r.p.payload.evidence.website %}<tr>
+  <td><a href="/proposal/{{r.p.id}}">#{{r.p.id}}</a></td>
+  <td><code>{{r.account_id}}</code><br>{{ r.p.title }}</td>
+  <td>{% for k, v in r.fields.items() %}<div>{{k}}: <span class="diff-old">{{ r.current.get(k, '') }}</span> → <span class="diff-new">{{ v }}</span></div>{% endfor %}</td>
+  <td class="muted">{{ w.name }} · {{ w.street }}, {{ w.city }} {{ w.zip }} · {{ w.phone }}<br><a href="{{ w.source_url }}" target="_blank" rel="noopener">website page</a> · <a href="/proposal/{{r.p.id}}">full evidence</a></td>
+  <td><form method="post" action="/proposal/{{r.p.id}}/decide" style="margin:0">
+      <input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="next" value="queue">
+      <button class="approve" name="action" value="approve">Approve</button>
+      <button name="action" value="hold">Hold</button></form></td></tr>{% endfor %}
+</table>
+{% else %}<p class="muted">None.</p>{% endif %}
+
+<h2>3. Manual review only ({{ manual|length }})</h2>
+<table><tr><th>#</th><th>Kind</th><th>Proposal</th><th>Status</th><th>Why it cannot be queued</th></tr>
+{% for r in manual %}<tr><td><a href="/proposal/{{r.p.id}}">#{{r.p.id}}</a></td><td><span class="tag {{r.p.kind}}">{{r.p.kind}}</span></td>
+  <td>{{ r.p.title }}</td><td><span class="tag s-{{r.p.status}}">{{ r.p.status|state }}</span></td><td class="muted">{{ r.why|join('; ') }}</td></tr>{% endfor %}
+</table>
+
+{% if runs %}<h2>Recent queue runs</h2>
+<table><tr><th>Finished</th><th>Results</th></tr>{% for e in runs %}{% set d = e.detail|fromjson %}<tr><td>{{ e.at }}</td>
+<td>{% for r in d.results %}<a href="/proposal/{{r.pid}}">#{{r.pid}}</a> <span class="tag s-{{r.status}}">{{r.status}}</span> {% endfor %}{% if d.stopped %}<b class="bad">stopped early</b>{% endif %}</td></tr>{% endfor %}</table>{% endif %}
+{% endblock %}

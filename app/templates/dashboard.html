@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Start Here · Bellhaven{% endblock %}
+{% block body %}
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+  <h1>Start Here</h1>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+  <form method="post" action="/run" onsubmit="this.querySelector('button').disabled=true;this.querySelector('button').textContent='Scanning… (30–60 s, page will look frozen)'">
+    <input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="mode" value="live">
+    <button class="run">▶ Live scan (read-only)</button></form>
+  {% if snapshot_exists %}<form method="post" action="/run"><input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="mode" value="offline">
+    <button title="Uses data/snapshot.json (pre-Findlay, stale). No network.">Offline scan from saved snapshot</button></form>{% endif %}
+  </div>
+</div>
+{% if msg %}<div class="ok">{{ msg }}</div>{% endif %}
+
+<div class="card">
+  <b>Mission.</b> Reconcile Bellhaven Senior Living's public website (source of truth for which communities Bellhaven runs)
+  against the assessment CRM, propose evidence-backed corrections, and apply <u>only</u> those a human approves — with a live
+  re-check before and a read-back after every write.
+  <ol class="steps">
+    <li><b>Scan</b> (button above, or <code>./bh scan</code>) — website + every CRM page, read-only, fingerprinted.</li>
+    <li><a href="/data">Data Review</a> — each website community, how it matched, and why.</li>
+    <li><a href="/problems">Find Problems</a> — categorised issues, including HOLD items the tool refuses to guess on.</li>
+    <li><a href="/review">Build / Modify</a> — approve / reject / hold; then live preview → typed confirmation → write → read-back.</li>
+    <li><a href="/history">History</a> — append-only audit of every decision, write and receipt.</li>
+  </ol>
+</div>
+
+{% if not run %}
+  <div class="card">No completed scan yet. Nothing is written to the CRM by scanning.</div>
+{% else %}
+<p class="muted">Latest completed scan #{{ run.id }} · {{ run.finished_at }} · {{ summary.provenance }} · {{ run.new_proposals or 0 }} new, {{ run.known_proposals or 0 }} already known</p>
+<div class="{{ 'ok' if completeness.ok else 'bad' }}"><b>Scan completeness:</b> {{ 'complete' if completeness.ok else 'NOT complete — treat counts with caution' }} · {{ completeness.text }}</div>
+<div class="grid">
+  <div class="stat"><div class="n">{{ run.website_facilities }}</div><div class="l">Website facilities{% if summary.homepage_count %} (homepage says {{summary.homepage_count}}, directory {{summary.directory_count}}){% endif %}</div></div>
+  <div class="stat"><div class="n">{{ run.crm_accounts }}</div><div class="l">CRM accounts (all pages)</div></div>
+  <div class="stat"><div class="n">{{ cls.get('MATCH_OK',0) }}</div><div class="l">Clean matches</div></div>
+  <div class="stat"><div class="n">{{ write_count }}</div><div class="l">CRM write calls ever (this engine)</div></div>
+</div>
+<h2>Proposal lifecycle (current ledger)</h2>
+<div class="grid">
+{% for key in ['pending','hold','approved','applying','verified','failed','conflict','rejected','superseded','resolved'] %}
+  <a class="stat" href="/review?status={{key}}" style="text-decoration:none;color:inherit"><div class="n">{{ counts.get(key,0) }}</div><div class="l"><span class="tag s-{{key}}">{{ state_labels[key] }}</span>{% if key=='verified' %} — applied &amp; read-back verified{% elif key=='approved' %} — decision only, nothing written{% elif key=='hold' %} — no write possible{% endif %}</div></a>
+{% endfor %}
+</div>
+<h2>Source provenance</h2>
+<table><tr><th>Source</th><th>Records</th><th>SHA-256</th><th>Retrieved</th><th>Provenance</th></tr>
+{% for s in sources %}<tr><td>{{s.source}}</td><td>{{s.records}}</td><td><code>{{s.fingerprint[:16]}}…</code></td><td>{{s.retrieved_at}}</td><td>{{s.provenance}}</td></tr>{% endfor %}</table>
+{% if open_kinds %}<h2>Open items by type</h2><p>{% for k,n in open_kinds.items() %}<a href="/review?kind={{k}}"><span class="tag {{k}}">{{k}}</span></a> {{n}} &nbsp; {% endfor %}</p>{% endif %}
+{% endif %}
+
+{% if receipts %}<h2>Verified writes made before this engine</h2>
+{% for r in receipts %}<div class="ok">{{ r.account_id }} · <code>{{ r.field }}</code> = <code>{{ r.value }}</code> · verified {{ r.verified_at }} · {{ r.source }}. Scans treat this as resolved and never re-propose it.</div>{% endfor %}{% endif %}
+
+{% if errors %}<h2>Last run notes</h2>{% for e in errors %}<div class="{{ 'bad' if e.error else 'warn' }}">{{ e.stage }}: {{ e.error or e.info }} {{ e.url or '' }}</div>{% endfor %}{% endif %}
+
+<h2>Daily schedule (read-only scans)</h2>
+<div class="card">
+  <p>Cron entry installed for this user: <b>{{ 'yes' if schedule.installed else ('no' if schedule.installed == False else 'unknown') }}</b>
+  {% if not schedule.installed %}<span class="muted">— optional; see <code>scripts/crontab.txt</code> and <code>docs/OPERATIONS.md</code>.</span>{% endif %}</p>
+  <p>Last scheduled run: {% if schedule.last %}#{{ schedule.last.id }} · {{ schedule.last.started_at }} · <span class="tag {{ 's-verified' if schedule.last.status=='completed' else 's-failed' }}">{{ schedule.last.status }}</span>{% else %}<span class="muted">none recorded yet</span>{% endif %}
+  · Scheduled failures recorded: <b>{{ schedule.failures|length }}</b></p>
+  {% for r in schedule.failures %}<div class="bad">Run #{{r.id}} {{r.started_at}} ended <b>{{r.status}}</b>: {{ r.errors }}</div>{% endfor %}
+  <p class="muted">The scheduled job only scans: it refuses to start if <code>CRM_WRITES_ENABLED=1</code>, never approves or executes, and an incomplete scan creates no proposals.</p>
+  {% if schedule.log_tail %}<pre>{{ schedule.log_tail }}</pre>{% endif %}
+</div>
+
+<h2>Recent runs</h2>
+<table><tr><th>#</th><th>Started</th><th>Finished</th><th>Status</th><th>Website</th><th>CRM</th><th>New</th><th>Known</th></tr>
+{% for r in runs %}<tr><td>{{r.id}}</td><td>{{r.started_at}}</td><td>{{r.finished_at or ''}}</td><td><span class="tag {{ 's-verified' if r.status=='completed' else 's-failed' }}">{{r.status}}</span></td><td>{{r.website_facilities}}</td><td>{{r.crm_accounts}}</td><td>{{r.new_proposals}}</td><td>{{r.known_proposals}}</td></tr>{% endfor %}</table>
+{% endblock %}

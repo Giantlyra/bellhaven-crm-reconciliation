@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}History · Bellhaven{% endblock %}
+{% block body %}
+<h1>History &amp; audit</h1>
+<h2>Verified writes made before this engine (imported receipts)</h2>
+<table><tr><th>Verified at</th><th>Account</th><th>Field = value</th><th>Source</th></tr>
+{% for r in receipts %}<tr><td>{{r.verified_at}}</td><td>{{r.account_id}}</td><td><code>{{r.field}}</code> = <code>{{r.value}}</code></td><td>{{r.source}}</td></tr>
+{% else %}<tr><td colspan="4" class="muted">None.</td></tr>{% endfor %}</table>
+<h2>Legacy Findlay page event log (read-only view of data/execution_audit.db)</h2>
+<table><tr><th>When</th><th>Event</th><th>Account</th><th>Message</th></tr>
+{% for at, ev, aid, m in legacy %}<tr><td>{{at}}</td><td>{{ev}}</td><td>{{aid}}</td><td>{{m}}</td></tr>{% else %}<tr><td colspan="4" class="muted">None.</td></tr>{% endfor %}</table>
+
+<h2>CRM write attempts by this engine</h2>
+<table><tr><th>When</th><th>Proposal</th><th>Op</th><th>Account</th><th>Status</th><th>Returned id</th><th>Error</th></tr>
+{% for o in ops %}<tr><td>{{ o.updated_at }}</td><td><a href="/proposal/{{o.proposal_id}}">#{{o.proposal_id}}</a> {{ o.title }}</td><td>{{ o.op_type }}</td><td>{{ o.account_id or '' }}</td>
+<td><span class="tag {{ 's-verified' if o.status=='verified' else ('s-failed' if o.status in ['failed','uncertain','verify_failed'] else '') }}">{{ o.status }}</span></td>
+<td>{{ o.returned_id or '' }}</td><td>{{ o.error or '' }}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No writes yet.</td></tr>{% endfor %}</table>
+
+<h2>Decisions</h2>
+<table><tr><th>When</th><th>Decision</th><th>Proposal</th><th>Actor</th><th>Note</th></tr>
+{% for d in decisions %}<tr><td>{{ d.decided_at }}</td><td>{{ d.decision }}</td>
+<td><a href="/proposal/{{d.proposal_id}}">#{{d.proposal_id}}</a> <span class="tag {{d.kind}}">{{d.kind}}</span> {{ d.title }}</td><td>{{ d.actor or '' }}</td><td>{{ d.note }}</td></tr>
+{% else %}<tr><td colspan="5" class="muted">No decisions yet.</td></tr>{% endfor %}</table>
+
+<h2>Runs</h2>
+<table><tr><th>#</th><th>Started</th><th>Status</th><th>Website</th><th>CRM</th><th>New</th><th>Known</th></tr>
+{% for r in runs %}<tr><td>{{r.id}}</td><td>{{r.started_at}}</td><td>{{r.status}}</td><td>{{r.website_facilities}}</td><td>{{r.crm_accounts}}</td><td>{{r.new_proposals}}</td><td>{{r.known_proposals}}</td></tr>{% endfor %}</table>
+
+<h2>Append-only audit log (latest 300)</h2>
+<p class="muted">SQLite triggers reject UPDATE and DELETE on this table.</p>
+<table><tr><th>#</th><th>When</th><th>Proposal</th><th>Event</th><th>Detail</th></tr>
+{% for a in audit %}<tr><td>{{a.id}}</td><td>{{a.at}}</td><td>{% if a.proposal_id %}<a href="/proposal/{{a.proposal_id}}">#{{a.proposal_id}}</a>{% endif %}</td><td>{{a.event}}</td><td><code style="white-space:pre-wrap;word-break:break-word">{{ a.detail }}</code></td></tr>{% endfor %}</table>
+{% endblock %}

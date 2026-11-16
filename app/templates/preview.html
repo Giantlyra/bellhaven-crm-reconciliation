@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Preview #{{p.id}} · Bellhaven{% endblock %}
+{% block body %}
+<p><a href="/proposal/{{p.id}}">← Proposal #{{p.id}}</a></p>
+<h1>Live preview — <span class="tag {{p.kind}}">{{p.kind}}</span> {{ p.title }}</h1>
+<div class="card muted">This page only READ the CRM just now. Nothing has been written.</div>
+{% if err %}<div class="bad">Could not build a live preview: {{ err }}. No write is possible.</div>{% else %}
+
+{% for n in pv.notes %}<div class="ok">{{ n }}</div>{% endfor %}
+{% if pv.problems %}<div class="bad"><b>BLOCKED — execution will not proceed:</b><ul>{% for x in pv.problems %}<li>{{x}}</li>{% endfor %}</ul>Re-scan to regenerate the proposal from current data.</div>{% endif %}
+
+<h2>Live financial context (just re-read)</h2>
+<table><tr><th>Role</th><th>Account</th><th>Parent</th><th>Status</th><th>Revenue</th><th>AR</th><th>SOP verdict on live data</th></tr>
+{% for f in fin %}<tr><td>{{f.role}}</td><td>{{f.account_id}} {{f.name}}</td><td>{{f.parent}}</td><td>{{f.status}}</td><td>{{f.revenue|money}}</td><td>{{f.ar|money}}</td><td class="muted">{{f.sop}}</td></tr>{% endfor %}</table>
+
+<h2>Exact requests that will be sent</h2>
+<table><tr><th>#</th><th>State</th><th>Request</th><th>Live value now</th><th>Body</th></tr>
+{% for r in pv.requests %}<tr><td>{{r.index}}</td><td><span class="tag {{ 's-verified' if r.state in ['done','already_applied'] else 's-approved' }}">{{r.state}}</span></td>
+<td><code>{{r.method}} {{r.path}}</code></td><td>{% if r.before %}<pre>{{ r.before|pretty }}</pre>{% endif %}</td><td><pre>{{ r.body|pretty }}</pre></td></tr>{% endfor %}</table>
+<p class="muted">Plan token <code>{{ pv.token }}</code> binds your confirmation to exactly this CRM state. If anything changes before you submit, execution is refused and you will be asked to review again.</p>
+
+{% if not pv.problems %}
+<form method="post" action="/proposal/{{p.id}}/execute" class="card">
+  <input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="plan_token" value="{{pv.token}}">
+  {% if not writes_enabled %}<div class="warn">This server is in <b>dry-run</b>: the button below will be refused. To allow writes, stop the server (Ctrl+C) and start it with <code>CRM_WRITES_ENABLED=1 ./bh serve</code>.</div>{% endif %}
+  <label><input type="checkbox" name="reviewed" value="yes" required> I reviewed the targets, before/after values, sources and financial context above and authorize exactly these {{ pv.requests|length }} request(s).</label>
+  <p>Type <span class="phrase">{{ phrase }}</span> to confirm:</p>
+  <input type="text" name="confirmation" autocomplete="off" required>
+  <button class="approve">{{ 'Write to CRM and verify by read-back' if not pv.noop else 'Mark resolved (no write needed)' }}</button>
+</form>{% endif %}
+{% endif %}
+{% endblock %}

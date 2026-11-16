@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}#{{p.id}} {{ p.kind }} · Bellhaven{% endblock %}
+{% block body %}
+<p><a href="/review">← Proposal queue</a></p>
+<h1><span class="tag {{p.kind}}">{{ p.kind }}</span> {{ p.title }}</h1>
+<p>Status <span class="tag s-{{p.status}}">{{ p.status|state }}</span> · Risk <span class="tag r-{{p.risk}}">{{ p.risk }}</span> · Confidence <b>{{ p.confidence }}</b> · Proposal #{{ p.id }} · fingerprint <code>{{ p.fingerprint }}</code> · first seen {{ p.created_at }}</p>
+{% if msg %}<div class="{{ 'bad' if msg.startswith('error') or 'failed' in msg or 'conflict' in msg else 'ok' }}">{{ msg }}</div>{% endif %}
+{% if p.last_error %}<div class="bad">{{ p.last_error }}</div>{% endif %}
+{% if p.resolution %}<div class="ok">Resolved: {{ p.resolution }}</div>{% endif %}
+
+{% if p.kind == 'HOLD' %}<div class="chow">⏸ HOLD — {{ pl.hold_reason }}<br>This item has no CRM operations and cannot be approved. Resolve identity/ownership outside the tool; the next scan re-evaluates it.</div>{% endif %}
+{% if p.kind == 'CHOW' %}
+<div class="chow">⚠ Change-of-ownership SOP: revenue history AND outstanding AR &gt; 0, so the original account is preserved — its parent, name and financials are <u>not</u> changed. {% if pl.ops|length > 1 %}Step 1 creates a successor under Bellhaven; step 2 sets the old account's <code>chow_current_account</code> to the new id.{% else %}The old account's <code>chow_current_account</code> is pointed at the existing current-owner account.{% endif %}</div>
+<h2>Ordered transaction plan — one approval, one typed confirmation, recoverable</h2>
+<table><tr><th>Step</th><th>Action</th><th>Write?</th><th>Recorded state</th></tr>
+<tr><td>0</td><td>Preserve <code>{{ pl.evidence.crm.account_id if pl.evidence.crm else '' }}</code> as the historical financial record: parent, name, status, lifetime revenue and outstanding AR are not modified. Re-checked on live data at preview time.</td><td>no</td><td class="muted">checked at preview</td></tr>
+{% for op in pl.ops %}{% set rec = (ops_log|selectattr('op_index','equalto',loop.index0)|list|last) if ops_log else None %}
+<tr><td>{{ loop.index }}</td><td>{% if op.type=='create' %}<code>POST /accounts</code> — create the successor <b>{{ op.fields.name }}</b> under parent <code>{{ op.fields.parent_id }}</code>{% else %}<code>PATCH /accounts/{{ op.account_id }}</code> — set {% for k,v in op.fields.items() %}<code>{{k}}</code> = <code>{{ v if not (v is string and v.startswith('$ref:')) else 'id returned by the create step' }}</code>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</td>
+<td>yes</td><td>{% if rec %}<span class="tag {{ 's-verified' if rec.status=='verified' else ('s-failed' if rec.status in ['failed','uncertain','verify_failed'] else 's-approved') }}">{{ rec.status }}</span>{% if rec.returned_id %} → {{ rec.returned_id }}{% endif %}{% else %}<span class="muted">not started</span>{% endif %}</td></tr>
+{% endfor %}
+<tr><td>{{ pl.ops|length + 1 }}</td><td>Read back every touched account and compare each field; only then is the proposal VERIFIED.</td><td>no</td><td class="muted">{{ 'done' if p.status=='verified' else 'pending' }}</td></tr>
+</table>
+<p class="muted">Each step's outcome is saved before the next starts. If step 2 fails, the proposal becomes FAILED with step 1's returned id recorded; a retry needs a new live preview and the typed phrase again, and it reuses that id instead of creating a second successor. If a create's outcome is unknown, the retry looks the account up and never re-posts blindly.</p>
+{% endif %}
+{% if p.kind == 'DUPLICATE' %}{% for op in pl.ops if op.fields.duplicate_of_account %}
+<div class="warn"><b>Survives:</b> <code>{{ op.fields.duplicate_of_account }}</code> (unchanged). <b>Becomes Inactive:</b> <code>{{ op.account_id }}</code> with <code>duplicate_of_account</code> pointing at the survivor and an explanatory note. Nothing is merged or deleted; the inactive record and its history stay in the CRM.{% if pl.evidence.survivor_criteria %}{% set lab = {'bh_parent':'under the Bellhaven parent','revenue':'has revenue history','phone':'phone matches the website'} %}<br>Decisive evidence — survivor: {% for k,v in pl.evidence.survivor_criteria.survivor.items() %}{{ lab.get(k,k) }}: <b>{{ 'yes' if v else 'no' }}</b>{% if not loop.last %}, {% endif %}{% endfor %}; inactivated record: {% for k,v in pl.evidence.survivor_criteria.loser.items() %}{{ lab.get(k,k) }}: <b>{{ 'yes' if v else 'no' }}</b>{% if not loop.last %}, {% endif %}{% endfor %}.{% endif %}</div>
+{% endfor %}{% endif %}
+
+{% set ex = cmp.explain %}{% set src = cmp.sources %}
+<style>
+  .res{font-size:12px;padding:1px 7px;border-radius:9px;white-space:nowrap}
+  .res-match{background:#e3f1e6;color:#1f5f2e}.res-differs{background:#fdecd2;color:#8a4b00}
+  .res-na{background:#ececec;color:#555}
+  td.chg{font-weight:600}.idrow td:first-child{font-weight:600}
+  .q{margin:6px 0 2px;font-weight:700}.q + ul{margin-top:2px}
+  @media (prefers-color-scheme: dark){.res-match{background:#1f3a26;color:#bfe6c8}.res-differs{background:#4a3210;color:#ffd9a0}.res-na{background:#333;color:#ccc}}
+</style>
+<h2>Evidence comparison</h2>
+<p>{{ ex.summary }}</p>
+
+<div class="card">
+  <b>Sources and timestamps</b>
+  <table>
+    <tr><th>Source</th><th>Record</th><th>Captured</th><th>Reference</th></tr>
+    <tr><td>Bellhaven website</td>
+      <td>{% if cmp.website %}{{ cmp.website.name }}{% if cmp.website.in_directory == false %} <span class="muted">(linked from homepage only)</span>{% endif %}{% else %}<span class="muted">Not available: no website community matched</span>{% endif %}</td>
+      <td>{{ cmp.website.retrieved_at if cmp.website else '—' }}</td>
+      <td>{% if cmp.website %}<a href="{{ cmp.website.source_url }}" target="_blank" rel="noopener">{{ cmp.website.source_url }}</a>{% else %}—{% endif %}</td></tr>
+    <tr><td>CRM account</td>
+      <td>{% if cmp.crm %}<code>{{ cmp.crm.account_id }}</code> {{ cmp.crm.name }}{% else %}<span class="muted">Not available: no CRM account matched</span>{% endif %}</td>
+      <td>{% if cmp.crm %}record last updated {{ cmp.crm.updated_at }}{% if src.evidence_run and src.evidence_run.crm %}; read {{ src.evidence_run.crm.retrieved_at }}{% endif %}{% else %}—{% endif %}</td>
+      <td>{% if cmp.crm %}<code>GET /api/v1/accounts/{{ cmp.crm.account_id }}</code> · <a href="/api/account/{{ cmp.crm.account_id }}" target="_blank">re-read live (read-only)</a>{% else %}—{% endif %}</td></tr>
+  </table>
+  {% set er = src.evidence_run %}{% set lr = src.latest_run %}
+  <p class="muted" style="margin-bottom:0">
+  {% if er %}Evidence captured in scan #{{ er.id }} ({{ er.status }}, finished {{ er.finished_at }}): {{ er.website_facilities }} website communities, {{ er.crm_accounts }} CRM accounts.{% else %}Evidence scan record not found.{% endif %}
+  {% if lr %} Latest scan: #{{ lr.id }} ({{ lr.status }}, finished {{ lr.finished_at }}).{% endif %}
+  {% set fr = cmp.fresh %}
+  {% if fr.run %}<br>Checked against latest scan #{{ fr.run }}:
+    {% if fr.website is not none %}{% if fr.website %}<b>website record changed ({{ fr.website|join(', ') }})</b>{% else %}this community's website record is unchanged{% endif %}{% endif %}{% if fr.website is not none and fr.crm is not none %}; {% endif %}
+    {% if fr.crm is not none %}{% if fr.crm %}<b>CRM account changed ({{ fr.crm|join(', ') }})</b>{% else %}this CRM account is unchanged{% endif %}{% endif %}.
+    {% if src.unchanged_since_evidence == false %}Other parts of the website or CRM changed since scan #{{ er.id if er else '?' }}; that does not affect this record unless shown above.{% endif %}
+  {% endif %}
+  The live preview re-reads the CRM before any write.
+  {% if er %}{% for n in er.notes %}<br>Completeness check: {{ n }}{% endfor %}{% endif %}
+  </p>
+</div>
+
+<table>
+  <tr><th>Field</th><th>Website value</th><th>CRM value</th><th>Comparison</th><th>Proposed CRM value</th></tr>
+  {% for r in cmp.rows %}
+  <tr class="{{ 'idrow' if r.identity }}">
+    <td>{{ r.label }}{% if r.identity %} <span class="muted">(identity)</span>{% endif %}</td>
+    <td>{% if r.website == 'Not available' %}<span class="muted">Not available</span>{% else %}{{ r.website }}{% endif %}{% if r.note and r.label == 'Care type' %}<br><span class="muted">{{ r.note }}</span>{% endif %}</td>
+    <td>{% if r.crm == 'Not available' %}<span class="muted">Not available</span>{% else %}{{ r.crm }}{% endif %}{% if r.note and r.label == 'Parent / owner' %}<br><span class="muted">{{ r.note }}</span>{% endif %}</td>
+    <td><span class="res {{ 'res-match' if r.result=='match' else ('res-differs' if r.result=='differs' else 'res-na') }}">{{ r.result }}</span></td>
+    <td class="{{ 'chg diff-new' if r.changes }}">{% if r.changes %}{{ r.proposed if r.proposed is not string or not r.proposed.startswith('$ref:') else 'id from the create step' }}{% else %}<span class="muted">unchanged</span>{% endif %}</td>
+  </tr>{% endfor %}
+</table>
+<p class="muted">"Not available" means that source does not carry the field. It is not counted as a mismatch. Overall confidence: <b>{{ p.confidence }}</b>, risk: <b>{{ p.risk }}</b>.{% if p.kind == 'WEBSITE_ONLY' %} The proposed new account's fields are listed under "What would change" below.{% endif %}</p>
+
+<div class="card">
+  <p class="q">Why do we think these records are the same facility?</p>
+  <ul>{% for s in ex.same %}<li>{{ s }}</li>{% endfor %}</ul>
+  <p class="q">Which source supports the proposed correction?</p>
+  <ul>{% for s in ex.support %}<li>{{ s }}</li>{% endfor %}</ul>
+  <p class="q">What evidence is still missing?</p>
+  <ul>{% for s in ex.missing %}<li>{{ s }}</li>{% endfor %}</ul>
+  <p class="q">What precisely would change if approved and confirmed?</p>
+  <ul>{% for s in ex.changes %}<li><code>{{ s }}</code></li>{% endfor %}</ul>
+</div>
+
+<h2>Competing CRM candidates</h2>
+{% if cmp.candidates %}
+<table><tr><th>Role</th><th>Account</th><th>Address</th><th>Identity vs {{ cmp.candidates[0].identity_ref }}</th><th>Parent</th><th>Phone</th><th>Revenue / AR</th><th>Status</th></tr>
+{% for c in cmp.candidates %}<tr><td>{{ c.role }}</td><td><code>{{ c.account_id }}</code> {{ c.name }}{% if c.proposal %}<br><a href="/proposal/{{ c.proposal.id }}">#{{ c.proposal.id }} {{ c.proposal.kind }} ({{ c.proposal.status|state }})</a>{% endif %}</td><td>{{ c.address }}</td><td>{% for lab,res in c.identity %}<span class="res {{ 'res-match' if res=='match' else ('res-differs' if res=='differs' else 'res-na') }}">{{ lab }} {{ res }}</span> {% else %}<span class="muted">Not available</span>{% endfor %}</td><td>{{ c.parent }}</td><td>{{ c.phone }}</td><td>{{ c.revenue }} / {{ c.ar }}</td><td>{{ c.status }}</td></tr>{% endfor %}
+</table>
+{% else %}<p class="muted">None. No other CRM account was found at this address or considered for this facility.</p>{% endif %}
+
+<div class="card"><b>Reasoning.</b> {{ pl.explanation }}
+{% if pl.evidence.basis %}<br><span class="muted">Match basis: {{ pl.evidence.basis }}</span>{% endif %}</div>
+{% for w in pl.warnings %}<div class="warn">⚠ {{ w }}</div>{% endfor %}
+
+<h2>Financial context (from proposal-time data; the live preview re-reads it)</h2>
+<table><tr><th>Role</th><th>Account</th><th>Parent</th><th>Status</th><th>Lifetime revenue</th><th>Outstanding AR</th><th>SOP</th></tr>
+{% for f in fin %}<tr><td>{{f.role}}</td><td><a href="/api/account/{{f.account_id}}" target="_blank">{{f.account_id}}</a> {{f.name}}</td><td>{{f.parent}}</td><td>{{f.status}}</td>
+<td>{{ f.revenue|money }}</td><td>{{ f.ar|money }}</td><td class="muted">{{ f.sop }}</td></tr>{% else %}<tr><td colspan="7" class="muted">No existing CRM account involved.</td></tr>{% endfor %}</table>
+
+{% if pl.ops %}
+<h2>Before → after</h2>
+{% if pl.current is mapping and pl.proposed is mapping and p.kind not in ['CHOW','WEBSITE_ONLY'] %}
+<table><tr><th>Field</th><th>Current CRM value</th><th>Proposed value</th></tr>
+{% for k,v in pl.proposed.items() %}<tr><td>{{k}}</td><td class="diff-old">{{ pl.current.get(k) }}</td><td class="diff-new">{{ v }}</td></tr>{% endfor %}</table>
+{% else %}<pre>{{ pl.proposed|pretty }}</pre>{% endif %}
+<h2>Exact API operations (in order, only after approval + confirmation)</h2>
+<table><tr><th>#</th><th>Call</th><th>Body</th></tr>
+{% for op in pl.ops %}<tr><td>{{ loop.index0 }}</td><td>{{ 'POST /accounts' if op.type=='create' else 'PATCH /accounts/' ~ op.account_id }}</td><td><pre>{{ op.fields|pretty }}</pre></td></tr>{% endfor %}</table>
+{% endif %}
+
+<details><summary>Raw evidence records (as captured at scan time)</summary>
+<div class="cols">
+  <div><h2>Website evidence</h2>{% if pl.evidence.website %}<p><a href="{{ pl.evidence.website.source_url }}" target="_blank" rel="noopener">{{ pl.evidence.website.source_url }}</a></p><pre>{{ pl.evidence.website|pretty }}</pre>{% else %}<p class="muted">Not found on the website.</p>{% endif %}</div>
+  <div><h2>CRM evidence {% if pl.evidence.crm %}(<a href="/api/account/{{ pl.evidence.crm.account_id }}" target="_blank">live JSON</a>){% endif %}</h2>
+    {% if pl.evidence.crm %}<pre>{{ pl.evidence.crm|pretty }}</pre>{% else %}<p class="muted">No single CRM account.</p>{% endif %}</div>
+</div>
+{% if pl.evidence.survivor %}<h2>Surviving account</h2>{% if pl.evidence.survivor_criteria %}<p class="muted">Decisive criteria — survivor: {{ pl.evidence.survivor_criteria.survivor }} · loser: {{ pl.evidence.survivor_criteria.loser }}</p>{% endif %}<pre>{{ pl.evidence.survivor|pretty }}</pre>{% endif %}
+{% if pl.evidence.current_owner_account %}<h2>Current-owner account</h2><pre>{{ pl.evidence.current_owner_account|pretty }}</pre>{% endif %}
+{% if pl.evidence.alternatives %}<h2>Other candidates considered (not used)</h2><pre>{{ pl.evidence.alternatives|pretty }}</pre>{% endif %}
+</details>
+
+<div class="card">
+  <h2 style="margin-top:0">Decision</h2>
+  <form method="post" action="/proposal/{{p.id}}/decide" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <input type="hidden" name="csrf" value="{{csrf}}">
+    <input type="text" name="note" placeholder="Reviewer note (recorded in the audit log)">
+    {% if p.status == 'pending' %}<button class="approve" name="action" value="approve">Approve (no write yet)</button>
+      <button name="action" value="hold">Hold</button><button class="rejectb" name="action" value="reject">Reject</button>
+    {% elif p.status == 'approved' %}<button name="action" value="hold">Hold</button><button class="rejectb" name="action" value="reject">Withdraw / reject</button>
+    {% elif p.status == 'hold' %}{% if p.actionable %}<button name="action" value="release">Release to pending</button>{% endif %}<button class="rejectb" name="action" value="reject">Reject</button>
+    {% elif p.status == 'conflict' %}<button class="rejectb" name="action" value="reject">Reject</button>{% endif %}
+    <button name="action" value="note">Add note only</button>
+  </form>
+  {% if p.status in ['approved','failed','applying'] %}
+  <p><a href="/proposal/{{p.id}}/preview"><button class="run" type="button">{{ 'Live preview & confirm (read-only until you confirm)' if p.status=='approved' else ('Live preview to resume an interrupted execution' if p.status=='applying' else 'Live preview to resume / retry') }}</button></a></p>
+  <p class="muted">The preview re-reads every touched account, re-checks the SOP and drift, and shows the exact requests. Execution requires typing <span class="phrase">{{ phrase }}</span>.</p>
+  {% elif p.status == 'conflict' %}<p class="muted">Conflicted proposals are not retried. Re-scan: a fresh proposal is created from current data.</p>{% endif %}
+</div>
+
+{% if decisions %}<h2>Decisions</h2><table><tr><th>When</th><th>Decision</th><th>Actor</th><th>Note</th><th>For fingerprint</th></tr>
+{% for d in decisions %}<tr><td>{{d.decided_at}}</td><td>{{d.decision}}</td><td>{{d.actor}}</td><td>{{d.note}}</td><td><code>{{d.fingerprint}}</code></td></tr>{% endfor %}</table>{% endif %}
+
+{% if ops_log %}<h2>Write log</h2>
+<table><tr><th>When</th><th>Op</th><th>Account</th><th>Status</th><th>Returned id</th><th>Error</th></tr>
+{% for o in ops_log %}<tr><td>{{ o.updated_at }}</td><td>{{ o.op_type }} #{{ o.op_index }}</td><td>{{ o.account_id or '' }}</td>
+<td><span class="tag {{ 's-verified' if o.status=='verified' else ('s-failed' if o.status in ['failed','uncertain','verify_failed'] else '') }}">{{ o.status }}</span></td>
+<td>{{ o.returned_id or '' }}</td><td>{{ o.error or '' }}</td></tr>{% endfor %}</table>{% endif %}
+
+<h2>Audit trail</h2>
+<table><tr><th>When</th><th>Event</th><th>Detail</th></tr>
+{% for a in audit %}<tr><td>{{a.at}}</td><td>{{a.event}}</td><td><pre>{{ a.detail|fromjson|pretty }}</pre></td></tr>{% endfor %}</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Submit · Bellhaven{% endblock %}
+{% block body %}
+<h1>Submit — checklist</h1>
+<table><tr><th></th><th>Item</th><th>Detail</th></tr>
+{% for label, ok, detail in checks %}<tr><td>{{ '✅' if ok else '⬜' }}</td><td>{{label}}</td><td class="muted">{{detail}}</td></tr>{% endfor %}</table>
+<h2>Deliverables</h2>
+<table>
+<tr><td>Code</td><td>this repository (<code>./bh</code> CLI, <code>app/</code>, <code>tests/</code>) — <i>repository link: add here</i></td></tr>
+<tr><td>Instructions</td><td><code>README.md</code> (setup, single start command, architecture)</td></tr>
+<tr><td>Requirements</td><td><code>docs/REQUIREMENTS_MATRIX.md</code> · <code>docs/NINE_PATH_REVIEW.md</code></td></tr>
+<tr><td>Decisions</td><td><code>docs/DECISION_REPORT.md</code> · <code>docs/APPROVAL_BATCH.md</code> (operations needing your authorization) · <code>docs/INVESTIGATION_QUESTIONS.md</code></td></tr>
+<tr><td>Evidence of safety</td><td><code>docs/TEST_REPORT.md</code> · <code>docs/CRM_CHANGE_HISTORY.md</code> · <code>docs/OPERATIONS.md</code> (schedule &amp; recovery)</td></tr>
+<tr><td>Demo video</td><td><i>not recorded yet — add link</i></td></tr>
+<tr><td>CRM changes</td><td>Only verified writes count. See <a href="/history">History</a> (engine writes + legacy Findlay receipt).</td></tr>
+</table>
+<p class="muted">Never include <code>.env</code>, <code>data/</code> (snapshots, ledgers) or screenshots showing the token in a submission.</p>
+{% endblock %}

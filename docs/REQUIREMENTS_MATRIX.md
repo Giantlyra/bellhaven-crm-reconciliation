@@ -1,0 +1,65 @@
+# Requirements traceability matrix
+
+Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112 passed**).
+
+## Sources
+
+- **[O] Original Clipboard Health brief: NOT available in this workspace.** It isn't in the repository, in `~/Downloads`,
+  or on the public assessment site. The site serves only `/`, `/communities`, `/about` and `/api/docs`.
+  - Every requirement below is traced to the sources that *are* available.
+  - Rows marked **Cannot verify** depend on wording only the original brief has.
+  - The billing SOP is taken from [H] §6, which restates it. I couldn't check it against the original text.
+- **[S]** Starter code `README.md`, "Handoff to Claude" steps 1–7 (`~/Downloads/clipboard_starter/`).
+- **[H]** `~/Downloads/CLAUDE_BELLHAVEN_HANDOFF.md`: safeguards §1–8, priorities P1–P8, acceptance criteria (AC).
+- **[D]** The final completion directive (this review): confirmed scope, UI requirements and deliverables.
+- **[API]** `/api/openapi.json` (Bellhaven CRM Sandbox API 0.1.0): accounts and contacts, GET/POST/PATCH only, no delete or merge, no field enums.
+- `~/Downloads/PRD.md` is the SANCTUM/GI4NT product PRD for an unrelated engagement. It is **not** a requirements source
+  for this assessment. Only its "deterministic modules, no GI4NT runtime" constraint carries over, through [H] and [D].
+
+**Status key.**
+
+- **Met:** implemented and covered by tests or live evidence.
+- **Met (code); pending operator:** built and tested, but the real-world step needs your decision.
+- **Incomplete:** work remains.
+- **Cannot verify:** depends on the unavailable original brief.
+
+## Matrix
+
+| # | Requirement | Source | Module (layer) | UI location | Test coverage | Status | Remaining action |
+|---|---|---|---|---|---|---|---|
+| 1 | Scrape every website community: directory pagination plus homepage-only links | S3, H-P2 | `scrape.py` (Reconciliation) | Start Here completeness; Data Review | `test_website_pagination_and_homepage_only_listing` | **Met**: live scan #9 found 35/35 (homepage 35, directory 34, Findlay homepage-only) | — |
+| 2 | Fail closed on incomplete ingestion | H-P2 | `scrape.py`, `pipeline.py` | Start Here completeness banner; run status | `test_failed_scrape_page_marks_incomplete_and_skips_crm_only`, `test_incomplete_scrape_creates_no_proposals`, `test_fewer_facilities_than_homepage_count_fails_closed`, `test_incomplete_scan_never_resolves_open_items`, `test_crm_listing_failure_fails_run` | **Met** | — |
+| 3 | Retrieve all CRM accounts with robust pagination | S2, H-P2 | `crm.py` (Reconciliation) | Start Here (121 accounts) | `test_crm_pagination_fetches_all_pages` | **Met**: 121 accounts across 3 pages, every scan | — |
+| 4 | Use the API auth correctly and never expose the token | S1–2, H§2 | `config.py`, `crm.py`, `main.py` | Token never rendered | `test_removed_token_bearing_redirect`, web token checks | **Met** | — |
+| 5 | Decide identity by address, never by name alone (Amberly, Carlisle/New Carlisle) | H-P2, AC | `reconcile.py`, `normalize.py` | Data Review; proposal evidence and competing candidates | `test_matching.py` (10), `test_holds`, `test_carlisle_and_batavia_not_conflated` | **Met** | — |
+| 6 | Classify findings with evidence, confidence and rationale | H-P2 | `reconcile.py` | Find Problems; proposal page | `test_aliases_are_reviewable_renames`, `test_lima_direct_reparent` | **Met** | — |
+| 7 | Proposal queue with exact before/after, IDs, risk, status and notes; deduplicate by fingerprint across runs | H-P3 | `reconcile.py`, `ledger.py` (Audit & State) | Build / Modify; proposal page | `test_idempotency.py` (7) | **Met** | — |
+| 8 | CHOW SOP: revenue > 0 and AR > 0 means no parent PATCH; create a successor under Bellhaven and link `chow_current_account` | H§6 (restates [O]) | `policy.py` (Risk & Validation), `executor.py` | Proposal page: financial table and ordered transaction plan | `test_revenue_and_ar_requires_chow`, `test_chow_marietta_tiffin_never_direct_reparent`, `test_chow_creates_and_links_and_preserves_original`, `test_chow_preserves_all_financials_and_parent` | **Met (code); pending operator**: #54 Marietta and #60 Tiffin await approval. SOP wording **cannot be verified** against [O] | Your approval of #54 and #60 |
+| 9 | Missing or uncertain financials block the change | H§6 | `policy.py` | Shows "missing" in the financial table | `test_missing_or_malformed_financials_block`, `test_chow_blocks_when_financials_become_missing`, `test_chow_blocks_when_financials_change_after_proposal` | **Met** | — |
+| 10 | CHOW is one approved logical operation with recoverable execution state and duplicate-successor protection | H§6, H-P4, D | `executor.py`, `ledger.py` | Ordered plan table with per-step recorded state | `test_chow_partial_failure_retry_does_not_recreate`, `test_chow_partial_failure_resume_needs_fresh_confirmation_and_reuses_successor`, `test_uncertain_create_is_resolved_by_lookup_not_blind_retry`, `test_chow_blocked_when_successor_already_exists`, `test_interrupted_chow_execution_resumes_without_second_create`, `test_second_concurrent_execution_is_refused` | **Met** | — |
+| 11 | Duplicates: defensible survivor; loser gets `duplicate_of_account`, Inactive and a note; never merge or delete | H§7, D | `reconcile.py`, `policy.py`, `executor.py` | Proposal page: "Survives / Becomes Inactive / why" | `test_duplicate_inactivation`, `test_owosso_survivor`, `test_duplicates_survivor_is_bellhaven_parented`, `test_duplicate_survivor_needs_decisive_evidence`, `test_duplicate_loser_with_billing_history_is_held` | **Met (code); pending operator**: #56, #41, #42, #57, #64 | Your approval |
+| 12 | Ambiguous identity or ownership becomes HOLD/INVESTIGATE, with no automatic action | H§7, AC, D | `reconcile.py`, `cli.py resolve` | Find Problems (HELD); `docs/INVESTIGATION_QUESTIONS.md` | `test_holds`, `test_indistinguishable_same_address_accounts_are_held_not_guessed`, `test_hold_cannot_be_approved`, resolution tests | **Met**: #36, #38, #53 held; #70, #46, #68, #69 recommended for hold | Your answers to the investigation questions |
+| 13 | Before a write: re-fetch, check identity, drift, financials and decision version; block if stale | H§5, H-P4 | `executor.preview` | Live preview page | `test_stale_record_conflict_stops_write`, `test_state_change_between_preview_and_confirm_is_refused`, `test_drift_to_a_different_value_is_a_conflict`, `test_unexplained_drift_still_blocks` | **Met** | — |
+| 14 | After a write: read back and verify; never report success without it | H§5, D | `executor.execute` | Proposal write log; History; VERIFIED state | `test_readback_mismatch_marks_failed`, `test_readback_failure_never_reports_success` | **Met** | — |
+| 15 | Approval never writes; fresh explicit authorization (typed `APPLY <id>`, plan token, write flag) | H§3, H-P4, D | `executor.py`, `main.py` | Proposal and preview pages; DRY-RUN banner | `test_approval_alone_never_writes`, `test_writes_disabled_by_default_blocks_execution`, `test_wrong_confirmation_phrase_refused`, `test_dry_run_server_refuses_confirmed_write` | **Met** | — |
+| 16 | Previous approvals, including the nine-card decisions, never authorize new execution | H§3, AC, D | `executor._authorize` (approval bound to fingerprint); `review.py` kept separate | Legacy tab (read-only) | `test_nine_card_decisions_are_not_execution_approvals`, `test_superseded_approval_cannot_execute`, `test_approval_from_another_proposal_version_does_not_authorize`, `test_reverted_proposal_reopens_pending_never_approved` | **Met** | — |
+| 17 | Repeated approvals and re-execution are refused; rejected proposals never execute | H-P6, D | `executor.py` | Decision controls by state | `test_repeated_approval_is_refused_and_recorded_once`, `test_verified_proposal_cannot_be_executed_again`, `test_rejected_never_writes`, `test_rejected_via_ui_never_executes` | **Met** | — |
+| 18 | Batch review only of exact, individually audited mutations | H§3 | `executor.execute_batch` | Build / Modify batch preview | `test_batch_excludes_chow_and_requires_phrase`, `test_batch_executes_each_individually`, overlap tests | **Met** | — |
+| 19 | Persistent runs, provenance, fingerprints, decisions, operations and append-only audit | H-P2, H-P3 | `ledger.py`, `pipeline.py` | Start Here provenance; History | `test_audit_log_is_append_only`, `test_pipeline_saves_fingerprinted_snapshot`, `test_website_fingerprint_ignores_fetch_timestamps`, `test_migrates_old_ledger_in_place` | **Met** | — |
+| 20 | Findlay is already corrected: preserve it and never re-propose or retry | H, AC | `legacy.py` | Start Here receipt; History | `test_findlay_receipt_marks_stale_proposal_resolved`, `test_findlay_live_state_produces_no_proposal`, `test_unverified_legacy_attempt_is_not_a_receipt`, `test_legacy_findlay_route_refuses_in_dry_run` | **Met**: the live CRM still shows the parent set to Bellhaven | — |
+| 21 | No writes on import, GET, startup, scan, tests, scheduler or background jobs | H-P4, D | `main.py`, `pipeline.py`, `run_daily.py` | DRY-RUN banner; "CRM write calls ever: 0" | `test_scan_and_every_get_route_never_write`, `test_pipeline_never_writes`, `test_scheduled_scan_makes_zero_writes_and_is_reported`, `test_daily_job_refuses_to_start_with_writes_enabled` | **Met**: 0 engine writes across 9 live scans | — |
+| 22 | Daily schedule runs read-only scans only; status and failures visible | S7, H-P7, D | `scripts/run_daily.py`, `scripts/crontab.txt`, `main.schedule_status` | Start Here: "Daily schedule" card | `test_scheduled_scan_*`, `test_failed_scheduled_scan_is_shown_as_failure` | **Met (code)**: the exact cron command ran (scan #8). The cron job isn't installed | Optional: install the cron line |
+| 23 | Real review tabs: Data Review, Find Problems, Build/Modify, Test, Walkthrough, Submit | H-P5 | `main.py`, templates (Review & Monitoring) | All tabs | `test_scan_and_every_get_route_never_write` (every route returns 200) | **Met**: 14 pages checked on a live `./bh serve` | — |
+| 24 | UI shows scan state, risk, before/after, competing candidates, financial risk, the full state machine, receipts, schedule, tests and readiness | D | templates | Start Here, proposal, preview, History, Test, Submit | `test_dashboard_shows_lifecycle_states_completeness_and_schedule`, `test_executing_state_is_labelled_and_never_called_applied` | **Met** | — |
+| 25 | Never describe a proposal as applied unless the read-back verified it | D | `main.STATE_LABELS`, executor | VERIFIED is the only "applied" label | `test_readback_failure_never_reports_success` | **Met** | — |
+| 26 | One CLI command for scan and one for the server | AC | `bh`, `cli.py` | — | Run manually: `./bh scan` (#9), `./bh serve` | **Met** | — |
+| 27 | Automated tests on mocked HTTP and temporary SQLite | S4, H-P6 | `tests/` | Test tab | 112 tests | **Met** | — |
+| 28 | Apply only user-approved corrections and validate the CRM state afterwards | S6, H AC | `executor.py` | Preview and History | Covered by tests; **no live execution yet** | **Incomplete (operator)** | Approve and execute the items in `APPROVAL_BATCH.md`, then re-scan |
+| 29 | README, architecture, policy, known limits, ~2-minute demo script and submission checklist | S7, H-P8, D | `README.md`, `docs/` | Walkthrough; Submit | — | **Met** | — |
+| 30 | Estimated actual time spent | H-P8 | README | — | — | **Incomplete (operator)** | Fill in your real total |
+| 31 | Demo video recorded | H-P8, [O] | — | Submit (unchecked) | — | **Incomplete (operator)** | Record it from `docs/DEMO_SCRIPT.md` |
+| 32 | Secrets and private data excluded from the repo | H§2, H-P1 | `.gitignore` | — | `git check-ignore` confirms `.env`, `data/`, `investigation.txt` and backups are ignored | **Met** | — |
+| 33 | Neutral terminology; deterministic layers; no GI4NT runtime or conversational AI | D, H | All modules | Navigation (the chat tab is removed) | `test_chat_and_ask_routes_are_not_part_of_the_app` | **Met**: the chat module was moved out to `~/clipboard-assessment-backups/ask-feature-20261115/` | — |
+| 34 | Contacts reconciliation (website administrator vs CRM contacts) | [API] exposes contacts; not in [S] or [H] | — | — | — | **Cannot verify** whether [O] requires it. Not implemented | Check the original brief |
+| 35 | "Needs Review" as a valid account status (#68/#69) | [API] has no enums | — | — | — | **Cannot verify** | Check the original brief or the CRM admin |
+| 36 | Submission format: repository link, video link, time spent, form, deadline (**unverified**: no source found; Nov 17 2026 04:29 UTC equals the CRM seed time 2026-11-15 04:29:11Z + 48 h, so it was likely inferred) | [O] (not available) | — | Submit tab | — | **Cannot verify** the exact form fields. **Incomplete** | Submit |

@@ -1,0 +1,18 @@
+# secrets
+.env
+# private assessment data, ledgers, snapshots, logs, reports
+data/
+*.db
+*.db-journal
+*.log
+snapshot*.json
+# backups made during refactors
+*.backup
+*.before-*
+# python / tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# investigation notes contain CRM account data
+investigation.txt

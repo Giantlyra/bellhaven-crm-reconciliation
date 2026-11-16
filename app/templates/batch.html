@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Batch preview · Bellhaven{% endblock %}
+{% block body %}
+<p><a href="/review?status=approved">← Approved proposals</a></p>
+<h1>Batch live preview ({{ items|length }})</h1>
+<div class="card muted">Read-only so far. Each item below was re-validated against the live CRM. Items with problems are excluded from the batch.</div>
+<form method="post" action="/batch/execute">
+<input type="hidden" name="csrf" value="{{csrf}}">
+{% set ok = [] %}
+{% for p, pv, err in items %}
+<div class="card"><b>#{{p.id}} <span class="tag {{p.kind}}">{{p.kind}}</span> {{p.title}}</b>
+{% if err %}<div class="bad">{{err}}</div>{% elif pv.problems %}<div class="bad">Excluded: {{ pv.problems|join('; ') }}</div>
+{% else %}{% set _ = ok.append(p.id) %}<input type="hidden" name="pids" value="{{p.id}}"><input type="hidden" name="tokens" value="{{pv.token}}">
+<table><tr><th>Request</th><th>Live now</th><th>Body</th></tr>{% for r in pv.requests %}<tr><td><code>{{r.method}} {{r.path}}</code> <span class="muted">{{r.state}}</span></td><td>{% if r.before %}<pre>{{r.before|pretty}}</pre>{% endif %}</td><td><pre>{{r.body|pretty}}</pre></td></tr>{% endfor %}</table>{% endif %}
+</div>{% endfor %}
+{% if ok %}
+<div class="card">{% if not writes_enabled %}<div class="warn">Dry-run server: execution will be refused.</div>{% endif %}
+<label><input type="checkbox" name="reviewed" value="yes" required> I reviewed every request above and authorize exactly this batch of {{ ok|length }}.</label>
+<p>Type <span class="phrase">APPLY BATCH OF {{ ok|length }}</span>:</p><input type="text" name="confirmation" autocomplete="off" required>
+<button class="approve">Execute batch (each audited &amp; read-back verified; stops at first failure)</button></div>{% endif %}
+</form>
+{% endblock %}

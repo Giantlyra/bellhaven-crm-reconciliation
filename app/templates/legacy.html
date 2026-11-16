@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Legacy pages · Bellhaven{% endblock %}
+{% block body %}
+<h1>Legacy pages (kept, read-only context)</h1>
+<div class="card">These earlier pages still work and their data is preserved untouched. Their decisions are <b>not</b> execution approvals and are never imported into the ledger.</div>
+<table><tr><th>Page</th><th>What it is</th></tr>
+<tr><td><a href="/legacy/cards">Nine-card console</a></td><td>Original nine cases; local approve/reject/hold notes in <code>data/review.db</code>. Demo decisions only.</td></tr>
+<tr><td><a href="/investigate">Investigation (16 flagged cases)</a></td><td>Exact-name evidence screen from the pre-Findlay snapshot.</td></tr>
+<tr><td><a href="/records">Exact-name records</a></td><td>35-facility exact-name table from the snapshot.</td></tr>
+<tr><td><a href="/proposals">Findlay guarded page</a></td><td>The page that made the one verified live write (Findlay parent). It re-reads live state and now correctly reports BLOCKED — already assigned. Do not retry.</td></tr>
+</table>
+{% endblock %}
