@@ -3,7 +3,7 @@
 A change is listed here only if a **read-back from the CRM API** confirmed it. Approvals, previews and proposals are
 not changes.
 
-As of 2026-11-16 04:42 UTC there are **twenty-one** verified CRM changes (the legacy Findlay re-parent plus 20 engine operations):
+As of 2026-11-16 04:42 UTC there are verified CRM changes from the legacy Findlay re-parent plus **25 engine operations** (22 proposals):
 
 1. The Findlay re-parent, made before this engine existed.
 2. Proposal #43, the Monroe phone fix.
@@ -14,7 +14,7 @@ As of 2026-11-16 04:42 UTC there are **twenty-one** verified CRM changes (the le
 7. Proposal #45, the Findlay phone fix (Wave A).
 8–12. Proposals #37, #44, #51, #63 and #67: Wave A field fixes run through the controlled execution queue.
 
-The engine has made 20 write calls in total (see §2.7 and §2.8 for operations 7–20).
+The engine has made 25 write calls in total (see §2.7–§2.9).
 
 ## 1. Findlay parent correction (verified)
 
@@ -140,7 +140,23 @@ Both were executed by the user in the app (`APPLY BATCH OF 7` at 04:25:02–04:2
 
 Independent checks: only the approved fields changed (the displayed parent name follows the new `parent_id`); revenue, AR, status, links and contacts are unchanged; no phone collisions. A fresh `scripts/final_audit.py` run shows **20 of 20 operations live-matched and receipted, integrity PASS**.
 
-The other proposals are not affected by these changes. As of stage 2 there are 2 PENDING (#60, #54), 11 HELD, 2 REJECTED and 20 VERIFIED. Earlier local
+### 2.9 Changes of ownership (CHOW): #60 Tiffin and #54 Marietta (verified 2026-11-16)
+
+Both were approved and executed by the user in the app (`APPLY 60` at 05:06:38 UTC, `APPLY 54` at 05:09:05 UTC). For #54 the user approved, held, released and re-approved it; one execute attempt while it was on hold was refused (audit #357) and wrote nothing.
+
+| | #60 Tiffin | #54 Marietta |
+|---|---|---|
+| Historical account | `001U6RW32TY0WSXZZB`, under Cedar Trail | `001A34WFSUYHCRBLFT`, under Cedar Trail |
+| Change on historical account | **only** `chow_current_account` → `00164AE214A6588944` | **only** `chow_current_account` → `0014861C0619562203` |
+| Preserved on historical account | revenue **$84,000**, AR **$12,400**, parent, name, phone, status, contacts (none) | revenue **$51,250**, AR **$3,800**, parent, name, phone, status, contacts (none) |
+| Successor created | `00164AE214A6588944` "Bellhaven of Tiffin", under Bellhaven, $0 / $0, website address and phone; exists once | `0014861C0619562203` "Bellhaven of Marietta", under Bellhaven, $0 / $0; exists once |
+| Ledger | operations 21–22 verified; read-back ok | operations 24–25 verified; read-back ok |
+
+**By design** two accounts now share each name and address: the historical (Cedar Trail) record and the Bellhaven successor, linked by `chow_current_account`.
+**Open question Q8, not assumed:** who is responsible for collecting the $12,400 and $3,800 historical balances.
+Backup: `data/ledger.pre-chow60.db`.
+
+The other proposals are not affected by these changes. As of the CHOWs there are 22 VERIFIED, 11 HELD, 2 REJECTED and 0 PENDING. Earlier local
 approvals, including the nine-card console's "APPROVE Marietta", are not authorizations.
 
 When you execute approved items, each verified change appears automatically:
