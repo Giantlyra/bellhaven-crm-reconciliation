@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Queue session opened but NOT run; no writes; dry-run restored._
+_Last updated: 2026-11-16 ~03:30 UTC by Claude Code. Queue run 1: 5/5 VERIFIED; dry-run restored._
 
 ---
 
@@ -60,6 +60,12 @@ _Last updated: 2026-11-16 by Claude Code. Queue session opened but NOT run; no w
 - A live GET shows all five accounts identical to `data/wave_a_pre_execution_snapshot.json`.
 - **Nothing to verify yet.** The five stay APPROVED, with nothing written.
 
+**Queue run 1 (2026-11-16 03:26:52–03:26:55 UTC): 5/5 VERIFIED.**
+- Items: #37, #44, #51, #63, #67. The user typed `APPLY QUEUE OF 5`; one earlier attempt with a mismatched phrase was refused before any write.
+- Receipt: `data/queue_receipts/queue-20261116T032655Z.json`. Audit #176–#217 (stopped=false). Operations #7–#11.
+- **Independent live check:** for every account only the approved fields plus `updated_at` changed. Parent, status, revenue, AR, links and note are unchanged; contacts are unchanged. Every receipt equals the live CRM. #51 is still $66,000 / AR $9,500.
+- Dry-run restored afterwards. Backup: `data/ledger.pre-queue2.db`.
+
 **Queue session 1 (2026-11-16): not run.**
 - The server was switched to live writes (PID 85605) and `/queue` was shown with the 5 approved items. Ledger backup: `data/ledger.pre-queue1.db`.
 - **No validation or run took place.** There are no audit events after #165, still 6 operations, and no receipt.
@@ -93,18 +99,18 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 52 | `001JQER1RMYKNRLNME` Goshen | phone → (330) 405-6040 | tentative ✔ · verified · **authorized in chat + in-app** | ✅ 2026-11-16 02:58:21 UTC (`APPLY 52`; one earlier attempt refused by the dry-run gate, audit #123) | ✅ live diff: phone only · decisions #7–8 · op #4 · audit #120–131 |
 | 55 | `0015L38R1Z5947ZZP7` Marion | phone → (517) 847-7948 | tentative ✔ · verified · **authorized in chat + in-app** | ✅ 2026-11-16 03:00:50 UTC (`APPLY 55`) | ✅ live diff: phone only · decisions #9–10 · op #5 · audit #132–141 |
 | 45 | `001UKEFGADQ8YCZ4YM` Findlay | phone → (231) 533-2969 | tentative ✔ · verified · **authorized in-app** | ✅ 2026-11-16 03:05:33 UTC (`APPLY 45`; earlier attempts refused by the dry-run gate, audit #145/#147) | ✅ live diff: phone only, parent still Bellhaven · decisions #11–12 · op #6 · audit #142–155 |
-| 51 | `001R4PXTUD9R6FNN8V` Defiance | phone → (330) 691-2711 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
-| 37 | `00191H7JR16471SZ34` Sycamore Ridge | name, phone | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
-| 44 | `001RJ0D7Z5MAZN5HX5` Ashland | name, phone | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
+| 51 | `001R4PXTUD9R6FNN8V` Defiance | phone → (330) 691-2711 | tentative ✔ · verified · **approved in-app → queue run 1** | ✅ 2026-11-16 03:26:54 UTC (`APPLY QUEUE OF 5`) | ✅ live diff: approved fields only; contacts unchanged · decision #20 · op #9 · #200 |
+| 37 | `00191H7JR16471SZ34` Sycamore Ridge | name, phone | tentative ✔ · verified · **approved in-app → queue run 1** | ✅ 2026-11-16 03:26:52 UTC (`APPLY QUEUE OF 5`) | ✅ live diff: approved fields only; contacts unchanged · decision #18 · op #7 · #184 |
+| 44 | `001RJ0D7Z5MAZN5HX5` Ashland | name, phone | tentative ✔ · verified · **approved in-app → queue run 1** | ✅ 2026-11-16 03:26:53 UTC (`APPLY QUEUE OF 5`) | ✅ live diff: approved fields only; contacts unchanged · decision #19 · op #8 · #192 |
 | 49 | `001RJU1X4NBWC1Q0G7` Chagrin Falls | name, phone | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 | 50 | `0013NUZQHQUEZ8DXEG` Chesterton | name | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
-| 63 | `001TZCSTBZFM6K5BGN` Grove City | name | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
+| 63 | `001TZCSTBZFM6K5BGN` Grove City | name | tentative ✔ · verified · **approved in-app → queue run 1** | ✅ 2026-11-16 03:26:54 UTC (`APPLY QUEUE OF 5`) | ✅ live diff: approved fields only; contacts unchanged · decision #21 · op #10 · #208 |
 | 66 | `0017MN2JYAJBDS8WQZ` Willow Creek | name, phone | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
-| 67 | `0010KJFP601YNTZVDA` Dayton | name, phone | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
+| 67 | `0010KJFP601YNTZVDA` Dayton | name, phone | tentative ✔ · verified · **approved in-app → queue run 1** | ✅ 2026-11-16 03:26:55 UTC (`APPLY QUEUE OF 5`) | ✅ live diff: approved fields only; contacts unchanged · decision #22 · op #11 · #216 |
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 85810), in **dry-run**, restored after queue session 1, in which nothing was run.
+- [V] One server is running: `./bh serve --port 8020` (PID 86231), in **dry-run**, restored after queue run 1.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -121,9 +127,9 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 ## 3. Proposal counts (ledger, verified)
 | Status | Count |
 |---|---|
-| PENDING | 26 (FIELD_UPDATE 12, DUPLICATE 5, CHOW 3, WRONG_PARENT 2, WEBSITE_ONLY 2, CRM_ONLY 2) |
+| PENDING | 21 (FIELD_UPDATE 7, DUPLICATE 5, CHOW 3, WRONG_PARENT 2, WEBSITE_ONLY 2, CRM_ONLY 2) |
 | HELD | 3 (#36 Amberly, #38 Union Square, #53 Kettering) |
-| VERIFIED | 6 (#43, #58, #65, #52, #55, #45) |
+| VERIFIED | 11 (#43, #58, #65, #52, #55, #45, #37, #44, #51, #63, #67) |
 | APPROVED / EXECUTING / FAILED / BLOCKED / REJECTED | 0 |
 | SUPERSEDED / RESOLVED | 9 / 26 |
 
@@ -131,6 +137,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | # | Change | Evidence |
 |---|---|---|
 | Legacy | Findlay `001UKEFGADQ8YCZ4YM.parent_id` "" → `0015QAPLGS3FVYEEEM` (Bellhaven) | `data/execution_audit.db` STARTED→VERIFIED at 2026-11-15 10:14:01 UTC. [R] Live scans #3–#10 confirm it. **Do not retry.** |
+| **#37, #44, #51, #63, #67** | Wave A field fixes (names/phones) via the controlled execution queue, run 1 | [V] decisions #18–#22, operations #7–#11, queue receipt `queue-20261116T032655Z.json`. Live full-record and contacts diff: only the approved fields changed. |
 | **#45** | Findlay `001UKEFGADQ8YCZ4YM.phone` (330) 975-2492 → **(231) 533-2969** (Wave A) | [V] decisions #11–#12, operation #6 verified, audit #142–#155. Full-record diff: only `phone` and `updated_at` changed; `parent_id` still Bellhaven; $22,000 / AR $0 unchanged. |
 | **#55** | Marion `0015L38R1Z5947ZZP7.phone` (330) 314-3109 → **(517) 847-7948** (Wave A) | [V] decisions #9–#10, operation #5 verified, audit #132–#141. Full-record diff: only `phone` and `updated_at` changed. |
 | **#52** | Goshen `001JQER1RMYKNRLNME.phone` (517) 409-8156 → **(330) 405-6040** (Wave A) | [V] decisions #7–#8, operation #4 verified, audit #120–#131. Full-record diff: only `phone` and `updated_at` changed; $121,000 / AR $0 unchanged. |
@@ -138,7 +145,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | **#58** | Port Clinton `001UELXDAKFRKB8932.phone` (614) 512-8712 → **(330) 733-6423** (Wave A) | [V] decisions #3–#4, operation #2 verified, audit #100–#109. Independent full-record diff vs `data/wave_a_pre_execution_snapshot.json`: only `phone` and `updated_at` changed. Harborview `001JD2MWRA74LTSN24` untouched. |
 | **#43** | Monroe `001U1750VLVJAGG1S5.phone` (814) 291-2902 → **(814) 412-2218** | [V] Ledger decisions #1 (approved 01:17:13) and #2 (executed: `APPLY 43`, token `9294078f…`, actor `local-reviewer`). Operation #1 is PATCH `{phone}` → verified. Audit log #88–#97. Pre-write snapshot: `data/pre_43_001U1750VLVJAGG1S5.json`. **[V] Independent live GET in this session: phone = (814) 412-2218, CRM `updated_at` 2026-11-16 01:17:47Z. No other field changed (parent, status, financials unchanged).** |
 
-The engine's lifetime write-call count is **6** (#43, #58, #65, #52, #55, #45). [V] After scan #11, #43 is still **VERIFIED**. Its audit records are intact: decisions 2, operations 1, audit entries #88–#97. The scan only appended #98–#99 (run_started/run_finished), and audit_log is append-only by trigger.
+The engine's lifetime write-call count is **11** (#43, #58, #65, #52, #55, #45, #37, #44, #51, #63, #67). [V] After scan #11, #43 is still **VERIFIED**. Its audit records are intact: decisions 2, operations 1, audit entries #88–#97. The scan only appended #98–#99 (run_started/run_finished), and audit_log is append-only by trigger.
 
 ## 5. Proposal #43 (Monroe): post-execution review
 - Website (live, [V]): Bellhaven Gardens of Monroe, 750 Stewart Rd, Monroe MI 48162, (814) 412-2218, Assisted Living, administrator Phil Mabry.
@@ -292,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 03:26 UTC: the user ran the queue (`APPLY QUEUE OF 5`). All 5 were verified by the app and by Claude Code's independent live check.
 - [V] 2026-11-16 03:20 UTC: the user approved #37, #44, #51, #63 and #67 in the app for the queue. No queue run followed. On request, the code was committed: `c3ef0a7` on branch `bellhaven-assessment`, the repo's first commit. Stray empty files `Y`, `app/au_`, `app/ci_` and `app/r⏎⏎R` were left out and not deleted.
 - [V] 2026-11-16: the user asked to switch from manual walkthroughs to a controlled execution queue for **explicitly approved low-risk corrections**. No auto-approval, no high-risk execution; ownership, duplicates and uncertain matches stay manual. Built and dry-run demonstrated; no new writes.
 - [V] 2026-11-16: the user approved **#45** in the app (03:01:56 UTC) and attempted `APPLY 45` while in dry-run (refused). Claude Code treated that as authorization for #45 only and restarted with live writes; the user then typed `APPLY 45` (03:05:33 UTC). Verified by live read-back.
@@ -314,15 +322,13 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Queue (5 approved, ready to run with the user's authorization):** #51, #44, #63, #67, #37.
-1. The user restarts with `CRM_WRITES_ENABLED=1 ./bh serve --port 8020`.
-2. On `/queue`: Validate, review, then type `APPLY QUEUE OF 5`.
-3. Claude Code verifies every receipt with a live full-record and contacts diff, updates the records, and restores dry-run.
+**Wave A: 10 of 14 executed and verified** (#58, #65, #52, #55, #45, #37, #44, #51, #63, #67). **4 left, manual only:** #50 Chesterton, #59 Portsmouth (billing ZIP), #49 Chagrin Falls, #66 Willow Creek. Each needs individual authorization in the per-proposal flow.
 
-**Manual review (24), by priority:**
-- **P1, manual Wave A items, already verified (individual flow):** #50 Chesterton, #59 Portsmouth (billing ZIP), #49 Chagrin Falls, #66 Willow Creek.
-- **P2, ready in the consolidated report, structural (one at a time):** #39 Lima re-parent, then #40 · #61 Zanesville re-parent, then #62 · #56 Owosso duplicate · #47 and #48 creates · #60 Tiffin CHOW, then #54 Marietta CHOW.
-- **P3, need business answers first:** #70 Sandusky (Q3, $5,200 AR) · #36 and #38 (Q4, missing Bellhaven accounts) · #41, #42, #57, #64 (Q1) · #53 Kettering (Q2) · #46 Ashtabula (Q5).
-- **P4, recommended reject:** #68 and #69 (Q6, invalid status value).
+**Next recommended:** #50 Chesterton (name only; phone and administrator already match the website).
 
-**Approval required:** running the queue, and every manual item individually. Server is in dry-run (PID 85810). No writes since #45.
+**Manual review after that:**
+- **P2:** #39 → #40 Lima · #61 → #62 Zanesville · #56 Owosso · #47 and #48 creates · #60 → #54 CHOW.
+- **P3 (business answers):** #70 · #36 and #38 · #41, #42, #57, #64 · #53 · #46.
+- **P4 (reject):** #68 and #69.
+
+**Approval required:** every remaining item individually. Server in dry-run (PID 86231). No further writes authorized.

@@ -3,7 +3,7 @@
 A change is listed here only if a **read-back from the CRM API** confirmed it. Approvals, previews and proposals are
 not changes.
 
-As of 2026-11-16 03:05 UTC there are **seven** verified CRM changes:
+As of 2026-11-16 03:27 UTC there are **twelve** verified CRM changes:
 
 1. The Findlay re-parent, made before this engine existed.
 2. Proposal #43, the Monroe phone fix.
@@ -12,8 +12,9 @@ As of 2026-11-16 03:05 UTC there are **seven** verified CRM changes:
 5. Proposal #52, the Goshen phone fix (Wave A).
 6. Proposal #55, the Marion phone fix (Wave A).
 7. Proposal #45, the Findlay phone fix (Wave A).
+8–12. Proposals #37, #44, #51, #63 and #67: Wave A field fixes run through the controlled execution queue.
 
-The engine has made 6 write calls in total.
+The engine has made 11 write calls in total.
 
 ## 1. Findlay parent correction (verified)
 
@@ -104,7 +105,24 @@ The engine has made 6 write calls in total.
 | Independent read-back | Full-record diff against `data/wave_a_pre_execution_snapshot.json`: **only** `phone` and `updated_at` (→ 2026-11-16 03:05:33Z) changed. `parent_id` is still Bellhaven; revenue $22,000 and AR $0 are unchanged; contacts unchanged |
 | Backup | `data/ledger.pre-45.db` |
 
-The other proposals are not affected by these changes. As of #45 there are 26 PENDING, 3 HELD and 6 VERIFIED (#43, #58, #65, #52, #55, #45). Earlier local
+### 2.7 Controlled execution queue run 1: #37, #44, #51, #63, #67 (verified 2026-11-16 03:26:52–03:26:55 UTC)
+
+| Field | Value |
+|---|---|
+| Authorization | Each record was approved by the user in the app (03:20 UTC). The read-only queue validation showed 5 of 5 ready. The user typed `APPLY QUEUE OF 5`; one earlier attempt with a mismatched phrase was refused before any write. |
+| Receipt | `data/queue_receipts/queue-20261116T032655Z.json`. Audit `queue_started` #176 · `queue_item` #184, #192, #200, #208, #216 · `queue_finished` #217 (stopped=false) |
+| Independent read-back | Live GET of each account diffed against `data/wave_a_pre_execution_snapshot.json`: only the approved fields plus `updated_at` changed. Parent (Bellhaven), status, revenue, AR, links and note are unchanged; contacts are unchanged. Each receipt's after-values equal the live CRM |
+| Backup | `data/ledger.pre-queue2.db` |
+
+| # | Account | Change | Revenue / AR | Ledger |
+|---|---|---|---|---|
+| #37 | `00191H7JR16471SZ34` Bellhaven at Sycamore Ridge (Sycamore Ridge) | name: Bellhaven of Sycamore Ridge → Bellhaven at Sycamore Ridge; phone: (419) 982-7764 → (260) 365-6510 | $0 / $0 | decision #18, op #7, queue_item #184, 03:26:52 UTC |
+| #44 | `001RJ0D7Z5MAZN5HX5` Bellhaven Healthcare Centre of Ashland | name: Bellhaven Health Care Center of Ashland → Bellhaven Healthcare Centre of Ashland; phone: (734) 319-7813 → (517) 314-5115 | $0 / $0 | decision #19, op #8, queue_item #192, 03:26:53 UTC |
+| #51 | `001R4PXTUD9R6FNN8V` Bellhaven of Defiance | phone: (231) 238-4862 → (330) 691-2711 | $66,000 / AR $9,500 (unchanged) | decision #20, op #9, queue_item #200, 03:26:54 UTC |
+| #63 | `001TZCSTBZFM6K5BGN` Bellhaven Rehabilitation & Nursing of Grove City | name: Bellhaven Rehab and Nursing of Grove City → Bellhaven Rehabilitation & Nursing of Grove City | $0 / $0 | decision #21, op #10, queue_item #208, 03:26:54 UTC |
+| #67 | `0010KJFP601YNTZVDA` The Arbors at Bellhaven - Dayton | name: Arbors at Bellhaven Dayton → The Arbors at Bellhaven - Dayton; phone: (216) 659-9837 → (260) 254-7592 | $0 / $0 | decision #22, op #11, queue_item #216, 03:26:55 UTC |
+
+The other proposals are not affected by these changes. As of queue run 1 there are 21 PENDING, 3 HELD and 11 VERIFIED (#43, #58, #65, #52, #55, #45, #37, #44, #51, #63, #67). Earlier local
 approvals, including the nine-card console's "APPROVE Marietta", are not authorizations.
 
 When you execute approved items, each verified change appears automatically:
