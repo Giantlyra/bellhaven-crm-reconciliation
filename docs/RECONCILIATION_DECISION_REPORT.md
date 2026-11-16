@@ -15,6 +15,26 @@ in-app Approve → Live preview → typed `APPLY <id>`, followed by a read-back.
 
 > **Wave A status (2026-11-16 02:23 UTC):** all 14 field corrections were tentatively approved by the user and verified read-only (`WAVE_A_FINAL_VALIDATION.md`). Awaiting individual authorization. The 9 investigation and 2 not-recommended cases are unchanged.
 
+> ## FINAL STATUS (2026-11-16, supersedes the counts below)
+>
+> **35 proposals: 23 VERIFIED (25 CRM operations) · 7 HOLD · 5 CLOSED/REJECTED without CRM write.** Independent audit: 25 of 25 operations live-matched and receipted; protected fields and contacts intact; no unexplained CRM writes.
+>
+> | Disposition | Proposals |
+> |---|---|
+> | **Verified field updates** | #43, #58, #65, #52, #55, #45, #37, #44, #51, #63, #67, #50, #59, #40, #62 |
+> | **Verified parent corrections** | #39 Lima, #61 Zanesville (AR $0, so direct re-parent under the SOP) |
+> | **Verified duplicate** | #56 Owosso (same parent; loser inactivated and linked) |
+> | **Verified new accounts** | #47 Batavia `00163AAEB690110611`, #48 Carlisle `00163ED66F49793F79` |
+> | **Verified changes of ownership** | #60 Tiffin → `00164AE214A6588944`; #54 Marietta → `0014861C0619562203`. Historical accounts keep $84,000/$12,400 and $51,250/$3,800 |
+> | **Verified CHOW link: documented exception** | #70 Sandusky → Millstone `0017JP8Z1UQ763BVK3`. Sale **not independently confirmed**; responsibility for the $5,200 AR unresolved |
+> | **Closed: historical predecessor records, both accounts preserved, no CRM write** | #57 Port Clinton, #64 Erie, #42 Monroe (Harborview). Ownership history **inferred, not confirmed** |
+> | **Closed: rejected as written** | #68 Alliance, #69 Coldwater (invalid status value "Needs Review") |
+> | **HOLD: unresolved** | #41 Monroe (Cedar Trail), #53 Kettering, #38 Union Square, #46 Ashtabula, #49 Chagrin Falls, #66 Willow Creek |
+> | **HOLD: identity resolved, follow-up pending** | #36 Amberly Manor: resolved DISTINCT; a follow-up scan will propose creating Hudson OH |
+>
+> Legacy pre-engine change: Findlay `parent_id` → Bellhaven (verified, not part of the 35).
+> Details: `EVALUATION_TABLE.md`, `CRM_CHANGE_HISTORY.md`, `CHOW_REVIEW.md`.
+
 ## 1. Executive summary
 
 Bellhaven's website lists **35 communities**:
