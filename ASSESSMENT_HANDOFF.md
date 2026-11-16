@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Evidence-based decision review of all 24 open proposals (docs/EVIDENCE_DECISION_REVIEW.md); lane A approved but not executed; dry-run._
+_Last updated: 2026-11-16 by Claude Code. Batch decision plan (groups A-D) recorded; Group A previewed read-only; nothing executed; dry-run._
 
 ---
 
@@ -299,6 +299,12 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: **batch decision plan (all 24 cases).**
+  - **Group A, approval candidates:** #50, #59, #39, #40, #61, #62, #56, #47, #48. Approved as a group only after final validation, and **not** an authorization to write. Read-only preview: `docs/GROUP_A_PREVIEW.md`. All 9 validate clean against the live CRM.
+  - **Group B, HOLD:** #57, #41, #42 (recorded), #38, #53 (already held), #70 and #46 (recorded as HOLD). #49 and #66: **not recorded as hold; see the conflict note below.**
+  - **Group C, special:** #64 stays HOLD, documented as a possible predecessor or duplicate, with no inactivation or link authorized. #60 and #54 (CHOW) stay pending with an explicit-review note.
+  - **Group D, close without writes:** #36 resolved as a distinct facility (resolution #1; the next scan will propose creating Hudson OH, needing its own approval). #68 and #69 REJECTED.
+  - **Conflict to confirm:** #49 and #66 are listed as HOLD in the plan, but the user explicitly approved them on 2026-11-16 ("APPROVE #50, #59, #49, #66"). They stay APPROVED and unexecuted until the user confirms hold or execute.
 - [V] 2026-11-16: **#41 Monroe (Cedar Trail of Monroe): HOLD** (user decision; no CRM change). #42 is the last of the four predecessor-brand cases to decide.
 - [V] 2026-11-16: **#64 Erie: HOLD** (user decision; same reasoning as #57; no CRM change). The proposed inactivate + `duplicate_of_account` + note on `001BLYF02K97SZLZHH` stays unexecuted. Next: #41 and #42 Monroe, one at a time.
 - [V] 2026-11-16: **#57 Port Clinton: HOLD** (user decision, recorded in the ledger as status HOLD, no CRM change). Reason: preserve history until it is confirmed whether the Harborview record is a historical operator or a duplicate. The proposed operation (inactivate + link `duplicate_of_account` + note on `001JD2MWRA74LTSN24`) stays unexecuted. #64 Erie, #41 and #42 Monroe are being decided next, one at a time.
@@ -328,12 +334,11 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Review: [`docs/EVIDENCE_DECISION_REVIEW.md`](docs/EVIDENCE_DECISION_REVIEW.md).** 24 cases, no drift.
-- **APPROVE (13):** lane A #50, #59, #49, #66 (approved, not executed) plus #39→#40, #61→#62, #56, #47, #48, #60→#54.
-- **Policy P1 (4):** #57, #64, #41, #42.
-- **Resolve distinct (1):** #36.
-- **HOLD (1):** #46.
-- **Unresolved (3):** #38, #53, #70.
-- **REJECT (2):** #68, #69.
+**The user confirms:**
+1. #49 and #66: HOLD (as in the plan) or EXECUTE (as in the earlier approval)?
+2. Authorization to execute Group A in two stages. Stage 1: #50, #59, #39, #61, #56, #47, #48 in one batch. Stage 2, after stage 1 is verified: #40 and #62.
 
-**User decides:** lane A execution; approve or hold each of the 9 new items; P1 yes/no; #36; #46; #68/#69. Nothing is authorized. Server in dry-run (PID 89467). Last write: queue run 1 (operations total 11).
+**Then:** the two CHOW cases (#60 then #54) individually, with financial and ownership review. After that come the final reconciliation report, the monitoring demonstration and the submission walkthrough.
+
+**Remaining open and unresolved, documented:** #57, #64, #41, #42, #38, #53, #70, #46 (business questions Q1–Q5).
+**Approval required:** every write. Server in dry-run (PID 89467). Operations total 11.
