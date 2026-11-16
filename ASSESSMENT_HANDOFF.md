@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. CHOW #60 and #54 EXECUTED AND VERIFIED by the user. 22 proposals verified (25 operations); no pending writes; dry-run._
+_Last updated: 2026-11-16 by Claude Code. CHOW #60, #54 and #70 executed by the user and verified. 23 proposals verified (25 operations); no unexplained writes; dry-run._
 
 ---
 
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 05:08 UTC: the user also **released #70 Sandusky from HOLD, approved it and executed it** (`APPLY 70`, operation 23). Independent check: only `chow_current_account` → Millstone `0017JP8Z1UQ763BVK3` changed; $130,000 / AR $5,200, Bellhaven parent, contact and status are unchanged; the Millstone account is unchanged. Q3 (sale confirmation, AR ownership) is still open. Whole-CRM check: all 23 accounts changed since the seed are explained by verified ledger operations; 0 unexplained writes; 25 of 25 operations verified. A later "stale form token" error came from a page opened before the dry-run restart; nothing was written.
 - [V] 2026-11-16 05:05–05:09 UTC: the user approved and executed **#60 Tiffin** (`APPLY 60`, 05:06:38) and then **#54 Marietta** (`APPLY 54`, 05:09:05) in the app. #54 was approved, held, released and re-approved; one attempt while on hold was refused (audit #357). Both verified (operations 21–22, 24–25). Independent check: each historical account changed **only** in `chow_current_account`, keeping its revenue/AR ($84,000/$12,400; $51,250/$3,800), Cedar Trail parent, name, phone and contacts. Each successor exists once, under Bellhaven, at $0/$0. Note: #54 ran before Claude Code had verified #60 (the agreed order was to verify #60 first); both are correct.
 - [V] 2026-11-16: the user asked to prepare **#60 then #54** for separate human-approved CHOW execution. **Claude Code must not approve or execute either.** Verified read-only (see `docs/CHOW_REVIEW.md` § Direction): direction Cedar Trail → Bellhaven for both; each successor equals the live website (name, address, phone), under Bellhaven, with no revenue/AR fields sent (starts $0/$0); only `chow_current_account` is written on the historical account. **Open question Q8:** who collects the $12,400 and $3,800 balances. Not assumed and not changed. Live window opened for #60 (backup `data/ledger.pre-chow60.db`). #54 is not presented until #60 is verified.
 - [V] 2026-11-16 04:42:23 UTC: the user authorized **stage 2** in chat (approvals for #40 and #62 recorded from it) and ran `APPLY BATCH OF 2` in the app. Both verified (operations 19–20, audit `batch_started` #322 / `batch_finished` #337). Independent check: only the approved fields changed; Lima $47,000 / $0, Bellhaven parent, status and contacts intact; Zanesville contacts intact; no phone collisions. A fresh audit run: **20 of 20 operations live-matched and receipted, integrity PASS.** The CHOW cases (#60, #54) were **not** touched.
@@ -342,7 +343,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**State:** 35 proposals = **22 verified** (25 operations), 11 held, 2 rejected, 0 pending. No writes are waiting for authorization.
+**State:** 35 proposals = **23 verified** (25 operations), 10 held, 2 rejected, 0 pending. No writes are waiting for authorization.
 
 **Wrap-up (no CRM writes):**
 1. Run the #36 follow-up scan (read-only; turns the Amberly resolution into a Hudson OH create proposal for review).
@@ -350,5 +351,5 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 3. Final reconciliation report, monitoring demo and walkthrough; refresh stale docs.
 4. Check the deliverables against the original assessment brief (the user must supply it).
 
-**Open business questions:** Q1–Q6 (held cases) and Q8 (Tiffin/Marietta historical balances).
+**Open business questions:** Q1, Q2, Q4, Q5, Q6 (held cases); Q3 (Sandusky sale and AR, despite the link now recorded); Q8 (Tiffin/Marietta historical balances).
 Server in dry-run (PID 95736).

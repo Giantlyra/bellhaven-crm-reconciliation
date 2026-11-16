@@ -3,7 +3,7 @@
 A change is listed here only if a **read-back from the CRM API** confirmed it. Approvals, previews and proposals are
 not changes.
 
-As of 2026-11-16 04:42 UTC there are verified CRM changes from the legacy Findlay re-parent plus **25 engine operations** (22 proposals):
+As of 2026-11-16 04:42 UTC there are verified CRM changes from the legacy Findlay re-parent plus **25 engine operations** (23 proposals):
 
 1. The Findlay re-parent, made before this engine existed.
 2. Proposal #43, the Monroe phone fix.
@@ -14,7 +14,7 @@ As of 2026-11-16 04:42 UTC there are verified CRM changes from the legacy Findla
 7. Proposal #45, the Findlay phone fix (Wave A).
 8–12. Proposals #37, #44, #51, #63 and #67: Wave A field fixes run through the controlled execution queue.
 
-The engine has made 25 write calls in total (see §2.7–§2.9).
+The engine has made 25 write calls in total (see §2.7–§2.10).
 
 ## 1. Findlay parent correction (verified)
 
@@ -156,7 +156,18 @@ Both were approved and executed by the user in the app (`APPLY 60` at 05:06:38 U
 **Open question Q8, not assumed:** who is responsible for collecting the $12,400 and $3,800 historical balances.
 Backup: `data/ledger.pre-chow60.db`.
 
-The other proposals are not affected by these changes. As of the CHOWs there are 22 VERIFIED, 11 HELD, 2 REJECTED and 0 PENDING. Earlier local
+### 2.10 #70 Sandusky CHOW link (verified 2026-11-16 05:08:24 UTC)
+
+Released from HOLD, approved and executed by the user in the app (`APPLY 70`). Operation 23.
+
+| Field | Value |
+|---|---|
+| Account | `001SXSF4ELF0Z2LGDM` Bellhaven of Sandusky, 2715 Columbus Ave, Sandusky OH 44870 |
+| Change | **only** `chow_current_account` → `0017JP8Z1UQ763BVK3` (Millstone Care of Sandusky, Millstone Health Partners). No account was created; the Millstone account is unchanged |
+| Preserved | revenue **$130,000**, AR **$5,200**, Bellhaven parent, name, phone, status Active, contact Frank Dietz |
+| Meaning | The CRM now records that ownership passed from Bellhaven to Millstone. The open question Q3 (was the sale confirmed, and who owns the $5,200 AR) was **not** answered by this write and stays open |
+
+The other proposals are not affected by these changes. As of the CHOWs there are 23 VERIFIED, 10 HELD, 2 REJECTED and 0 PENDING. Earlier local
 approvals, including the nine-card console's "APPROVE Marietta", are not authorizations.
 
 When you execute approved items, each verified change appears automatically:
