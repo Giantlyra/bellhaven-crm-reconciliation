@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Final execution/audit mode: CHOW review and read-only final-audit tool done; baseline audit PASS; awaiting Group A authorization; dry-run._
+_Last updated: 2026-11-16 by Claude Code. Stage 1 (7 items) approved and fully validated live; awaiting the user's APPLY BATCH OF 7 in the app; live-writes server up._
 
 ---
 
@@ -110,7 +110,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 89467), in **dry-run**.
+- [V] One server is running: `./bh serve --port 8020` (PID 91576), **LIVE WRITES ENABLED** for the stage-1 window only; restore dry-run after the batch. Ledger backup: `data/ledger.pre-stage1.db`.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16 ~04:22 UTC: the user authorized **preparation of stage 1** (#50, #59, #39, #61, #56, #47, #48); approvals recorded from that chat authorization (#50, #59 were already approved). Final live validation: all 7 pass — no overlaps; no drift; approvals bound to current fingerprints; SOP: Lima AR $0 and Zanesville $0/$0 so direct re-parents are allowed; Owosso survivor `001EGU7BMJ942ZTRE6` matches the website phone and administrator, is Active under Bellhaven, and the loser has $0/$0 and no links; Portsmouth billing street identical to the website street; Batavia and Carlisle have no account with the same name, city, ZIP, phone or street. The user will personally type `APPLY BATCH OF 7`. Stage 2 (#40, #62) and CHOW (#60, #54) are **not** authorized.
 - [V] 2026-11-16: the user moved to **final execution and audit mode**. Plan: Group A executed only after explicit in-app authorization, with each write verified as it happens; B/C/D recorded; then one comprehensive read-only audit and the final report, monitoring results and walkthrough. Not an authorization to write; no approvals were given beyond those already recorded.
 - [V] 2026-11-16: the user confirmed **#49 and #66: HOLD** (superseding the earlier approval of both). They are recorded as HOLD in the ledger; no CRM change. Group B is now fully recorded (9 holds: #49, #66, #57, #41, #42, #38, #53, #70, #46).
 - [V] 2026-11-16: **batch decision plan (all 24 cases).**
