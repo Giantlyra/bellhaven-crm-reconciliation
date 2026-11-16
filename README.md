@@ -13,7 +13,7 @@ live re-check before it runs and a read-back check after.
 | CRM changes | **25 operations on 23 proposals**, each human-approved, live-previewed, typed-confirmed and **read-back VERIFIED**. Plus one earlier Findlay parent correction |
 | Integrity audit | **PASS**: every write live-matched and receipted; protected financial fields and contacts intact; no change outside the ledger |
 | Communities matching the CRM exactly | **23 of 35**. The rest are documented cases, not guesses: 6 HELD with business questions, 5 closed without a write, 1 new pending create |
-| Tests | **134 passing** (mocked CRM, temporary SQLite). On a fresh clone, **127 pass and 7 are skipped**: those 7 need the private assessment snapshot, which is gitignored |
+| Tests | **145 passing** (mocked CRM, temporary SQLite). On a fresh clone, **138 pass and 7 are skipped**: those 7 need the private assessment snapshot, which is gitignored |
 
 **Start here:** [docs/FINAL_RECONCILIATION_REPORT.md](docs/FINAL_RECONCILIATION_REPORT.md) · [docs/FINAL_DECISION_REVIEW.md](docs/FINAL_DECISION_REVIEW.md) · [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md) · [docs/WRITEUP.md](docs/WRITEUP.md) · [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md)
 
@@ -204,7 +204,7 @@ _As of 2026-11-15 these were proposals awaiting review, and 0 engine writes had 
 
 ## Tests
 
-`./bh test`: **134 passed** (was 112 before the queue and confirmation-phrase work) (Python 3.9.6). Everything runs on mocked HTTP and in-memory or temporary SQLite. The report appears in the Test
+`./bh test`: **145 passed** (was 112 before the queue and confirmation-phrase work) (Python 3.9.6). Everything runs on mocked HTTP and in-memory or temporary SQLite. The report appears in the Test
 tab and in [docs/TEST_REPORT.md](docs/TEST_REPORT.md), which maps tests to the required scenarios:
 
 - incomplete ingestion

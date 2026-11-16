@@ -46,6 +46,13 @@
 <h2>Source provenance</h2>
 <table><tr><th>Source</th><th>Records</th><th>SHA-256</th><th>Retrieved</th><th>Provenance</th></tr>
 {% for s in sources %}<tr><td>{{s.source}}</td><td>{{s.records}}</td><td><code>{{s.fingerprint[:16]}}…</code></td><td>{{s.retrieved_at}}</td><td>{{s.provenance}}</td></tr>{% endfor %}</table>
+{% if inv_groups %}<h2>Why the remaining cases aren't finished</h2>
+<p class="muted">Investigation categories are descriptive labels, not statuses or permissions. Statuses are read live from the ledger.</p>
+<table><tr><th>Category</th><th>Cases (current status)</th><th>What the business team needs to confirm</th></tr>
+{% for label, why, cards in inv_groups %}<tr><td><b>{{ label }}</b><br><span class="muted">{{ why }}</span></td>
+<td>{% for c in cards %}<a href="/proposal/{{c.id}}">#{{c.id}} {{ c.place }}</a> <span class="tag s-{{c.status}}">{{ c.status|state }}</span>{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+<td>{% for c in cards %}#{{c.id}}: {{ c.confirm }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td></tr>{% endfor %}</table>
+{% endif %}
 {% if open_kinds %}<h2>Open items by type</h2><p>{% for k,n in open_kinds.items() %}<a href="/review?kind={{k}}"><span class="tag {{k}}">{{k}}</span></a> {{n}} &nbsp; {% endfor %}</p>{% endif %}
 {% endif %}
 

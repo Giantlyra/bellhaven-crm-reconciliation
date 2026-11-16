@@ -53,7 +53,7 @@ The goal: reconcile the CRM to the website, change only what is justified, never
 - **Left open on purpose, with a business question each:** Kettering (3 records), Union Square, Monroe/Cedar Trail, the Ashtabula PO box, two renames, and Hudson OH (#71, pending).
   - Documented exceptions: the Sandusky sale and its $5,200 AR, and who collects the Tiffin and Marietta balances.
 - **23 of 35** communities now match the CRM exactly; every remaining difference is a documented case.
-- **134 automated tests** run on a mocked CRM and temporary SQLite.
+- **145 automated tests** run on a mocked CRM and temporary SQLite.
 
 Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM_CHANGE_HISTORY.md`.
 

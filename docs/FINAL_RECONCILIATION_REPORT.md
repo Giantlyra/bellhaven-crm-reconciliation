@@ -70,7 +70,7 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 | #46 Ashtabula | HOLD · **Needs verification** (mailing vs physical address) | Is PO Box 517 the invoice mailing address? Where should the physical street 3156 W Prospect Rd be recorded? Both are preserved; release or approval requires an evidence note |
 | #49 Chagrin Falls | HOLD | Was "Riverbend Manor Care Center" a prior operator or a former name? |
 | #66 Willow Creek | HOLD | Is "Sunny Acres Retirement Home" the same facility? There are no contacts to confirm it |
-| #71 Amberly Manor, Hudson OH | PENDING (new) | Confirm the Hudson OH community before approving the create |
+| #71 Amberly Manor, Hudson OH | APPROVED, not executed | Confirm the Hudson OH community before the create is applied |
 | #70 Sandusky | **TECHNICALLY VERIFIED · BUSINESS UNCONFIRMED** | The link exists and matches the authorized operation. The sale's direction, date and the $5,200 collection responsibility are **not independently proven**. The original investigation had recommended HOLD |
 | #60 Tiffin / #54 Marietta | **TECHNICALLY VERIFIED · collection responsibility open** | Successors verified; historical balances preserved on the old accounts. Who collects the $12,400 / $3,800? |
 | #68 / #69 | Rejected, **finding** | Are Alliance and Coldwater still Bellhaven communities? |
@@ -93,7 +93,7 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 | **Identity HOLD (not actionable)** | The engine could not decide identity, so it created a HOLD with **no CRM operation** at all | #38 Union Square, #53 Kettering |
 | **Actionable proposal, manually held** | A concrete operation exists but was put on hold by a human pending business evidence; it can be released later | #41 Monroe/Cedar Trail, #46 Ashtabula, #49 Chagrin Falls, #66 Willow Creek |
 | **Rejected / closed without write** | The proposed operation will never run | #42, #57, #64: predecessor records preserved, not inactivated · #68, #69: "Needs Review" is not a CRM status; their business questions remain documented |
-| **Pending** | A proposal awaiting a decision | #71 Amberly Manor, Hudson OH (the Colorado account was resolved as a separate facility). Left pending until expressly authorized |
+| **Approved, not executed** | Approved in the app but never applied; it needs a typed confirmation on a writes-enabled server | #71 Amberly Manor, Hudson OH (the Colorado account was resolved as a separate facility). Approved by the user in the app at 22:21:51 UTC on 2026-11-16; nothing created |
 
 **Two records at one address are not automatically duplicates.**
 - One may be a historical predecessor. Treating it as a duplicate (inactivate + "Duplicate of") versus as history (preserve) has different consequences for reporting and finances.

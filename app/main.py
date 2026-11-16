@@ -23,6 +23,7 @@ from fastapi.templating import Jinja2Templates
 
 from . import config
 from . import evidence as E
+from . import investigation as I
 from . import exec_queue as Q
 from . import executor as X
 from . import ledger as L
@@ -42,6 +43,7 @@ STATE_LABELS = {"pending": "PENDING", "hold": "HELD", "approved": "APPROVED", "a
                 "rejected": "REJECTED", "resolved": "RESOLVED", "applied": "WRITTEN, NOT VERIFIED"}
 templates.env.filters["state"] = lambda v: STATE_LABELS.get(v, (v or "").upper())
 templates.env.globals["needs_verification"] = X.address_purpose_check
+templates.env.globals["investigation"] = I.for_proposal
 
 CSRF = secrets.token_urlsafe(32)
 LOCAL_HOSTS = {"127.0.0.1", "::1", "localhost", "testclient"}
@@ -112,6 +114,7 @@ def start(request: Request, msg: str = ""):
                   errors=json.loads(last_any["errors"]) if last_any and last_any.get("errors") else [],
                   sources=led.sources(run["id"]) if run else [], receipts=led.receipts(),
                   open_kinds=Counter(p["kind"] for p in props if p["status"] in L.OPEN),
+                  inv_groups=I.summary(props),
                   write_count=led.write_count(),
                   snapshot_exists=(config.DATA_DIR / "snapshot.json").exists())
 

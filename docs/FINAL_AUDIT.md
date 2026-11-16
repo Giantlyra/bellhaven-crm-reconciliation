@@ -1,4 +1,4 @@
-# Final Reconciliation Audit (2026-11-16T15:40:05Z)
+# Final Reconciliation Audit (2026-11-16T22:47:37Z)
 
 _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM write is possible from this script._
 
@@ -9,7 +9,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 
 | Community | Result | Detail |
 |---|---|---|
-| Amberly Manor | NO ACCOUNT AT PHYSICAL ADDRESS | create proposal #71 PENDING, awaiting explicit authorization |
+| Amberly Manor | NO ACCOUNT AT PHYSICAL ADDRESS | create proposal #71 APPROVED, awaiting explicit authorization |
 | Bellhaven Gardens of Monroe | MULTIPLE ACCOUNTS | Bellhaven Gardens of Monroe (Bellhaven Senior Living), Cedar Trail of Monroe (Cedar Trail Communities), Monroe Gardens Care Center (Harborview Care Group) |
 | Bellhaven Shores of Erie | MULTIPLE ACCOUNTS | Bellhaven Shores of Erie (Bellhaven Senior Living), Harborview Shores of Erie (Harborview Care Group) |
 | Bellhaven Willow Creek | DIFFERS | differs: name, phone |
@@ -74,7 +74,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 
 ## 5. Proposal statuses and unresolved exceptions
 
-- Open ledger: **hold: 6** · **pending: 1** · **rejected: 5** · **verified: 23**
+- Open ledger: **approved: 1** · **hold: 6** · **rejected: 5** · **verified: 23**
 - Resolved or superseded by later scans (not open): 36
 
 | # | Kind | Status | Case | Open question |
@@ -93,7 +93,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 | #68 | CRM_ONLY | rejected | Flag for review: Bellhaven Care Center of Alliance not on website | Are Alliance and Coldwater still Bellhaven communities? (#68, #69: rejected as written) |
 | #69 | CRM_ONLY | rejected | Flag for review: Bellhaven of Coldwater not on website | Are Alliance and Coldwater still Bellhaven communities? (#68, #69: rejected as written) |
 | #70 | CHOW | verified | CHOW link: Bellhaven of Sandusky → Millstone Care of Sandusky (Millsto | Was the Sandusky sale to Millstone confirmed, and who collects the $5,200 AR? (#70: link verified, exception documented) |
-| #71 | WEBSITE_ONLY | pending | Create account: Amberly Manor | Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71) |
+| #71 | WEBSITE_ONLY | approved | Create account: Amberly Manor | Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71) |
 
 ### Open business questions
 
@@ -109,7 +109,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 - **Q9:** Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71)
 
 - Identity resolutions recorded (local decisions, no CRM write): 1
-- Audit log: 400 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
+- Audit log: 410 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
 
 ## Result
 

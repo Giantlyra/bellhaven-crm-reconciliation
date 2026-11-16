@@ -8,6 +8,13 @@
 {% if p.last_error %}<div class="bad">{{ p.last_error }}</div>{% endif %}
 {% if p.resolution %}<div class="ok">Resolved: {{ p.resolution }}</div>{% endif %}
 
+{% set inv = investigation(p) %}{% if inv %}<div class="chow" id="investigation"><b>Investigation category: {{ inv.label }}</b> · current status <span class="tag s-{{p.status}}">{{ p.status|state }}</span> <span class="muted">(a label for reviewers, not a status or a permission)</span>
+<table style="margin-top:6px">
+<tr><th style="width:24%">Why it isn't finished</th><td>{{ inv.why }}</td></tr>
+<tr><th>What we know</th><td>{{ inv.known }}</td></tr>
+<tr><th>What's uncertain</th><td>{{ inv.uncertain }}</td></tr>
+<tr><th>Business team needs to confirm</th><td><b>{{ inv.confirm }}</b></td></tr>
+<tr><th>Recommended next action</th><td>{{ inv.next }}</td></tr></table></div>{% endif %}
 {% if addr %}<div class="chow" id="needs-verification">🔎 <b>NEEDS VERIFICATION — mailing vs physical address</b>{% if p.status == 'hold' %} · held: cannot be approved, executed or batched{% endif %}<br>{{ addr.reason }}{% if hold_note %}<br><b>Reviewer note:</b> {{ hold_note }}{% endif %}</div>
 <table><tr><th>Address</th><th>Value</th><th>Source</th><th>Purpose</th></tr>
 <tr><td>Physical (facility location)</td><td><code>{{ addr.physical }}</code>{% if addr.site_city %}, {{ addr.site_city }} {{ addr.site_zip }}{% endif %}</td><td>{{ addr.physical_source }}</td><td>Where the residents are. <b>Not in the CRM</b></td></tr>

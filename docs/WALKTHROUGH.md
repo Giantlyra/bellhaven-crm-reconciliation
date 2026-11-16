@@ -5,7 +5,7 @@ _For the reviewer. Every step is read-only unless stated otherwise._
 ## Setup (1 minute)
 ```
 cd ~/clipboard-assessment
-./bh test          # 134 tests, mocked CRM, about 1 s
+./bh test          # 145 tests, mocked CRM, about 1 s
 ./bh status        # last scan, proposal counts, write calls (25)
 ./bh serve         # http://127.0.0.1:8000, DRY-RUN
 ```
@@ -48,7 +48,7 @@ cd ~/clipboard-assessment
 
 ## Live 45-minute walkthrough: preparation for the "small modification"
 
-- **Run tests first and last:** `./bh test` (134 tests, about 1 s). Keep the server in dry-run while changing code.
+- **Run tests first and last:** `./bh test` (145 tests, about 1 s). Keep the server in dry-run while changing code.
 - **Where common changes go:**
   - *Compare a new field* (e.g. care type): `app/normalize.py` (normalizer), `app/reconcile.py` (`_website_fields` and the field-diff block), then a test in `tests/test_matching.py`.
   - *Change matching strictness*: the street-similarity threshold and match tiers in `app/reconcile.py`.
@@ -74,6 +74,7 @@ cd ~/clipboard-assessment
 5. **Technical vs business verification (Sandusky):** the link to Millstone is verified, but the sale and the $5,200 are not proven. The original investigation recommended holding it.
 6. **"No account at this address" ≠ "no account" (Ashtabula):** the account exists under PO Box 517, kept pending a finance decision.
 7. **Why six cases stay held:** each needs a fact that isn't in the data. Name the question for each (`FINAL_DECISION_REVIEW.md`).
+8. **Investigation categories (Start Here → "Why the remaining cases aren't finished"):** the seven open cases are grouped by what's missing: possible change of ownership / rebrand (#41, #49, #66), address verification (#46), identity verification (#38, #53), new account confirmation (#71). Each proposal page answers: why it isn't finished, what we know, what's uncertain, what the business must confirm, and the next action. One line for the video: *"I also categorized the unresolved cases by what was missing — possible ownership changes, address discrepancies and identity questions — so the business team knows what to investigate next."* The categories are labels only; they don't change any status or permission.
 
 **Likely questions, short answers:**
 - *Why not just inactivate the Harborview records?* "Without billing or contacts, there was no financial reason to act, and labelling history as a duplicate would be wrong if they're predecessors."
@@ -101,7 +102,7 @@ cd ~/clipboard-assessment
 - [x] All 35 communities and all CRM accounts reconciled; evidence for every proposal
 - [x] 25 CRM operations human-approved, executed and verified; integrity audit PASS
 - [x] Unresolved cases documented with business questions (report §5)
-- [x] 134 tests passing
+- [x] 145 tests passing
 - [x] Read-only daily schedule **installed** as a local cron job (06:00 daily, idempotent) and tested: run #14 PASS, failure capture PASS, 0 CRM writes
 - [x] Code committed locally on branch `bellhaven-assessment`
 - [x] Cross-checked against the original brief (welcome page): deadline Nov 16 2026 11:29 PM EST; schedule config only (no live cron needed); no hosting
