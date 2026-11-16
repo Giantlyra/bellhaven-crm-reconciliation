@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user decided to **keep the local cron job installed** (06:00 daily, read-only), despite a later handoff suggesting "configured, not activated". The docs already state that it is installed.
 - [V] 2026-11-16 ~15:05 UTC: the user authorized installing the **local daily cron job**. The crontab was empty before (backed up). One entry was installed, tagged `bellhaven-daily-reconcile`; a re-install is idempotent; macOS required the user to approve the "administer your computer" dialog.
   - The exact command was run in a cron-like environment: scan #14 completed (exit 0).
   - A forced-refusal test was logged with exit 1.
