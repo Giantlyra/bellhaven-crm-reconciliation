@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: the user confirmed **#49 and #66: HOLD** (superseding the earlier approval of both). They are recorded as HOLD in the ledger; no CRM change. Group B is now fully recorded (9 holds: #49, #66, #57, #41, #42, #38, #53, #70, #46).
 - [V] 2026-11-16: **batch decision plan (all 24 cases).**
   - **Group A, approval candidates:** #50, #59, #39, #40, #61, #62, #56, #47, #48. Approved as a group only after final validation, and **not** an authorization to write. Read-only preview: `docs/GROUP_A_PREVIEW.md`. All 9 validate clean against the live CRM.
   - **Group B, HOLD:** #57, #41, #42 (recorded), #38, #53 (already held), #70 and #46 (recorded as HOLD). #49 and #66: **not recorded as hold; see the conflict note below.**
@@ -334,8 +335,8 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**The user confirms:**
-1. #49 and #66: HOLD (as in the plan) or EXECUTE (as in the earlier approval)?
+**The user authorizes:**
+1. (#49 and #66 confirmed HOLD.)
 2. Authorization to execute Group A in two stages. Stage 1: #50, #59, #39, #61, #56, #47, #48 in one batch. Stage 2, after stage 1 is verified: #40 and #62.
 
 **Then:** the two CHOW cases (#60 then #54) individually, with financial and ownership review. After that come the final reconciliation report, the monitoring demonstration and the submission walkthrough.
