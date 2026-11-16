@@ -71,9 +71,33 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 | #49 Chagrin Falls | HOLD | Was "Riverbend Manor Care Center" a prior operator or a former name? |
 | #66 Willow Creek | HOLD | Is "Sunny Acres Retirement Home" the same facility? There are no contacts to confirm it |
 | #71 Amberly Manor, Hudson OH | PENDING (new) | Confirm the Hudson OH community before approving the create |
-| #70 Sandusky | VERIFIED, **exception** | Was the sale to Millstone confirmed? Who collects the $5,200? |
-| #60 Tiffin / #54 Marietta | VERIFIED, **exception** | Who collects the historical $12,400 / $3,800? |
+| #70 Sandusky | **TECHNICALLY VERIFIED · BUSINESS UNCONFIRMED** | The link exists and matches the authorized operation. The sale's direction, date and the $5,200 collection responsibility are **not independently proven**. The original investigation had recommended HOLD |
+| #60 Tiffin / #54 Marietta | **TECHNICALLY VERIFIED · collection responsibility open** | Successors verified; historical balances preserved on the old accounts. Who collects the $12,400 / $3,800? |
 | #68 / #69 | Rejected, **finding** | Are Alliance and Coldwater still Bellhaven communities? |
+
+## 5a. Distinctions a reviewer should not miss
+
+**Technical verification is not business certainty.**
+- "VERIFIED" means the CRM now holds exactly what was authorized, confirmed by read-back.
+- It does **not** prove that the underlying business event happened.
+- **#70 Sandusky** is the clearest case: the Bellhaven → Millstone link is technically verified, but the sale itself is business-unconfirmed and is **not** described here as independently proven.
+
+**"No account at the physical address" is not "no CRM account".**
+- **Ashtabula** (#46) has no CRM account at 3156 W Prospect Rd, but it **does** have an existing Bellhaven account, `001NXP9X46CWEPSLSV`. That account was identified by other evidence: name, phone and ZIP match, and its billing address is **PO Box 517**.
+- The PO box is **deliberately preserved** until finance confirms whether it should change. No second account is created, and nothing is overwritten.
+
+**Three different "not done" states:**
+
+| State | Meaning | Cases |
+|---|---|---|
+| **Identity HOLD (not actionable)** | The engine could not decide identity, so it created a HOLD with **no CRM operation** at all | #38 Union Square, #53 Kettering |
+| **Actionable proposal, manually held** | A concrete operation exists but was put on hold by a human pending business evidence; it can be released later | #41 Monroe/Cedar Trail, #46 Ashtabula, #49 Chagrin Falls, #66 Willow Creek |
+| **Rejected / closed without write** | The proposed operation will never run | #42, #57, #64: predecessor records preserved, not inactivated · #68, #69: "Needs Review" is not a CRM status; their business questions remain documented |
+| **Pending** | A proposal awaiting a decision | #71 Amberly Manor, Hudson OH (the Colorado account was resolved as a separate facility). Left pending until expressly authorized |
+
+**Two records at one address are not automatically duplicates.**
+- One may be a historical predecessor. Treating it as a duplicate (inactivate + "Duplicate of") versus as history (preserve) has different consequences for reporting and finances.
+- Owosso was a true same-parent duplicate and was inactivated. Port Clinton, Erie and Monroe/Harborview were preserved as likely predecessor records, with their history **inferred, not confirmed**.
 
 ## 6. Controls that held
 
@@ -83,6 +107,9 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 - **CHOW:** the historical accounts are never edited beyond the link; the successor-duplicate guard and the partial-failure recovery are in place.
 - **The audit log is append-only**, and a ledger backup was taken before each execution window.
 - **Scheduled scans are read-only** and refuse to run with writes enabled (see `MONITORING_RESULTS.md`).
+  - The brief requires only a schedule *configuration*.
+  - At the user's direct request, the local cron job was additionally **installed and tested** on the author's Mac on 2026-11-16 (06:00 daily).
+  - The GitHub Actions workflow exists on GitHub with no `CRM_TOKEN` secret, so it cannot read the CRM.
 
 ## 7. Evidence index
 

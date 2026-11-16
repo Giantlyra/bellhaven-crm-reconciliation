@@ -165,7 +165,7 @@ Released from HOLD, approved and executed by the user in the app (`APPLY 70`). O
 | Account | `001SXSF4ELF0Z2LGDM` Bellhaven of Sandusky, 2715 Columbus Ave, Sandusky OH 44870 |
 | Change | **only** `chow_current_account` → `0017JP8Z1UQ763BVK3` (Millstone Care of Sandusky, Millstone Health Partners). No account was created; the Millstone account is unchanged |
 | Preserved | revenue **$130,000**, AR **$5,200**, Bellhaven parent, name, phone, status Active, contact Frank Dietz |
-| Meaning | The CRM now records that ownership passed from Bellhaven to Millstone. The open question Q3 (was the sale confirmed, and who owns the $5,200 AR) was **not** answered by this write and stays open |
+| Meaning | **TECHNICALLY VERIFIED:** the link exists and matches the authorized operation. **BUSINESS UNCONFIRMED:** the sale's direction and date, and who collects the $5,200 AR, are not independently documented. The original investigation had recommended HOLD. The CRM now *records* Bellhaven → Millstone; this history does not claim the transfer is proven |
 
 The other proposals are not affected by these changes. As of the CHOWs there are 23 VERIFIED, 10 HELD, 2 REJECTED and 0 PENDING. Earlier local
 approvals, including the nine-card console's "APPROVE Marietta", are not authorizations.

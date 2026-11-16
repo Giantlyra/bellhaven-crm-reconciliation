@@ -1,5 +1,7 @@
 # Demo (~2 minutes), technical walkthrough, and submission checklist
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15).** Kept unchanged as historical evidence. Superseded by [WALKTHROUGH.md](WALKTHROUGH.md) for the final submission. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 ## Before recording
 
 1. Stop the stale servers (see `OPERATIONS.md`), then start **one**:

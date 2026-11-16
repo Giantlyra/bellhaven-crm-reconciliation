@@ -1,5 +1,7 @@
 # Bellhaven Reconciliation: Consolidated Proposal Decision Report (2026-11-15)
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15).** Kept unchanged as historical evidence. Recommendations made before any approval. Final dispositions differ for several items, for example #41/#42/#57/#64 and #70. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 **Source:** live read-only scans #5–#9 (latest #9, 2026-11-15 22:51 UTC). Website: 35 communities (homepage says 35, directory lists 34; *Bellhaven
 Meadows of Findlay* is linked only from the homepage). CRM: 121 accounts, 3 pages. CRM content fingerprint `5daed874…` is identical
 in every scan since #3, so the CRM has not changed since the Findlay write. Every scan: **0 new proposals, 35 known**.

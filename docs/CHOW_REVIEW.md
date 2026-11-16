@@ -1,5 +1,12 @@
 # CHOW Review: #60 Tiffin and #54 Marietta (2026-11-16T04:20:44Z)
 
+> **OUTCOME (final): #60 Tiffin and #54 Marietta were EXECUTED by the user in the app and READ-BACK VERIFIED** (05:06:38 and 05:09:05 UTC, 2026-11-16).
+> - Successors: `00164AE214A6588944` and `0014861C0619562203`, under Bellhaven, $0 / $0.
+> - Historical accounts: preserved with $84,000 / $12,400 and $51,250 / $3,800; only `chow_current_account` was set.
+> - **Still open (business, not technical):** who collects the historical balances (Q8).
+>
+> The review below is the **PRE-EXECUTION SNAPSHOT** (2026-11-16 04:20 UTC and the later direction check), kept unchanged. Final records: [FINAL_AUDIT.md](FINAL_AUDIT.md) · [CRM_CHANGE_HISTORY.md](CRM_CHANGE_HISTORY.md) §2.9.
+
 _Read-only. Reviewed under the existing change-of-ownership SOP and financial rules. **Not an authorization.** Both stay pending; nothing is executed._
 
 **SOP (from `app/policy.py`):** an account that must change parent AND has revenue > 0 AND outstanding AR > 0 is never re-parented. The old account is left exactly as it is.

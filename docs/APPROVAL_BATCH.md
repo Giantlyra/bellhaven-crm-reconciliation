@@ -1,5 +1,7 @@
 # Operations that require your fresh authorization
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15).** Kept unchanged as historical evidence. Lists operations that were *awaiting* authorization at that time. Since then, 25 operations on 23 proposals were executed and read-back verified, and others were held or closed. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 Prepared 2026-11-15 from **live read-only scan #9** (35 website facilities / 121 CRM accounts, CRM fingerprint
 `5daed874…`, unchanged since scan #3; 0 baseline drift on every open proposal). **Nothing in this document has been
 approved or executed.**

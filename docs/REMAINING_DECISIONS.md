@@ -1,5 +1,7 @@
 # Remaining Decisions: all 24 open proposals
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16, before stage 1).** Kept unchanged as historical evidence. Decision table before execution. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 _Read-only review 2026-11-16T03:37:33Z by Claude Code: live CRM (121 accounts), live website pages and the ledger. **Nothing here authorizes a write.** Server: dry-run._
 
 **Checks run on all 24:**

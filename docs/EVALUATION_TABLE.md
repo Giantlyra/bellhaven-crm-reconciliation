@@ -1,5 +1,7 @@
 # Comprehensive Evaluation: all 35 proposals (read-only)
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16 ~04:35 UTC, after stage 1).** Kept unchanged as historical evidence. Later: #40/#62 verified (stage 2); #60, #54, #70 executed and verified; #42/#57/#64 closed as predecessor records; #36 superseded by #71 (pending). **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 _2026-11-16, Claude Code. **No CRM changes were made by this evaluation.** Server: dry-run. Sources: live CRM (123 accounts, 67 contacts), live website, the ledger and audit log, all snapshots, and receipts._
 
 **Method.** Each case was examined for (1) plausible explanations, (2) what could make the proposed change unsafe, and (3) consistency with CRM history, contacts, parent relationships, financials and prior decisions. Categories follow the business taxonomy: FIELD UPDATE · PARENT CORRECTION · CHANGE OF OWNERSHIP · DUPLICATE · NEW ACCOUNT · INSUFFICIENT/CONFLICTING EVIDENCE.

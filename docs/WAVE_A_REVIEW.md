@@ -1,5 +1,7 @@
 # Wave A Review: 14 field corrections (for the user's decision)
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16).** Kept unchanged as historical evidence. Review before execution. The 14 Wave A items ended as 10 verified individually or by queue, #50/#59 verified in stage 1, and #49/#66 held. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 > **Update 2026-11-16 02:23 UTC:** all 14 were tentatively approved in the user–ChatGPT review and then **verified** read-only. See `WAVE_A_FINAL_VALIDATION.md`. None is authorized or executed yet.
 
 _Prepared read-only on 2026-11-16 from a fresh live read of the CRM (121 accounts, 67 contacts), scan #11 and the ledger.

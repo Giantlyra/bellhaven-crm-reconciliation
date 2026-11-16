@@ -1,5 +1,7 @@
 # Ambiguous records: investigation questions
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15).** Kept unchanged as historical evidence. The questions remain valid. Their current status is in the final report §5. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 Source: live read-only scan **#9** (2026-11-15 22:51 UTC; 35 website facilities, 121 CRM accounts, CRM fingerprint
 `5daed874…`). Bellhaven parent = `0015QAPLGS3FVYEEEM`.
 

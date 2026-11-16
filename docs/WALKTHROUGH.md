@@ -24,6 +24,9 @@ cd ~/clipboard-assessment
 
 ## 2-minute demo video (required: evidence, approval, rejection, verified CRM change)
 
+**Teleprompter:** open `docs/teleprompter.html` in any browser by double-clicking it in Finder; it works offline with no server. It has 7 beats with time targets and screen cues, a 2:00 timer, ←/→ to move between beats, T to start the timer, C for clean reading mode, and D for dark mode.
+
+
 **Before recording:**
 - The server is in **dry-run**: `./bh serve` (or the session server on :8020). The green DRY-RUN banner is on.
 - Open these tabs in order: `/` · `/proposal/60` · `/proposal/68` · `/history` · `docs/FINAL_AUDIT.md`.

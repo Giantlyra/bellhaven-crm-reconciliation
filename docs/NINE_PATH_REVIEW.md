@@ -1,5 +1,7 @@
 # Nine-path review (2026-11-15, after live read-only scan #9)
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15, after scan #9).** Kept unchanged as historical evidence. Review of the system before execution. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 Each path was evaluated on its own against the code, the live data (scan #9, plus a read-only diff of the snapshot, ledger
 and CRM) and the test suite. Conflicting conclusions are reconciled at the end, in a prioritized remediation plan.
 

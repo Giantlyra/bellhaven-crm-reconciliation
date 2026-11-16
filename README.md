@@ -176,9 +176,9 @@ blindly re-creates.
 - The nine-card console decisions (`data/review.db`, e.g. a local "APPROVE Marietta") are **not** imported. They were
   demo notes and never authorized a write.
 
-## Historical: initial findings before any execution (scans #3–#9, 2026-11-15)
+## PRE-EXECUTION SNAPSHOT (2026-11-15): initial findings, scans #3–#9
 
-> **Historical snapshot, superseded.** This section records what the first scans found *before* anything was approved. Since then, 25 writes were executed and verified; see **Results at a glance** above and `docs/FINAL_RECONCILIATION_REPORT.md`. The counts below (for example "0 engine write calls", "28 operations ready") describe 2026-11-15 only.
+> **PRE-EXECUTION SNAPSHOT, superseded.** Final, authoritative outcome: [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md). This section records what the first scans found *before* anything was approved. Since then, 25 writes were executed and verified; see **Results at a glance** above and `docs/FINAL_RECONCILIATION_REPORT.md`. The counts below (for example "0 engine write calls", "28 operations ready") describe 2026-11-15 only.
 
 - **28 operations** are ready for your individual authorization.
 - **4** are prepared but recommended for HOLD or INVESTIGATE:

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bellhaven Teleprompter</title>
+<style>
+  :root { --bg:#fbfaf7; --ink:#1c2120; --mut:#6b7370; --line:#e3e1db; --accent:#2e5d50; --cue:#fff6e0; --cueink:#6b4e00; --bar:#2e5d50; --warn:#b3261e; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c; --bar:#7cc0aa; --warn:#ff8a80; } }
+  :root[data-theme="dark"] { --bg:#121514; --ink:#ecefed; --mut:#9aa3a0; --line:#2a302e; --accent:#7cc0aa; --cue:#2b2616; --cueink:#f0d58c; --bar:#7cc0aa; --warn:#ff8a80; }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  header { position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; z-index:2 }
+  .sec { font-weight:700 } .tgt { color:var(--mut) } .clock { font-variant-numeric:tabular-nums; font-weight:700; margin-left:auto }
+  .clock.over { color:var(--warn) }
+  .bar { height:4px; background:var(--line); } .bar > i { display:block; height:100%; background:var(--bar); width:0 }
+  main { max-width:900px; margin:0 auto; padding:20px 16px 120px }
+  .cue { background:var(--cue); color:var(--cueink); border-radius:8px; padding:10px 14px; font-size:16px; margin-bottom:18px }
+  .cue b { font-weight:700 }
+  .text { font-size:clamp(28px, 4.6vw, 46px); line-height:1.35; font-weight:500; letter-spacing:.005em }
+  .text em { font-style:normal; color:var(--accent); font-weight:700 }
+  nav { position:fixed; bottom:0; left:0; right:0; background:var(--bg); border-top:1px solid var(--line); display:flex; gap:8px; padding:10px 16px; justify-content:center; flex-wrap:wrap }
+  button { font:inherit; font-size:16px; padding:10px 16px; border-radius:8px; border:1px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; min-width:96px }
+  button.primary { background:var(--accent); color:var(--bg); border-color:var(--accent) }
+  .dots { display:flex; gap:6px; align-items:center } .dots span { width:9px; height:9px; border-radius:50%; background:var(--line) } .dots span.on { background:var(--accent) }
+  .hint { color:var(--mut); font-size:13px; text-align:center; margin-top:28px }
+  body.clean header .tgt, body.clean .cue, body.clean .hint { display:none }
+  body.clean .text { font-size:clamp(32px, 5.4vw, 56px) }
+</style>
+</head>
+<body>
+<header>
+  <span class="sec" id="sec">1 / 7</span>
+  <span class="tgt" id="tgt">target 0:00–0:15</span>
+  <span class="dots" id="dots"></span>
+  <span class="clock" id="clock">0:00 / 2:00</span>
+</header>
+<div class="bar"><i id="bar"></i></div>
+<main>
+  <div class="cue" id="cue"></div>
+  <div class="text" id="text"></div>
+  <p class="hint">Keys: → / Space next · ← previous · T start/pause timer · R reset · C clean reading mode · D dark/light</p>
+</main>
+<nav>
+  <button id="prev">← Prev</button>
+  <button id="timer" class="primary">Start timer</button>
+  <button id="next">Next →</button>
+  <button id="clean">Clean mode</button>
+</nav>
+<script>
+const BEATS = [
+  { t:[0,15], title:"The Bellhaven problem",
+    cue:"Screen: <b>Start Here</b> (http://127.0.0.1:8020/), the 35 vs 121/125 counters and DRY-RUN banner",
+    text:"Bellhaven Senior Living's website lists <em>35 communities</em>. The CRM started with <em>121 accounts</em>: stale names and phones, wrong parent companies after two acquisitions, duplicates, and missing facilities. The website is the source of truth for identity. The CRM holds financial history we must not damage." },
+  { t:[15,30], title:"Address-first matching",
+    cue:"Screen: <b>Build / Modify</b>, then open any proposal's evidence table",
+    text:"I matched on <em>physical address and ZIP first</em>, never on name alone. There's an \"Amberly Manor\" in the CRM, but it's in Colorado, where Bellhaven doesn't operate. Every proposal shows the website and the CRM evidence side by side." },
+  { t:[30,50], title:"Duplicate vs. historical predecessor",
+    cue:"Screen: <b>Final report §5a</b> (docs/FINAL_RECONCILIATION_REPORT.md) or the Port Clinton / Owosso proposals",
+    text:"I learned that <em>two accounts at the same address don't automatically mean one is a duplicate</em>. One might be a historical predecessor, and the financial consequences of treating them incorrectly are very different. Owosso was a true duplicate, so it was inactivated. Port Clinton, Erie and Monroe kept their older operator records." },
+  { t:[50,70], title:"CHOW example: #60 Tiffin",
+    cue:"Screen: <b>/proposal/60</b>, scroll to the financial table ($84,000 / $12,400)",
+    text:"Tiffin is a <em>change of ownership</em>. It sat under Cedar Trail with <em>$84,000</em> in revenue and <em>$12,400</em> still owed. So we don't re-parent it. We preserve that history, create a new Bellhaven account starting at zero, and link the two." },
+  { t:[70,90], title:"Human approval and verified read-back",
+    cue:"Screen: <b>/proposal/60</b>, Decisions and Write log (approved → APPLY 60 → read-back VERIFIED)",
+    text:"Nothing writes without me. <em>I approve</em>, the live preview re-reads the CRM and re-checks the rules, <em>I type APPLY 60</em>, and the system <em>reads the result back</em>. Only then is it marked verified." },
+  { t:[90,105], title:"Rejected: #68 Alliance",
+    cue:"Screen: <b>/proposal/68</b>, status REJECTED (\"Needs Review\" is not a CRM status)",
+    text:"And not everything should run. This proposal would have set a status the CRM doesn't use, so <em>I rejected it</em>. Nothing was written, and the business question stays documented." },
+  { t:[105,120], title:"Results, monitoring, open questions",
+    cue:"Screen: <b>/history</b>, then <b>docs/FINAL_AUDIT.md</b> (integrity PASS)",
+    text:"In total: <em>25 verified operations</em>, an <em>integrity audit that passes</em>, and a <em>read-only daily scan</em>. 23 of 35 communities match exactly. The rest are open business questions, like Sandusky, where the link is verified but the sale itself still needs confirmation." },
+];
+const TOTAL = 120;
+let i = 0, elapsed = 0, running = false, tick = null;
+const $ = id => document.getElementById(id);
+const fmt = s => Math.floor(s/60) + ":" + String(Math.floor(s%60)).padStart(2,"0");
+function render() {
+  const b = BEATS[i];
+  $("sec").textContent = (i+1) + " / " + BEATS.length + " · " + b.title;
+  $("tgt").textContent = "target " + fmt(b.t[0]) + "–" + fmt(b.t[1]);
+  $("cue").innerHTML = b.cue;
+  $("text").innerHTML = b.text;
+  $("dots").innerHTML = BEATS.map((_, k) => '<span class="' + (k <= i ? "on" : "") + '"></span>').join("");
+  $("prev").disabled = i === 0; $("next").disabled = i === BEATS.length - 1;
+  try { localStorage.setItem("tp_beat", i); } catch (e) {}
+  window.scrollTo(0, 0);
+}
+function clock() {
+  $("clock").textContent = fmt(elapsed) + " / " + fmt(TOTAL);
+  $("clock").classList.toggle("over", elapsed > TOTAL);
+  $("bar").style.width = Math.min(100, elapsed / TOTAL * 100) + "%";
+}
+function toggleTimer() {
+  running = !running;
+  $("timer").textContent = running ? "Pause timer" : "Start timer";
+  if (running) tick = setInterval(() => { elapsed += 1; clock(); }, 1000); else clearInterval(tick);
+}
+function reset() { if (running) toggleTimer(); elapsed = 0; clock(); i = 0; render(); }
+const go = d => { i = Math.max(0, Math.min(BEATS.length - 1, i + d)); render(); };
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1);
+$("timer").onclick = toggleTimer; $("clean").onclick = () => document.body.classList.toggle("clean");
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); }
+  else if (e.key === "ArrowLeft") go(-1);
+  else if (e.key.toLowerCase() === "t") toggleTimer();
+  else if (e.key.toLowerCase() === "r") reset();
+  else if (e.key.toLowerCase() === "c") document.body.classList.toggle("clean");
+  else if (e.key.toLowerCase() === "d") { const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; }
+});
+try { const s = parseInt(localStorage.getItem("tp_beat"), 10); if (s >= 0 && s < BEATS.length) i = s; } catch (e) {}
+render(); clock();
+</script>
+</body>
+</html>

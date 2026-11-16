@@ -1,20 +1,20 @@
-# Final Reconciliation Audit (2026-11-16T05:32:37Z)
+# Final Reconciliation Audit (2026-11-16T15:09:42Z)
 
 _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM write is possible from this script._
 
 ## 1. Website vs CRM (all communities)
 
 - Website: **35** communities (scrape complete: True). CRM: **125** accounts, **67** contacts.
-- Result: **DIFFERS: 2** · **MATCH: 23** · **MULTIPLE ACCOUNTS: 7** · **NO CRM ACCOUNT: 3**
+- Result: **DIFFERS: 2** · **EXISTING ACCOUNT (alternate evidence): 1** · **MATCH: 23** · **MULTIPLE ACCOUNTS: 7** · **NO ACCOUNT AT PHYSICAL ADDRESS: 2**
 
 | Community | Result | Detail |
 |---|---|---|
-| Amberly Manor | NO CRM ACCOUNT | open proposal or business question |
+| Amberly Manor | NO ACCOUNT AT PHYSICAL ADDRESS | create proposal #71 PENDING, awaiting explicit authorization |
 | Bellhaven Gardens of Monroe | MULTIPLE ACCOUNTS | Bellhaven Gardens of Monroe (Bellhaven Senior Living), Cedar Trail of Monroe (Cedar Trail Communities), Monroe Gardens Care Center (Harborview Care Group) |
 | Bellhaven Shores of Erie | MULTIPLE ACCOUNTS | Bellhaven Shores of Erie (Bellhaven Senior Living), Harborview Shores of Erie (Harborview Care Group) |
 | Bellhaven Willow Creek | DIFFERS | differs: name, phone |
-| Bellhaven at Union Square | NO CRM ACCOUNT | open proposal or business question |
-| Bellhaven of Ashtabula | NO CRM ACCOUNT | open proposal or business question |
+| Bellhaven at Union Square | NO ACCOUNT AT PHYSICAL ADDRESS | identity HOLD #38: a look-alike CRM account exists elsewhere; unresolved |
+| Bellhaven of Ashtabula | EXISTING ACCOUNT (alternate evidence) | `001NXP9X46CWEPSLSV` matched by name + city/state match supported by: phone matches, CRM street is a PO Box (mailing address, not the facility), ZIP matches; CRM billing address 'PO Box 517' differs from the physical address; #46 HOLD, so the billing address is preserved pending a finance decision |
 | Bellhaven of Chagrin Falls | DIFFERS | differs: name, phone |
 | Bellhaven of Kettering | MULTIPLE ACCOUNTS | Kettering Care Centre (Harborview Care Group), Kettering Nursing & Rehabilitation (), Kettering Senior Campus (Cedar Trail Communities) |
 | Bellhaven of Marietta | MULTIPLE ACCOUNTS | Bellhaven of Marietta (Bellhaven Senior Living), Bellhaven of Marietta (Cedar Trail Communities) |
@@ -109,7 +109,7 @@ _Read-only: live website scrape, live CRM read, ledger and receipts. No CRM writ
 - **Q9:** Confirm Bellhaven's Hudson OH community before creating Amberly Manor (#71)
 
 - Identity resolutions recorded (local decisions, no CRM write): 1
-- Audit log: 398 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
+- Audit log: 400 events; append-only (SQLite triggers). Writes attempted by this engine: **25**.
 
 ## Result
 

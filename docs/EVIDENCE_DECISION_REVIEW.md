@@ -1,5 +1,7 @@
 # Evidence-Based Decision Review: all 24 open proposals
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16, before stage 1).** Kept unchanged as historical evidence. Recommendations before execution. #57/#64/#42 were later closed as predecessor records, not duplicates; #70 was executed by the user as a documented exception. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 _Read-only review, 2026-11-16, by Claude Code, using the existing system only. **Nothing here approves or executes anything.**_
 
 **Sources:**

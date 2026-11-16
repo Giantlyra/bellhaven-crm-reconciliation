@@ -1,5 +1,7 @@
 # Wave A Final Validation Report
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16).** Kept unchanged as historical evidence. Validation before execution. The appended execution log covers only the items run at that time; see the final report for all outcomes. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 _Read-only verification completed 2026-11-16T02:23:11Z by Claude Code. **CRM writes: DISABLED.** The server on :8020 (PID 76147) runs in dry-run, with no `CRM_WRITES_ENABLED` in its environment._
 
 The 14 tentative approvals in this report came from the user's conversation with ChatGPT. **They are not authorizations.**

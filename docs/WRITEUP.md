@@ -63,6 +63,11 @@ Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM
 - **Claude Code (Anthropic):** implementation, refactoring and tests; read-only CRM and website verification; evidence tables; independent read-back checks after each authorized write; documentation.
 - **ChatGPT (OpenAI):** business reasoning and second opinions. It drafted the review prompts (evidence → alternative explanations → risk challenge → historical consistency → recommendation) and challenged recommendations before decisions.
 - **Every CRM write was approved and confirmed by me personally in the app.** The AI tools prepared evidence and code; they never authorized changes.
+
+**Limitations and exceptions, stated plainly:**
+- "Verified" means the CRM holds exactly what was authorized (read-back). It is not proof of the business event: the Sandusky sale and the Tiffin/Marietta AR collection remain business-unconfirmed.
+- Ashtabula has an existing account whose billing address is a PO box, kept pending a finance decision.
+- Six cases stay on hold with explicit business questions rather than forced answers.
 - _Confirm or edit this list before submitting._
 
 ## What we'd build next

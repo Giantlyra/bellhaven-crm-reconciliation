@@ -1,5 +1,7 @@
 # Group A: consolidated validation preview (2026-11-16T04:17:39Z)
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-16 04:17 UTC).** Kept unchanged as historical evidence. Validation preview before execution. All 9 Group A items were later executed and verified (stages 1 and 2). **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 _Read-only. Live CRM re-read for every item; nothing written. **Not an authorization.** The CRM is unchanged and the server is in dry-run._
 
 | # | Kind | App status | Pre-write validation (live) |

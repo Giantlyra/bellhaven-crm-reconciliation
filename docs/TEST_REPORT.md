@@ -1,5 +1,7 @@
 # Automated test report
 
+> **PRE-EXECUTION SNAPSHOT (2026-11-15 (112 tests)).** Kept unchanged as historical evidence. Latest run: 130 passed (adds `tests/test_queue.py`). On a fresh clone, 123 pass and 7 are skipped because they need the private snapshot. **Final, authoritative outcome:** [FINAL_AUDIT.md](FINAL_AUDIT.md) · [FINAL_RECONCILIATION_REPORT.md](FINAL_RECONCILIATION_REPORT.md).
+
 Generated from `data/test_report.json`, written by `./bh test` at **2026-11-15T23:02:10+00:00**: **112 passed in 0.77s**, exit code 0. _Latest run 2026-11-16: **130 passed** (adds `tests/test_queue.py`)._
 
 Environment: Python 3.9.6 (`.venv`), pytest. Every test uses an in-memory fake CRM (`tests/conftest.py::FakeCRM`) and an in-memory or temporary SQLite database. Live writes are forced off unless a test explicitly opts in, and then only on the fake. **No test contacts the live CRM.** The one subprocess test (`test_daily_job_refuses_to_start_with_writes_enabled`) checks that `scripts/run_daily.py` exits before it imports the CRM client.

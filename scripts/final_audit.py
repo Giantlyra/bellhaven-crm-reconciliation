@@ -69,6 +69,13 @@ def main(out_path: str | None = None) -> int:
     if not site.complete or len(site.facilities) != 35:
         fails.append(f"website scrape incomplete or not 35 communities ({len(site.facilities)})")
     status = collections.Counter()
+    # Open/held proposals per website community: used to explain communities with no CRM account at the physical address.
+    by_site = collections.defaultdict(list)
+    for pid, kind, st, pl in led.db.execute("select id, kind, status, payload from proposals where status in ('hold','pending','approved')"):
+        p = json.loads(pl)
+        w = ((p.get("evidence") or {}).get("website") or {})
+        if w.get("name"):
+            by_site[w["name"]].append((pid, kind, st, p))
     rows = []
     for f in sorted(site.facilities, key=lambda x: x["name"]):
         cands = [a for a in accts.values() if a["billing_zip"] == f["zip"] and _num(a["billing_street"]) == _num(f["street"])]
@@ -76,7 +83,18 @@ def main(out_path: str | None = None) -> int:
         if len(cands) == 1 and bh and bh[0]["name"] == f["name"] and norm_phone(bh[0]["phone"]) == norm_phone(f["phone"]):
             state, note = "MATCH", ""
         elif not cands:
-            state, note = "NO CRM ACCOUNT", "open proposal or business question"
+            state, note = "NO ACCOUNT AT PHYSICAL ADDRESS", "no proposal found"
+            for pid, kind, st, p in by_site.get(f["name"], []):
+                upd = [op for op in p.get("ops", []) if op.get("type") == "update" and op.get("account_id") in accts]
+                if upd:
+                    a = accts[upd[0]["account_id"]]
+                    state = "EXISTING ACCOUNT (alternate evidence)"
+                    note = (f"`{a['account_id']}` matched by {p['evidence'].get('basis', 'name/phone/ZIP')}; CRM billing address "
+                            f"'{a['billing_street']}' differs from the physical address; #{pid} {st.upper()}, so the billing address is preserved pending a finance decision")
+                elif kind == "WEBSITE_ONLY":
+                    note = f"create proposal #{pid} {st.upper()}, awaiting explicit authorization"
+                elif kind == "HOLD":
+                    note = f"identity HOLD #{pid}: a look-alike CRM account exists elsewhere; unresolved"
         elif len(cands) > 1:
             state, note = "MULTIPLE ACCOUNTS", ", ".join(f"{a['name']} ({a['parent_name'].replace(' (Parent Account)', '')})" for a in cands)
         else:

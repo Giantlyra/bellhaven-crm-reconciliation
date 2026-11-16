@@ -1,5 +1,12 @@
 # Requirements traceability matrix
 
+> **FINAL OUTCOME FIRST:**
+> - 25 CRM operations on 23 proposals were executed and read-back verified, plus the earlier legacy Findlay correction.
+> - Integrity audit PASS: [FINAL_AUDIT.md](FINAL_AUDIT.md).
+> - 23 of 35 communities match exactly; 6 held, 5 rejected/closed without write, 1 pending (#71).
+>
+> Rows were last updated 2026-11-16 where marked (rows 21, 22, 28, 30, 31, 34–39). Other status texts (for example "121 accounts", "scan #9") are a **PRE-EXECUTION SNAPSHOT from the 2026-11-15 review**, kept as written.
+
 Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112 passed**). _Update 2026-11-16: tests now **130 passed**; final state and audit in `FINAL_RECONCILIATION_REPORT.md` / `FINAL_AUDIT.md`._
 
 ## Sources
