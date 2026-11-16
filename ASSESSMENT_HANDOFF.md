@@ -4,7 +4,7 @@ This is the authoritative operational handoff. Claude Code updates it after each
 It contains no credentials or tokens.
 Labels: **[V]** verified this session by a live read, ledger query or test run · **[R]** from an earlier report or document, not re-checked · **[A]** assumption · **[Rec]** recommendation.
 
-_Last updated: 2026-11-16 by Claude Code. Lane A (#50, #59, #49, #66) approved by the user and batch-previewed in dry-run; awaiting execution authorization._
+_Last updated: 2026-11-16 by Claude Code. Evidence-based decision review of all 24 open proposals (docs/EVIDENCE_DECISION_REVIEW.md); lane A approved but not executed; dry-run._
 
 ---
 
@@ -110,7 +110,7 @@ Review sheet: [`docs/WAVE_A_REVIEW.md`](docs/WAVE_A_REVIEW.md). It was built fro
 | 59 | `001CF3LDWVRGL09P4F` Portsmouth | billing_zip → 45662 | tentative ✔ (chat) · **verified** · awaiting authorization | — | — |
 
 ## 1. Application status
-- [V] One server is running: `./bh serve --port 8020` (PID 86231), in **dry-run**, restored after queue run 1.
+- [V] One server is running: `./bh serve --port 8020` (PID 89467), in **dry-run**.
 - [V] **CRM write mode: DRY-RUN.**
 - [V] No other app servers are listening.
 - [V] Claude Code can read the UI in its built-in browser pane.
@@ -299,6 +299,7 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 | Demo recording (keep #60 Tiffin CHOW for the camera) | ❌ not done [R] |
 
 ## 11. User decisions
+- [V] 2026-11-16: lane A batch attempts did **not** execute. One reached the dry-run server; one failed the phrase check; one never reached the app (stale page). All were refused before any write. The phrase check now ignores whitespace and shows the received text (commit `a769011`). The user then asked for an evidence-based review (alternatives → challenge → consistency → recommendation) of all open proposals, with no new software and no automatic approvals.
 - [V] 2026-11-16: the user's explicit decisions were **APPROVE #50, #59, #49, #66** (hold none, reject none), stated as *not* an execution authorization. #50 was approved by the user in the app (03:45:56). The approvals for #59, #49 and #66 were recorded in the ledger by Claude Code from that chat decision, with the actor labelled accordingly. A live re-check showed no drift and the website unchanged. The dry-run batch preview shows 4 of 4 `will_run` with the exact bodies.
 - [V] 2026-11-16: the user switched to **batch completion mode**: one read-only review of all remaining items, a decision table, then sequential execution of explicitly approved changes with stop-on-error. CHOW, duplicates, conflicting identities and financial-risk cases stay manual unless their requirements are met. Not an authorization.
 - [V] 2026-11-16 03:26 UTC: the user ran the queue (`APPLY QUEUE OF 5`). All 5 were verified by the app and by Claude Code's independent live check.
@@ -324,15 +325,12 @@ _The one-at-a-time tracker was superseded on 2026-11-16 by the user's request fo
 - [V] Git: first commit `c3ef0a7` on branch `bellhaven-assessment`; `main` has no commits. The commit excludes `.env`, `data/`, the ledgers and snapshots, and `investigation.txt` (per `.gitignore`), plus the stray files. `docs/` and this handoff contain assessment CRM account IDs and phone numbers: review before any push.
 
 ## 13. Exact next action
-**Decision table: [`docs/REMAINING_DECISIONS.md`](docs/REMAINING_DECISIONS.md)** (24 open items, reviewed read-only).
-- No drift, and the website is unchanged on all 24.
-- Pre-execution snapshot: `data/remaining_pre_execution_snapshot.json`.
+**Review: [`docs/EVIDENCE_DECISION_REVIEW.md`](docs/EVIDENCE_DECISION_REVIEW.md).** 24 cases, no drift.
+- **APPROVE (13):** lane A #50, #59, #49, #66 (approved, not executed) plus #39→#40, #61→#62, #56, #47, #48, #60→#54.
+- **Policy P1 (4):** #57, #64, #41, #42.
+- **Resolve distinct (1):** #36.
+- **HOLD (1):** #46.
+- **Unresolved (3):** #38, #53, #70.
+- **REJECT (2):** #68, #69.
 
-| Lane | Items | Execution |
-|---|---|---|
-| A. Batch (verified Wave A) | #50, #59, #49, #66 | Existing `/batch` path, `APPLY BATCH OF n`, stops at the first failure. The low-risk queue excludes them by design (renames and a billing field) |
-| B. Individual | #39 → #40 · #61 → #62 · #56 · #47 · #48 · #60 → #54 | `APPLY <id>`, one at a time; CHOW is never batched |
-| C. Blocked (Q1–Q5) | #70, #36, #38, #41, #42, #57, #64, #53, #46 | Needs business answers |
-| D. Reject | #68, #69 | Rejecting writes nothing |
-
-**Waiting on the user:** a separate authorization to execute lane A (`APPLY BATCH OF 4` on a live-writes server), then decisions on lane B. Server in dry-run (PID 88089).
+**User decides:** lane A execution; approve or hold each of the 9 new items; P1 yes/no; #36; #46; #68/#69. Nothing is authorized. Server in dry-run (PID 89467). Last write: queue run 1 (operations total 11).
