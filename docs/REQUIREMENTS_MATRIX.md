@@ -7,7 +7,7 @@
 >
 > Rows were last updated 2026-11-16 where marked (rows 21, 22, 28, 30, 31, 34–39). Other status texts (for example "121 accounts", "scan #9") are a **PRE-EXECUTION SNAPSHOT from the 2026-11-15 review**, kept as written.
 
-Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112 passed**). _Update 2026-11-16: tests now **130 passed**; final state and audit in `FINAL_RECONCILIATION_REPORT.md` / `FINAL_AUDIT.md`._
+Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112 passed**). _Update 2026-11-16: tests now **134 passed**; final state and audit in `FINAL_RECONCILIATION_REPORT.md` / `FINAL_AUDIT.md`._
 
 ## Sources
 
@@ -60,7 +60,7 @@ Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112
 | 24 | UI shows scan state, risk, before/after, competing candidates, financial risk, the full state machine, receipts, schedule, tests and readiness | D | templates | Start Here, proposal, preview, History, Test, Submit | `test_dashboard_shows_lifecycle_states_completeness_and_schedule`, `test_executing_state_is_labelled_and_never_called_applied` | **Met** | — |
 | 25 | Never describe a proposal as applied unless the read-back verified it | D | `main.STATE_LABELS`, executor | VERIFIED is the only "applied" label | `test_readback_failure_never_reports_success` | **Met** | — |
 | 26 | One CLI command for scan and one for the server | AC | `bh`, `cli.py` | — | Run manually: `./bh scan` (#9), `./bh serve` | **Met** | — |
-| 27 | Automated tests on mocked HTTP and temporary SQLite | S4, H-P6 | `tests/` | Test tab | 130 tests | **Met** | — |
+| 27 | Automated tests on mocked HTTP and temporary SQLite | S4, H-P6 | `tests/` | Test tab | 134 tests | **Met** | — |
 | 28 | Apply only user-approved corrections and validate the CRM state afterwards | S6, H AC | `executor.py` | Preview and History | Covered by tests; **25 live operations executed and read-back verified** | **Met**: 23 proposals verified; final audit PASS (`FINAL_AUDIT.md`); re-scan #12/#13 clean | — |
 | 29 | README, architecture, policy, known limits, ~2-minute demo script and submission checklist | S7, H-P8, D | `README.md`, `docs/` | Walkthrough; Submit | — | **Met** | — |
 | 30 | Honest actual time spent | [O], H-P8 | `docs/WRITEUP.md`, README | Submit | — | **Met**: approximately 5.5 hours of active work (excludes breaks and idle waiting), stated by the user | — |
@@ -73,4 +73,4 @@ Reviewed 2026-11-15 against live read-only scan **#9** and the test suite (**112
 
 | 37 | Write-up: matching approach, AI tools used, what we'd build next | [O] | `docs/WRITEUP.md` | Submit | — | **Met (draft)**: the user confirms the AI-tools list and adds the time spent | Confirm |
 | 38 | No hosting or deployment | [O] | — | — | — | **Met**: runs locally | — |
-| 39 | Ready for the 45-minute live walkthrough and a small modification | [O] | `docs/WALKTHROUGH.md` (5-minute script, modification map) | Walkthrough | 130 tests as a safety net | **Met (prep)** | — |
+| 39 | Ready for the 45-minute live walkthrough and a small modification | [O] | `docs/WALKTHROUGH.md` (5-minute script, modification map) | Walkthrough | 134 tests as a safety net | **Met (prep)** | — |

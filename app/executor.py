@@ -22,6 +22,7 @@ import threading
 
 from . import config
 from . import ledger as L
+from .normalize import is_po_box
 from .policy import check_ops, successor_conflicts
 
 
@@ -91,6 +92,41 @@ def _done_ops(ledger, pid: int, n: int) -> dict:
 
 # ------------------------------------------------------------------ decisions (no writes)
 
+# ------------------------------------------------------------------ address purpose (needs verification)
+
+ADDRESS_FIELDS = ("billing_street", "billing_city", "billing_zip")
+
+
+def address_purpose_check(p: dict):
+    """A proposal that would overwrite a PO-box (mailing/billing) address with a street address
+    needs human verification of what each address is for. Returns the address table, or None."""
+    pl = p.get("payload") or p
+    cur = (pl.get("current") or {}).get("billing_street")
+    if not is_po_box(cur):
+        return None
+    for op in pl.get("ops") or []:
+        new = (op.get("fields") or {}).get("billing_street")
+        if op.get("type") == "update" and new and not is_po_box(new):
+            site = ((pl.get("evidence") or {}).get("website") or {})
+            return {
+                "account_id": op.get("account_id"),
+                "physical": new, "physical_source": "Bellhaven website (facility location)",
+                "mailing": cur, "mailing_source": "CRM billing_street (PO box: mailing / billing)",
+                "site_city": site.get("city"), "site_zip": site.get("zip"),
+                "status": "UNVERIFIED",
+                "reason": ("The CRM billing address is a PO box and the proposal would replace it with the facility's "
+                           "street address. A PO box is often the invoice mailing address, so both records are preserved "
+                           "until the physical location and the mailing-address purpose are verified."),
+            }
+    return None
+
+
+def _require_evidence_note(p: dict, note: str, what: str):
+    if address_purpose_check(p) and not (note or "").strip():
+        raise ExecutionError(f"Needs verification (mailing vs physical address): {what} requires an evidence note "
+                             "stating how the address purpose was verified")
+
+
 def approve(ledger, pid: int, note: str = "", actor: str = "local-reviewer"):
     p = ledger.get_proposal(pid)
     if p is None:
@@ -99,6 +135,7 @@ def approve(ledger, pid: int, note: str = "", actor: str = "local-reviewer"):
         raise ExecutionError("HOLD items have no executable operations and cannot be approved")
     if p["status"] != L.PENDING:
         raise ExecutionError(f"Only pending proposals can be approved (this one is '{p['status']}')")
+    _require_evidence_note(p, note, "approval")
     ledger.decide(pid, "approved", note, actor)
     ledger.set_status(pid, L.APPROVED)
 
@@ -125,6 +162,7 @@ def release(ledger, pid: int, note: str = "", actor: str = "local-reviewer"):
         raise ExecutionError("Only held proposals can be released")
     if not p["actionable"]:
         raise ExecutionError("This HOLD has no executable operations; resolve identity and re-scan instead")
+    _require_evidence_note(p, note, "release")
     ledger.decide(pid, "released", note, actor)
     ledger.set_status(pid, L.PENDING)
 

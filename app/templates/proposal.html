@@ -8,6 +8,12 @@
 {% if p.last_error %}<div class="bad">{{ p.last_error }}</div>{% endif %}
 {% if p.resolution %}<div class="ok">Resolved: {{ p.resolution }}</div>{% endif %}
 
+{% if addr %}<div class="chow" id="needs-verification">🔎 <b>NEEDS VERIFICATION — mailing vs physical address</b>{% if p.status == 'hold' %} · held: cannot be approved, executed or batched{% endif %}<br>{{ addr.reason }}{% if hold_note %}<br><b>Reviewer note:</b> {{ hold_note }}{% endif %}</div>
+<table><tr><th>Address</th><th>Value</th><th>Source</th><th>Purpose</th></tr>
+<tr><td>Physical (facility location)</td><td><code>{{ addr.physical }}</code>{% if addr.site_city %}, {{ addr.site_city }} {{ addr.site_zip }}{% endif %}</td><td>{{ addr.physical_source }}</td><td>Where the residents are. <b>Not in the CRM</b></td></tr>
+<tr><td>Mailing / billing</td><td><code>{{ addr.mailing }}</code></td><td>{{ addr.mailing_source }}</td><td>Possibly where invoices go. <b>Kept</b></td></tr>
+<tr><td>Which one belongs in <code>billing_street</code></td><td colspan="2">{{ addr.status }}: neither record is overwritten until verified</td><td>Approve or release requires an evidence note</td></tr></table>
+{% endif %}
 {% if p.kind == 'HOLD' %}<div class="chow">⏸ HOLD — {{ pl.hold_reason }}<br>This item has no CRM operations and cannot be approved. Resolve identity/ownership outside the tool; the next scan re-evaluates it.</div>{% endif %}
 {% if p.kind == 'CHOW' %}
 <div class="chow">⚠ Change-of-ownership SOP: revenue history AND outstanding AR &gt; 0, so the original account is preserved — its parent, name and financials are <u>not</u> changed. {% if pl.ops|length > 1 %}Step 1 creates a successor under Bellhaven; step 2 sets the old account's <code>chow_current_account</code> to the new id.{% else %}The old account's <code>chow_current_account</code> is pointed at the existing current-owner account.{% endif %}</div>

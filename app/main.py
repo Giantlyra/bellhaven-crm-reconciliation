@@ -41,6 +41,7 @@ STATE_LABELS = {"pending": "PENDING", "hold": "HELD", "approved": "APPROVED", "a
                 "verified": "VERIFIED", "failed": "FAILED", "superseded": "SUPERSEDED", "conflict": "BLOCKED",
                 "rejected": "REJECTED", "resolved": "RESOLVED", "applied": "WRITTEN, NOT VERIFIED"}
 templates.env.filters["state"] = lambda v: STATE_LABELS.get(v, (v or "").upper())
+templates.env.globals["needs_verification"] = X.address_purpose_check
 
 CSRF = secrets.token_urlsafe(32)
 LOCAL_HOSTS = {"127.0.0.1", "::1", "localhost", "testclient"}
@@ -288,8 +289,11 @@ def proposal(request: Request, pid: int, msg: str = ""):
     if not p:
         raise HTTPException(404, "No such proposal")
     pl = p["payload"]
+    decisions = [d for d in led.decisions(1000) if d["proposal_id"] == pid][::-1]
+    holds = [d for d in decisions if d["decision"] == "hold" and (d.get("note") or "").strip()]
     return render(request, "proposal.html", tab="review", p=p, pl=pl, ops_log=led.operations(pid), msg=msg,
-                  decisions=[d for d in led.decisions(1000) if d["proposal_id"] == pid][::-1],
+                  addr=X.address_purpose_check(p), hold_note=holds[-1]["note"] if holds and p["status"] == "hold" else "",
+                  decisions=decisions,
                   audit=led.audit(pid), fin=_financial_context(pl), phrase=X.confirmation_phrase(pid),
                   cmp=E.build(led, p, str(config.DATA_DIR)))
 

@@ -14,7 +14,7 @@ type its confirmation phrase, and only if this server was started with <code>CRM
 <table><tr><th>#</th><th>Type</th><th>Proposal</th><th>Risk</th><th>Confidence</th><th>Status</th></tr>
 {% for p in props %}<tr>
   <td>{{ p.id }}</td><td><span class="tag {{p.kind}}">{{ p.kind }}</span></td>
-  <td><a href="/proposal/{{p.id}}">{{ p.title }}</a>{% if p.payload.warnings %} <span class="muted">⚠ {{ p.payload.warnings|length }}</span>{% endif %}</td>
+  <td><a href="/proposal/{{p.id}}">{{ p.title }}</a>{% if p.payload.warnings %} <span class="muted">⚠ {{ p.payload.warnings|length }}</span>{% endif %}{% if needs_verification(p) %} <span class="tag s-hold" title="Mailing vs physical address: purpose unverified">🔎 Needs verification</span>{% endif %}</td>
   <td><span class="tag r-{{p.risk}}">{{ p.risk }}</span></td><td>{{ p.confidence }}</td><td><span class="tag s-{{p.status}}">{{ p.status|state }}</span></td>
 </tr>{% else %}<tr><td colspan="6" class="muted">Nothing here.</td></tr>{% endfor %}</table>
 

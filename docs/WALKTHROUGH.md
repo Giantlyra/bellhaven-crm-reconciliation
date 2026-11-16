@@ -5,7 +5,7 @@ _For the reviewer. Every step is read-only unless stated otherwise._
 ## Setup (1 minute)
 ```
 cd ~/clipboard-assessment
-./bh test          # 130 tests, mocked CRM, about 1 s
+./bh test          # 134 tests, mocked CRM, about 1 s
 ./bh status        # last scan, proposal counts, write calls (25)
 ./bh serve         # http://127.0.0.1:8000, DRY-RUN
 ```
@@ -48,7 +48,7 @@ cd ~/clipboard-assessment
 
 ## Live 45-minute walkthrough: preparation for the "small modification"
 
-- **Run tests first and last:** `./bh test` (130 tests, about 1 s). Keep the server in dry-run while changing code.
+- **Run tests first and last:** `./bh test` (134 tests, about 1 s). Keep the server in dry-run while changing code.
 - **Where common changes go:**
   - *Compare a new field* (e.g. care type): `app/normalize.py` (normalizer), `app/reconcile.py` (`_website_fields` and the field-diff block), then a test in `tests/test_matching.py`.
   - *Change matching strictness*: the street-similarity threshold and match tiers in `app/reconcile.py`.
@@ -101,7 +101,7 @@ cd ~/clipboard-assessment
 - [x] All 35 communities and all CRM accounts reconciled; evidence for every proposal
 - [x] 25 CRM operations human-approved, executed and verified; integrity audit PASS
 - [x] Unresolved cases documented with business questions (report §5)
-- [x] 130 tests passing
+- [x] 134 tests passing
 - [x] Read-only daily schedule **installed** as a local cron job (06:00 daily, idempotent) and tested: run #14 PASS, failure capture PASS, 0 CRM writes
 - [x] Code committed locally on branch `bellhaven-assessment`
 - [x] Cross-checked against the original brief (welcome page): deadline Nov 16 2026 11:29 PM EST; schedule config only (no live cron needed); no hosting

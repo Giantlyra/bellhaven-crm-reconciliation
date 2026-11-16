@@ -67,7 +67,7 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 | #41 Monroe "Cedar Trail of Monroe" | HOLD | Did 750 Stewart Rd ever operate under Cedar Trail, or is this record an error? |
 | #53 Kettering (3 records) | HOLD | Which record is the live facility: `001WR41PYNWXCAE2X4`, `001B7XZAA3AFALS9GP` or `0016KTS1UAWBRXS09J`? |
 | #38 Union Square | HOLD | Is 240 Market St (Juniper Point, administrator Dale Croft) a different community from 118 Union Square Dr? |
-| #46 Ashtabula | HOLD | Keep PO Box 517 as the billing address? |
+| #46 Ashtabula | HOLD · **Needs verification** (mailing vs physical address) | Is PO Box 517 the invoice mailing address? Where should the physical street 3156 W Prospect Rd be recorded? Both are preserved; release or approval requires an evidence note |
 | #49 Chagrin Falls | HOLD | Was "Riverbend Manor Care Center" a prior operator or a former name? |
 | #66 Willow Creek | HOLD | Is "Sunny Acres Retirement Home" the same facility? There are no contacts to confirm it |
 | #71 Amberly Manor, Hudson OH | PENDING (new) | Confirm the Hudson OH community before approving the create |

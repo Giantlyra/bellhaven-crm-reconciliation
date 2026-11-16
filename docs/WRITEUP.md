@@ -53,7 +53,7 @@ The goal: reconcile the CRM to the website, change only what is justified, never
 - **Left open on purpose, with a business question each:** Kettering (3 records), Union Square, Monroe/Cedar Trail, the Ashtabula PO box, two renames, and Hudson OH (#71, pending).
   - Documented exceptions: the Sandusky sale and its $5,200 AR, and who collects the Tiffin and Marietta balances.
 - **23 of 35** communities now match the CRM exactly; every remaining difference is a documented case.
-- **130 automated tests** run on a mocked CRM and temporary SQLite.
+- **134 automated tests** run on a mocked CRM and temporary SQLite.
 
 Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM_CHANGE_HISTORY.md`.
 
@@ -66,7 +66,7 @@ Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM
 
 **Limitations and exceptions, stated plainly:**
 - "Verified" means the CRM holds exactly what was authorized (read-back). It is not proof of the business event: the Sandusky sale and the Tiffin/Marietta AR collection remain business-unconfirmed.
-- Ashtabula has an existing account whose billing address is a PO box, kept pending a finance decision.
+- **Ashtabula (#46)** has an existing account whose billing address is a PO box; the website gives the physical street. It's held as **Needs Verification (mailing vs physical address)**: both addresses are preserved, and the app refuses to release or approve this kind of change without an evidence note. The CRM has a single `billing_street` field, so a real fix needs a separate physical-address field.
 - **Lima (#39):** the re-parent was allowed because outstanding AR was $0. But Lima's **$47,000 historical revenue**, earned under Harborview, now sits on an account under Bellhaven. That's a reporting-attribution limitation, the same as the earlier Findlay correction.
 - **Owosso (#56):** the duplicate was correctly inactivated, but its **Admissions Director contact (Tricia Lindqvist) remains on the inactive account**. That belongs in future contacts reconciliation, not a last-minute change.
 - **Union Square (#38):** the competing account's contact (Dale Croft vs the website's Phil Holloway) is in the investigation records, but **the proposal page does not yet display competing accounts' contacts**.
