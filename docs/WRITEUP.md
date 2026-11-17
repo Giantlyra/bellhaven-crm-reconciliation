@@ -50,9 +50,9 @@ The goal: reconcile the CRM to the website, change only what is justified, never
 - **Closed without a write:**
   - Three old-operator records were preserved as likely predecessor records, not labelled duplicates.
   - Two proposals were rejected because they would have set a status value the CRM doesn't use.
-- **Left open on purpose, with a business question each:** Kettering (3 records), Union Square, Monroe/Cedar Trail, the Ashtabula PO box, two renames, and Hudson OH (#71, pending).
+- **Left open on purpose, with a business question each:** Kettering (3 records), Union Square, Monroe/Cedar Trail, the Ashtabula PO box, two renames, and Hudson OH (#71, held after a demonstration approval; never executed). **7 held, 0 pending.**
   - Documented exceptions: the Sandusky sale and its $5,200 AR, and who collects the Tiffin and Marietta balances.
-- **23 of 35** communities now match the CRM exactly; every remaining difference is a documented case.
+- **23 of 35** communities now match the CRM exactly, up from **9** at the start by the same rule (exactly one account at the address with the website's name, phone and Bellhaven parent). The dashboard's looser "clean matches" figure is 29, because it ignores extra historical records at the same address. Every remaining difference is a documented case.
 - **145 automated tests** run on a mocked CRM and temporary SQLite.
 
 Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM_CHANGE_HISTORY.md`.
@@ -71,8 +71,7 @@ Details: `docs/FINAL_RECONCILIATION_REPORT.md`, `docs/FINAL_AUDIT.md`, `docs/CRM
 - **Owosso (#56):** the duplicate was correctly inactivated, but its **Admissions Director contact (Tricia Lindqvist) remains on the inactive account**. That belongs in future contacts reconciliation, not a last-minute change.
 - **Union Square (#38):** the competing account's contact (Dale Croft vs the website's Phil Holloway) is in the investigation records, but **the proposal page does not yet display competing accounts' contacts**.
 - Superseded proposals are kept as audit history, not deleted. Two of them show the matching tightening: the first scan would have *created* Amberly Manor and Union Square; the stricter scan found look-alike accounts and escalated them to identity holds instead.
-- Six cases stay on hold with explicit business questions rather than forced answers.
-- _Confirm or edit this list before submitting._
+- Seven cases stay on hold with explicit business questions rather than forced answers.
 
 ## What we'd build next
 

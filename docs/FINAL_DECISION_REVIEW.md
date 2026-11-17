@@ -2,7 +2,7 @@
 
 _2026-11-16. Built from a fresh live read of the CRM (125 accounts) and the website, plus the ledger and the final audit. **No CRM writes, no holds released, no approvals, no ledger changes.** Earlier conversational agreement is **not** treated as permission to write. Server: dry-run._
 
-## 1. The six held proposals
+## 1. The original six held proposals (#71, also held now, is in §2)
 
 | # | Website (physical) | CRM record(s) | Supports a match | Conflicts / gaps | Financial and contact implications | Recommended disposition |
 |---|---|---|---|---|---|---|

@@ -73,7 +73,7 @@ cd ~/clipboard-assessment
 4. **The unsafe creates the matching caught:** the first scan would have created Amberly Manor and Union Square. Stricter identity checks found look-alike records. Amberly turned out to be distinct (Colorado; Bellhaven isn't there), so #71 is pending. Union Square stays held.
 5. **Technical vs business verification (Sandusky):** the link to Millstone is verified, but the sale and the $5,200 are not proven. The original investigation recommended holding it.
 6. **"No account at this address" ≠ "no account" (Ashtabula):** the account exists under PO Box 517, kept pending a finance decision.
-7. **Why six cases stay held:** each needs a fact that isn't in the data. Name the question for each (`FINAL_DECISION_REVIEW.md`).
+7. **Why seven cases stay held:** each needs a fact that isn't in the data. Name the question for each (`FINAL_DECISION_REVIEW.md`).
 8. **Investigation categories (Start Here → "Why the remaining cases aren't finished"):** the seven open cases are grouped by what's missing: possible change of ownership / rebrand (#41, #49, #66), address verification (#46), identity verification (#38, #53, #71). Each proposal page answers: why it isn't finished, what we know, what's uncertain, what the business must confirm, and the next action. One line for the video: *"I also categorized the unresolved cases by what was missing — possible ownership changes, address discrepancies and identity questions — so the business team knows what to investigate next."* The categories are labels only; they don't change any status or permission.
 
 **Likely questions, short answers:**

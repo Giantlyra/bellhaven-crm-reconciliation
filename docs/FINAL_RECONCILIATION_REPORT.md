@@ -11,7 +11,7 @@ _Generated 2026-11-16 05:28 UTC. Final state after all authorized work. Every nu
 | Proposals reviewed | **36** (35 in the review + #71 from the follow-up scan) |
 | CRM changes made by the engine | **25 operations on 23 proposals, all VERIFIED** by read-back. Plus the earlier Findlay parent correction |
 | Integrity audit | **PASS.** 25 of 25 operations live-matched and receipted; protected fields and contacts intact; no CRM change outside the ledger |
-| Communities now matching the CRM exactly | **23 of 35**. The other 12 are explained below |
+| Communities now matching the CRM exactly | **23 of 35** (9 at the start, same rule). The other 12 are explained below. The dashboard's looser "clean matches" tile shows 29 |
 | Website vs CRM today | **DIFFERS: 2** · **MATCH: 23** · **MULTIPLE ACCOUNTS: 7** · **NO CRM ACCOUNT: 3** |
 
 ## 2. What was changed (all human-approved, previewed live, typed-confirmed, read back)
@@ -101,7 +101,7 @@ Legacy, before this engine: Findlay `001UKEFGADQ8YCZ4YM.parent_id` → Bellhaven
 
 ## 5b. Why the dashboard shows 71 proposals
 
-Only **35** are current decisions: 23 verified + 6 held + 5 rejected + 1 pending. The other **36 are kept as audit history**, never deleted:
+Only **35** are current decisions: 23 verified + 7 held + 5 rejected (0 pending, 0 approved). The other **36 are kept as audit history**, never deleted:
 
 - **10 superseded:** earlier versions replaced by a materially changed proposal for the same case.
   - #1 → #36 and #3 → #38: the first scan would have **created** Amberly Manor and Union Square. The stricter scan found look-alike accounts and escalated both to identity holds, so an **unsafe create was prevented**.
