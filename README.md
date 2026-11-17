@@ -262,5 +262,5 @@ alternative; it would store the private ledger as a GitHub artifact, so **local 
 The **Submit** tab shows a live checklist.
 
 - Repository: https://github.com/Giantlyra/bellhaven-crm-reconciliation
-- Demo video: _add link (not recorded)_
+- Demo video (2:07): https://drive.google.com/file/d/1b2ZNJgsLMdWvgtV8Whw8sZ7wrMZrmZIJ/view
 - Time spent: Approximately 5.5 hours of active work, including implementation, CRM investigation, business-rule evaluation, testing, debugging, verification, and documentation. This estimate excludes breaks and idle waiting time.
